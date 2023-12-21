@@ -16,9 +16,10 @@ public class VeinMiner implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("veinminer");
 	public static Miner veinMiner;
 	public static OutlineRender outlineRender;
-    public static boolean fastplace;
+    public static boolean fastPlace;
 
-    @Override
+
+	@Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
@@ -30,5 +31,11 @@ public class VeinMiner implements ModInitializer {
 		veinMiner = new Miner();
 		outlineRender = new OutlineRender();
 		//WorldRenderEvents.AFTER_TRANSLUCENT.register(outlineRender);
+	}
+	public static void toggleFastPlace() {
+		fastPlace = !fastPlace;
+	}
+	public static boolean getFastPlace() {
+		return fastPlace;
 	}
 }

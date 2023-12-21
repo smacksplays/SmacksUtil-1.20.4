@@ -17,8 +17,8 @@ public class MinecraftClientMixin {
     @Inject(at = @At("HEAD"), method = "handleInputEvents")
     private void handleInputEvents(CallbackInfo info) {
         // This code is injected into the start of MinecraftServer.loadWorld()V
-        if(VeinMiner.fastplace){
-            itemUseCooldown = 1;
+        if(VeinMiner.getFastPlace()){
+            itemUseCooldown = 0;
         }
     }
 }
