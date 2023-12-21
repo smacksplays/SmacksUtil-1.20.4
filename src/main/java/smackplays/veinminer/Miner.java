@@ -57,14 +57,14 @@ public class Miner {
 
     }
 
-    public List<BlockPos> getBlocks(World worldIn, PlayerEntity playerIn, BlockPos sourcePosIn){
+    public ArrayList<BlockPos> getBlocks(World worldIn, PlayerEntity playerIn, BlockPos sourcePosIn){
         Block block = worldIn.getBlockState(sourcePosIn).getBlock();
         if(VeinMode.cropList.contains(block)){
             mode = modeArray[5];
         } else if (VeinMode.oreList.contains(block)){
             mode = modeArray[2];
         }
-        List<BlockPos> matching = mode.getBlocks(worldIn, playerIn, sourcePosIn, radius, playerIn.getMainHandStack());
+        ArrayList<BlockPos> matching = mode.getBlocks(worldIn, playerIn, sourcePosIn, radius, playerIn.getMainHandStack());
         mode = modeArray[currMode];
         return matching;
     }
@@ -92,7 +92,7 @@ public class Miner {
             mode = modeArray[2];
         }
 
-        toBreak = mode.getBlocks(world, player, sourceBlockPos, radius, mainHandStack);
+        toBreak = (ArrayList<BlockPos>)mode.getBlocks(world, player, sourceBlockPos, radius, mainHandStack).clone();
 
         for(Object nbt : enchants){
             NbtCompound n = (NbtCompound)nbt;
@@ -213,7 +213,7 @@ public class Miner {
                             BlockState state, World world, PlayerEntity player, BlockPos pos1) {
         if(isDrawing) return;
         isDrawing = true;
-        List<BlockPos> toRender = VeinMiner.veinMiner.getBlocks(world, player, pos);
+        ArrayList<BlockPos> toRender = (ArrayList<BlockPos>) VeinMiner.veinMiner.getBlocks(world, player, pos).clone();
         VoxelShape shape = combine(world, pos,toRender);
 
         drawCuboidShapeOutline(matrices, vertexConsumer, shape,
