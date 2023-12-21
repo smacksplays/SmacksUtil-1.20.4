@@ -48,7 +48,7 @@ public class KeyInputHandler {
                 }
                 if(fastplaceKey.wasPressed()){
                     VeinMiner.toggleFastPlace();
-                    String str = VeinMiner.veinMiner.renderPreview ? "Active" : "Inactive";
+                    String str = VeinMiner.getFastPlace() ? "Active" : "Inactive";
                     client.player.sendMessage(Text.literal("Fastplace: " + str), true);
                 }
             }
