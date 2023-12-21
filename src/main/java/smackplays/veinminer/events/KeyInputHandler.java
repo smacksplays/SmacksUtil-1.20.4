@@ -13,8 +13,10 @@ public class KeyInputHandler {
     public static final String KEY_CATEGORY_VEINMINER = "key.category.veinminer";
     public static final String KEY_VEINMINER_ACTIVE = "key.veinminer.activate";
     public static final String KEY_VEINMINER_PREVIEW = "key.veinminer.preview";
+    public static final String KEY_VEINMINER_FASTPLACE = "key.veinminer.fastplace";
     public static KeyBinding veinKey;
     public static KeyBinding previewKey;
+    public static KeyBinding fastplaceKey;
 
     public static void register(){
         veinKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
@@ -24,6 +26,10 @@ public class KeyInputHandler {
         previewKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 KEY_VEINMINER_PREVIEW, InputUtil.Type.KEYSYM,
                 GLFW.GLFW_KEY_Y, KEY_CATEGORY_VEINMINER
+        ));
+        fastplaceKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                KEY_VEINMINER_FASTPLACE, InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_Z, KEY_CATEGORY_VEINMINER
         ));
 
         registerEvents();
@@ -39,6 +45,9 @@ public class KeyInputHandler {
                     VeinMiner.veinMiner.togglePreview();
                     String str = VeinMiner.veinMiner.renderPreview ? "Active" : "Inactive";
                     client.player.sendMessage(Text.literal("Preview: " + str), true);
+                }
+                if(fastplaceKey.wasPressed()){
+                    VeinMiner.fastplace = !VeinMiner.fastplace;
                 }
             }
         });

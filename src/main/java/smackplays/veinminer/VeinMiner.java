@@ -16,8 +16,9 @@ public class VeinMiner implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("veinminer");
 	public static Miner veinMiner;
 	public static OutlineRender outlineRender;
+    public static boolean fastplace;
 
-	@Override
+    @Override
 	public void onInitialize() {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
