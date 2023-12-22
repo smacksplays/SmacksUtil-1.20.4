@@ -13,7 +13,6 @@ public class SmacksUtil implements ModInitializer {
 	public static Miner veinMiner;
 	public static boolean fastPlace;
 
-
 	@Override
 	public void onInitialize() {
 
