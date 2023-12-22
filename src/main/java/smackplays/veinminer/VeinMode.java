@@ -4,11 +4,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.CropBlock;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -153,7 +151,6 @@ class Shapeless extends VeinMode{
         sourcePos = sourcePosIn;
         toMatch = world.getBlockState(sourcePosIn).getBlock();
         if (!oldtoBreak.isEmpty() && oldsourcePos.equals(sourcePos) && oldradius == radius && oldtoMatch.equals(toMatch)) return oldtoBreak;
-
         if (vegetationList.contains(toMatch)){
             vegetation(sourcePos);
         } else {
@@ -301,7 +298,7 @@ class Ores extends VeinMode{
         }
         if(!oldtoBreak.isEmpty() && oldsourcePos == sourcePos && oldradius == radius && oldtoMatchList.contains(toMatch)) return oldtoBreak;
         if(oreList.contains(toMatch)){
-            shapeless(sourcePos);
+            ores(sourcePos);
         }
 
         oldtoBreak = toBreak;
@@ -311,19 +308,7 @@ class Ores extends VeinMode{
         return toBreak;
     }
 
-    private static void shapeless(BlockPos curr){
-        if(curr.getX() > sourcePos.getX() + radius
-                || curr.getX() < sourcePos.getX() - radius){
-            return;
-        }
-        if(curr.getY() > sourcePos.getY() + radius
-                || curr.getY() < sourcePos.getY() - radius){
-            return;
-        }
-        if(curr.getZ() > sourcePos.getZ() + radius
-                || curr.getZ() < sourcePos.getZ() - radius){
-            return;
-        }
+    private static void ores(BlockPos curr){
         if(checked.contains(curr)){
             return;
         }
@@ -366,7 +351,7 @@ class Ores extends VeinMode{
         surrounding[25] = curr.down().north().west();
         for(BlockPos pos : surrounding){
             if(toMatchList.contains(world.getBlockState(pos).getBlock())){
-                shapeless(pos);
+                ores(pos);
             }
         }
     }

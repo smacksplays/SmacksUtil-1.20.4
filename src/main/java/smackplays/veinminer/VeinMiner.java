@@ -7,7 +7,6 @@ import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import smackplays.veinminer.events.PlayerBlockBreak;
-import smackplays.veinminer.events.OutlineRender;
 
 public class VeinMiner implements ModInitializer {
 	// This logger is used to write text to the console and the log file.
@@ -15,7 +14,6 @@ public class VeinMiner implements ModInitializer {
 	// That way, it's clear which mod wrote info, warnings, and errors.
     public static final Logger LOGGER = LoggerFactory.getLogger("veinminer");
 	public static Miner veinMiner;
-	public static OutlineRender outlineRender;
     public static boolean fastPlace;
 
 
@@ -29,8 +27,6 @@ public class VeinMiner implements ModInitializer {
 
 		PlayerBlockBreakEvents.BEFORE.register(new PlayerBlockBreak());
 		veinMiner = new Miner();
-		outlineRender = new OutlineRender();
-		//WorldRenderEvents.AFTER_TRANSLUCENT.register(outlineRender);
 	}
 	public static void toggleFastPlace() {
 		fastPlace = !fastPlace;

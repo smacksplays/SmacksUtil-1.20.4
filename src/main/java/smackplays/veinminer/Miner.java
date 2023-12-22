@@ -1,5 +1,6 @@
 package smackplays.veinminer;
 
+import net.fabricmc.fabric.api.entity.event.v1.EntityElytraEvents;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -8,7 +9,7 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
@@ -17,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.text.Text;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
@@ -27,11 +29,9 @@ import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import smackplays.veinminer.events.KeyInputHandler;
+import smackplays.veinminer.util.CustomRenderLayer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Miner {
     public static BlockPos sourceBlock;
@@ -207,18 +207,19 @@ public class Miner {
         return isInit;
     }
 
-
     public void drawOutline(MatrixStack matrices, VertexConsumer vertexConsumer, Entity entity,
                             double cameraX, double cameraY, double cameraZ, BlockPos pos,
-                            BlockState state, World world, PlayerEntity player, BlockPos pos1) {
+                            BlockState state, World world, PlayerEntity player) {
         if(isDrawing) return;
         isDrawing = true;
         ArrayList<BlockPos> toRender = (ArrayList<BlockPos>) VeinMiner.veinMiner.getBlocks(world, player, pos).clone();
-        VoxelShape shape = combine(world, pos,toRender);
+        VoxelShape shape = combine(world, pos, toRender);
 
-        drawCuboidShapeOutline(matrices, vertexConsumer, shape,
+        VertexConsumer vertex = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers().getBuffer(CustomRenderLayer.LINES);
+
+        drawCuboidShapeOutline(matrices, vertex, shape,
                 (double)pos.getX() - cameraX, (double)pos.getY() - cameraY, (double)pos.getZ() - cameraZ,
-                0.0F, 0.0F, 0.0F, 0.4F);
+                1.0F, 1.0F, 1.0F, 0.8F);
         isDrawing = false;
     }
 

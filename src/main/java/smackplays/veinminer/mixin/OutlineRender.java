@@ -35,14 +35,17 @@ import java.util.*;
 @Mixin(WorldRenderer.class)
 public abstract class OutlineRender {
 
-    @Inject(at = @At("HEAD"), method = "drawBlockOutline")
+    @Inject(at = @At("HEAD"), method = "drawBlockOutline", cancellable = true)
     private void drawBlockOutline(MatrixStack matrices, VertexConsumer vertexConsumer,
                           Entity entity, double cameraX, double cameraY,
                           double cameraZ, BlockPos pos, BlockState state, CallbackInfo ci){
         if(VeinMiner.veinMiner.getRenderPreview() && entity.isPlayer()){
             if (!KeyInputHandler.veinKey.isPressed()) return;
+            //VeinMiner.outlineRender.setParams(matrices, vertexConsumer, (PlayerEntity) entity, entity.getWorld(), pos, cameraX, cameraY, cameraZ);
+            //VeinMiner.veinMiner.setToRender(pos, entity.getWorld(), (PlayerEntity) entity);
             VeinMiner.veinMiner.drawOutline(matrices, vertexConsumer, entity, cameraX, cameraY,
-                    cameraZ, pos, state, entity.getWorld(), (PlayerEntity) entity, pos);
+                    cameraZ, pos, state, entity.getWorld(), (PlayerEntity) entity);
+            ci.cancel();
         }
     }
 }
