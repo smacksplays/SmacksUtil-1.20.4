@@ -8,6 +8,8 @@ import net.minecraft.text.Text;
 import net.smackplays.smacksutil.SmacksUtil;
 import org.lwjgl.glfw.GLFW;
 
+import java.awt.*;
+
 public class KeyInputHandler {
 
     public static final String KEY_CATEGORY_SMACKSUTIL = "key.category.smacksutil";
@@ -40,6 +42,8 @@ public class KeyInputHandler {
 
         registerEvents();
     }
+    private static final int GREEN = 65280;
+    private static final int RED = 16711680;
 
     public static void registerEvents() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -47,17 +51,23 @@ public class KeyInputHandler {
                 if (veinPreviewKey.wasPressed()) {
                     SmacksUtil.veinMiner.togglePreview();
                     String str = SmacksUtil.veinMiner.renderPreview ? "Active" : "Inactive";
-                    client.player.sendMessage(Text.literal("Veinminer Preview: " + str), true);
+                    int color = SmacksUtil.veinMiner.renderPreview ? GREEN : RED;
+                    client.player.sendMessage(Text
+                            .literal("Veinminer Preview: " + str).withColor(color), true);
                 }
                 if (fastPlaceKey.wasPressed()) {
                     SmacksUtil.toggleFastPlace();
                     String str = SmacksUtil.getFastPlace() ? "Active" : "Inactive";
-                    client.player.sendMessage(Text.literal("Fastplace: " + str), true);
+                    int color = SmacksUtil.getFastPlace() ? GREEN : RED;
+                    client.player.sendMessage(Text
+                            .literal("Fastplace: " + str).withColor(color), true);
                 }
                 if (exactMatchKey.wasPressed()) {
                     SmacksUtil.veinMiner.toggleExactMatch();
                     String str = SmacksUtil.veinMiner.isExactMatch() ? "Active" : "Inactive";
-                    client.player.sendMessage(Text.literal("Exact Match: " + str), true);
+                    int color = SmacksUtil.veinMiner.isExactMatch() ? GREEN : RED;
+                    client.player.sendMessage(Text
+                            .literal("Exact Match: " + str).withColor(color), true);
                 }
             }
         });

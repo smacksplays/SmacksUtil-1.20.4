@@ -2,6 +2,7 @@ package net.smackplays.smacksutil.VeinMiner;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -16,6 +17,7 @@ import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -33,6 +35,7 @@ import net.smackplays.smacksutil.util.ModTags;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 @SuppressWarnings("unchecked")
 public class Miner {
@@ -155,7 +158,7 @@ public class Miner {
             Block currBlock = world.getBlockState(curr).getBlock();
             BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
 
-            if (mainHandIsTool && currDMG + i == maxDMG - 10) {
+            if (mainHandIsTool && mainHandStack.getDamage() >= maxDMG - 10) {
                 isMining = false;
                 player.getMainHandStack().setDamage(currDMG + i);
                 player.sendMessage(Text.literal("Mining stopped! Tool would break ;)"), true);
@@ -177,13 +180,17 @@ public class Miner {
                         world.spawnEntity(new ItemEntity(world, curr.getX(), curr.getY(), curr.getZ(), st));
                     }
                 }
-                world.breakBlock(curr, false, player);
+                //world.breakBlock(curr.north(), false, player);
+                world.setBlockState(curr, Blocks.AIR.getDefaultState());
+                if (mainHandStack.isDamageable()) {
+                    mainHandStack.damage(1, player.getRandom(), (ServerPlayerEntity) player);
+                }
+
                 if (replaceSeeds) {
                     world.setBlockState(curr, currBlock.getDefaultState());
                 }
                 i++;
             }
-            if (mainHandStack.isDamageable()) mainHandStack.setDamage(currDMG + damage);
         }
 
         isMining = false;
