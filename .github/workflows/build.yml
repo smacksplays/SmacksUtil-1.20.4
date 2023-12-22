@@ -49,6 +49,7 @@ jobs:
           name: Artifacts
           path: build/libs/
       - name: publish (CurseForge)
+        if: ${{ runner.os == 'Linux' && matrix.java == '21' }} # Only upload artifacts built from latest java on one OS
         uses: Kir-Antipov/mc-publish@v3.3   
         with:
           curseforge-id: 952860                                             #The id of your CurseForge project
