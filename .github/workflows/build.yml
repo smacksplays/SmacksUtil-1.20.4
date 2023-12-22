@@ -50,6 +50,7 @@ jobs:
           path: build/libs/
       - name: publish (CurseForge)
         uses: Kir-Antipov/mc-publish@v3.3   
+        with:
           curseforge-id: 952860                                             #The id of your CurseForge project
           curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
         
