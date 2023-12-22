@@ -10,7 +10,7 @@ env:                                              #Environment variables that ca
   JAVA_VERSION: 17
   MOD_VERSION: 0.0.1
   RELEASE_NAME: Smacksmisc
-  curseforge-token: {{secrets.PUBLISH_CURSEFORGE_TOKEN}}
+  curseforge-token: {{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
 
 permissions:
   contents: write
