@@ -1,7 +1,7 @@
-package smackplays.veinminer;
+package net.smackplays.smacksutil;
 
 import net.fabricmc.api.ClientModInitializer;
-import smackplays.veinminer.events.KeyInputHandler;
+import net.smackplays.smacksutil.events.KeyInputHandler;
 
 public class ModClient implements ClientModInitializer {
     @Override
