@@ -8,7 +8,10 @@ import net.minecraft.world.World;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
+@SuppressWarnings("unchecked")
 public class VeinMode {
     public static ArrayList<BlockPos> toBreak = new ArrayList<>();
     public static ArrayList<BlockPos> oldToBreak = new ArrayList<>();
@@ -17,6 +20,7 @@ public class VeinMode {
     public static BlockPos oldSourcePos;
     public static Block oldToMatch;
     public String ModeName = "";
+    public int MAX_RADIUS = 6;
 
     VeinMode() {
     }
@@ -74,4 +78,11 @@ public class VeinMode {
     public String getName() {
         return ModeName;
     }
+
+    public ArrayList<BlockPos> sortByNearest(ArrayList<BlockPos> toSort, PlayerEntity player){
+        ArrayList<BlockPos> sorted = (ArrayList<BlockPos>) toSort.clone();
+        sorted.sort(new BlockPosComparator(player));
+        return sorted;
+    }
 }
+

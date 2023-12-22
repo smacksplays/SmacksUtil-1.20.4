@@ -22,7 +22,7 @@ public abstract class OutlineRender {
                                   Entity entity, double cameraX, double cameraY,
                                   double cameraZ, BlockPos pos, BlockState state, CallbackInfo ci) {
         if (SmacksUtil.veinMiner.getRenderPreview() && entity.isPlayer()) {
-            if (!KeyInputHandler.veinKey.isPressed() || SmacksUtil.veinMiner.getRadius() > 3) return;
+            if (!KeyInputHandler.veinKey.isPressed()) return;
             SmacksUtil.veinMiner.setMode();
             SmacksUtil.veinMiner.drawOutline(matrices, cameraX, cameraY,
                     cameraZ, pos, entity.getWorld(), (PlayerEntity) entity);

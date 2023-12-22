@@ -8,8 +8,6 @@ import net.minecraft.text.Text;
 import net.smackplays.smacksutil.SmacksUtil;
 import org.lwjgl.glfw.GLFW;
 
-import java.awt.*;
-
 public class KeyInputHandler {
 
     public static final String KEY_CATEGORY_SMACKSUTIL = "key.category.smacksutil";

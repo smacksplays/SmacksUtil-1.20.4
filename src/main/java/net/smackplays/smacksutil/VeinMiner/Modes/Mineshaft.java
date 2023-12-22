@@ -40,6 +40,8 @@ public class Mineshaft extends VeinMode {
 
         mineshaft(sourcePos, player.getHorizontalFacing(), radius, player, world, isExactMatch, toMatch, tag);
 
+        toBreak.sort(new BlockPosComparator(player));
+
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         oldRadius = radius;
         oldSourcePos = sourcePos;

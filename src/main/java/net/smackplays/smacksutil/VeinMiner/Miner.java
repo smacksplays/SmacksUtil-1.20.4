@@ -15,8 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ToolItem;
 import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -32,14 +30,14 @@ import net.smackplays.smacksutil.events.KeyInputHandler;
 import net.smackplays.smacksutil.util.CustomRenderLayer;
 import net.smackplays.smacksutil.util.ModTags;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Random;
 
 @SuppressWarnings("unchecked")
 public class Miner {
-    public static final int MAX_RADIUS = 6;
+    public static int MAX_RADIUS = 6;
     public static ArrayList<BlockPos> toBreak;
     public static VeinMode mode;
     public static int radius = 2;
@@ -106,6 +104,7 @@ public class Miner {
     public ArrayList<BlockPos> getBlocks(World worldIn, PlayerEntity playerIn, BlockPos sourcePosIn) {
         BlockState sourceBlockState = worldIn.getBlockState(sourcePosIn);
         ArrayList<BlockPos> matching;
+        setMode();
 
         if (sourceBlockState.isIn(ModTags.Blocks.CROP_BLOCKS)) {
             matching = (ArrayList<BlockPos>) CropsMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
@@ -128,30 +127,14 @@ public class Miner {
         boolean drop = true;
         BlockState sourceBlockState = world.getBlockState(sourcePos);
         boolean replaceSeeds = sourceBlockState.isIn(ModTags.Blocks.CROP_BLOCKS);
-        String unbreaking = "";
         ItemStack mainHandStack = player.getMainHandStack();
         Item mainHand = player.getMainHandStack().getItem();
         boolean mainHandIsTool = ToolItem.class.isAssignableFrom(mainHand.getClass());
-        NbtList enchants = mainHandStack.getEnchantments();
         if (player.isCreative()) drop = false;
 
         toBreak = getBlocks(world, player, sourcePos);
 
-        for (Object nbt : enchants) {
-            NbtCompound n = (NbtCompound) nbt;
-            if (Objects.requireNonNull(n.get("id")).asString().equals("minecraft:unbreaking")) {
-                unbreaking = Objects.requireNonNull(n.get("lvl")).asString();
-            }
-        }
-        int damage = switch (unbreaking) {
-            case "1s" -> toBreak.size() / 2;
-            case "2s" -> toBreak.size() / 3;
-            case "3s" -> toBreak.size() / 4;
-            default -> toBreak.size();
-        };
-        int currDMG = mainHandStack.getDamage();
         int maxDMG = mainHandStack.getMaxDamage();
-        int i = 0;
 
         for (BlockPos curr : toBreak) {
             BlockState currBlockState = world.getBlockState(curr);
@@ -160,7 +143,6 @@ public class Miner {
 
             if (mainHandIsTool && mainHandStack.getDamage() >= maxDMG - 10) {
                 isMining = false;
-                player.getMainHandStack().setDamage(currDMG + i);
                 player.sendMessage(Text.literal("Mining stopped! Tool would break ;)"), true);
                 return;
             }
@@ -176,8 +158,8 @@ public class Miner {
             boolean canHarvest = (player.canHarvest(currBlockState) || player.isCreative());
             if (dropList != null && canHarvest) {
                 if (drop) {
-                    for (ItemStack st : dropList) {
-                        world.spawnEntity(new ItemEntity(world, curr.getX(), curr.getY(), curr.getZ(), st));
+                    for (ItemStack stack : dropList) {
+                        world.spawnEntity(new ItemEntity(world, player.getX(), player.getY(), player.getZ(), stack));
                     }
                 }
                 //world.breakBlock(curr.north(), false, player);
@@ -189,7 +171,6 @@ public class Miner {
                 if (replaceSeeds) {
                     world.setBlockState(curr, currBlock.getDefaultState());
                 }
-                i++;
             }
         }
 
@@ -198,9 +179,8 @@ public class Miner {
 
     public void setMode() {
         mode = modeArray[currMode];
-    }
-    public int getRadius(){
-        return radius;
+        MAX_RADIUS = mode.MAX_RADIUS;
+        if (radius > MAX_RADIUS) radius = MAX_RADIUS;
     }
 
     public void togglePreview() {
@@ -221,6 +201,10 @@ public class Miner {
         if (isDrawing) return;
         isDrawing = true;
         toBreak = (ArrayList<BlockPos>) SmacksUtil.veinMiner.getBlocks(world, player, pos).clone();
+
+        while (toBreak.size() >= 100){
+            toBreak.remove(toBreak.size() - 1);
+        }
         VoxelShape shape = combine(world, pos, (ArrayList<BlockPos>) toBreak.clone());
 
         VertexConsumer vertex = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers().getBuffer(CustomRenderLayer.LINES);

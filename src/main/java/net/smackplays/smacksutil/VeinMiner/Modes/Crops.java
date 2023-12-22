@@ -48,6 +48,8 @@ public class Crops extends VeinMode {
             pos = pos.add(1, 0, -radius * 2 - 1);
         }
 
+        toBreak.sort(new BlockPosComparator(player));
+
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         oldRadius = radius;
         oldSourcePos = sourcePos;

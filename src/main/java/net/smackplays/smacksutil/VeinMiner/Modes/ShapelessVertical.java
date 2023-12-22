@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class ShapelessVertical extends VeinMode {
     public ShapelessVertical() {
         ModeName = "ShapelessVertical";
+        MAX_RADIUS = 5;
     }
 
     @Override
@@ -37,6 +38,8 @@ public class ShapelessVertical extends VeinMode {
         }
 
         shapeless_vert(sourcePos, sourcePos, radius, player, world, isExactMatch, toMatch, tag);
+
+        toBreak.sort(new BlockPosComparator(player));
 
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         oldRadius = radius;

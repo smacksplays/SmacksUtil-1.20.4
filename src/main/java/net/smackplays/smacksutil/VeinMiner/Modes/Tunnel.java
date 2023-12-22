@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class Tunnel extends VeinMode {
     public Tunnel() {
         ModeName = "Tunnel";
+        MAX_RADIUS = 12;
     }
 
     @Override
@@ -40,6 +41,8 @@ public class Tunnel extends VeinMode {
         }
 
         tunnel(sourcePos, player.getHorizontalFacing(), radius, player, world, isExactMatch, toMatch, tag);
+
+        toBreak.sort(new BlockPosComparator(player));
 
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         oldRadius = radius;

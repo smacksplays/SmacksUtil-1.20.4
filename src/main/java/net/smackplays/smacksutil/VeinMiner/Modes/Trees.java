@@ -34,6 +34,8 @@ public class Trees extends VeinMode {
         }
         trees(sourcePos, world, player, isExactMatch, toMatch, tag);
 
+        toBreak.sort(new BlockPosComparator(player));
+
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         oldRadius = radius;
         oldSourcePos = sourcePos;
