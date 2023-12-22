@@ -3,9 +3,18 @@
 # certain platforms or Java versions, and provides a first line of defence
 # against bad commits.
 
-name: build
-on: [pull_request, push]
+name: Publish on GitHub, CurseForge
+on: [pull_request, workflow_dispatch ]
+env:                                              #Environment variables that can later be referenced using ${{ env.MINECRAFT_VERSION }}. These are useful for repeating information and allow for quick changes for new mod updates
+  MINECRAFT_VERSION: 1.20.4                        
+  JAVA_VERSION: 17
+  MOD_VERSION: 0.0.1
+  RELEASE_NAME: Smacksmisc
+  curseforge-token: {{secrets.PUBLISH_CURSEFORGE_TOKEN}}
 
+permissions:
+  contents: write
+  
 jobs:
   build:
     strategy:
@@ -39,3 +48,9 @@ jobs:
         with:
           name: Artifacts
           path: build/libs/
+      - name: publish (CurseForge)
+        uses: Kir-Antipov/mc-publish@v3.3   
+          curseforge-id: 952860                                             #The id of your CurseForge project
+          curseforge-token: "${{env.CURSEFORGE_TOKEN}}"
+        
+        
