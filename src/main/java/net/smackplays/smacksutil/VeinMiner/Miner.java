@@ -1,9 +1,8 @@
-package smackplays.veinminer;
+package net.smackplays.smacksutil.VeinMiner;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.CropBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -17,39 +16,42 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
-import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import smackplays.veinminer.events.KeyInputHandler;
+import net.smackplays.smacksutil.*;
+import net.smackplays.smacksutil.events.KeyInputHandler;
+import net.smackplays.smacksutil.util.CustomRenderLayer;
+import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class Miner {
-    public static BlockPos sourceBlock;
     public static ArrayList<BlockPos> toBreak;
     public static VeinMode mode;
     public static final int MAXRADIUS = 6;
     public static int radius = 2;
-    public static boolean isInit = false;
     public boolean renderPreview = false;
     public boolean isMining = false;
     public boolean isDrawing = false;
+    public static VeinMode ShapelessMode = new Shapeless();
+    public static VeinMode ShapelessVerticalMode = new ShapelessVertical();
+    public static VeinMode TunnelMode = new Tunnel();
+    public static VeinMode MineshaftMode = new Mineshaft();
+    public static VeinMode CropsMode = new Crops();
+    public static VeinMode OresMode = new Ores();
+    public static VeinMode VegetationMode = new Vegetation();
     public static VeinMode[] modeArray = new VeinMode[]{
-            new Shapeless("Shapeless"),
-            new ShapelessVertical("Shapeless Vertical"),
-            new Ores("Ores"),
-            new Tunnel("Tunnel"),
-            new Mineshaft("Mineshaft"),
-            new Crops("Crops")
+            ShapelessMode,
+            ShapelessVerticalMode,
+            TunnelMode,
+            MineshaftMode
     };
     public static int currMode = 0;
 
@@ -57,15 +59,20 @@ public class Miner {
 
     }
 
-    public List<BlockPos> getBlocks(World worldIn, PlayerEntity playerIn, BlockPos sourcePosIn){
-        Block block = worldIn.getBlockState(sourcePosIn).getBlock();
-        if(VeinMode.cropList.contains(block)){
-            mode = modeArray[5];
-        } else if (VeinMode.oreList.contains(block)){
-            mode = modeArray[2];
+    public ArrayList<BlockPos> getBlocks(World worldIn, PlayerEntity playerIn, BlockPos sourcePosIn){
+        BlockState sourceBlockState = worldIn.getBlockState(sourcePosIn);
+        ArrayList<BlockPos> matching;
+
+        if((mode.equals(ShapelessMode) || mode.equals(ShapelessVerticalMode)) && sourceBlockState.isIn(ModTags.Blocks.CROP_BLOCKS)){
+            matching = (ArrayList<BlockPos>)CropsMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, playerIn.getMainHandStack()).clone();
+        } else if((mode.equals(ShapelessMode) || mode.equals(ShapelessVerticalMode)) && sourceBlockState.isIn(ModTags.Blocks.ORE_BLOCKS)){
+            matching = (ArrayList<BlockPos>)OresMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, playerIn.getMainHandStack()).clone();
+        } else if((mode.equals(ShapelessMode) || mode.equals(ShapelessVerticalMode)) && sourceBlockState.isIn(ModTags.Blocks.VEGETATION_BLOCKS)){
+            matching = (ArrayList<BlockPos>)VegetationMode.getBlocks(worldIn, playerIn, sourcePosIn, 10, playerIn.getMainHandStack()).clone();
+        } else {
+            matching = (ArrayList<BlockPos>)mode.getBlocks(worldIn, playerIn, sourcePosIn, radius, playerIn.getMainHandStack()).clone();
         }
-        List<BlockPos> matching = mode.getBlocks(worldIn, playerIn, sourcePosIn, radius, playerIn.getMainHandStack());
-        mode = modeArray[currMode];
+
         return matching;
     }
 
@@ -78,21 +85,9 @@ public class Miner {
         ItemStack mainHandStack = player.getMainHandStack();
         Item mainHand = player.getMainHandStack().getItem();
         NbtList enchants = mainHandStack.getEnchantments();
-
-        BlockState sourceBlockState = world.getBlockState(sourceBlockPos);
-        Block sourceBlock = sourceBlockState.getBlock();
-
         if(player.isCreative()) drop = false;
 
-        mode = modeArray[currMode];
-        if(VeinMode.cropList.contains(sourceBlock)){
-            mode = modeArray[5];
-            replaceSeeds = true;
-        } else if (VeinMode.oreList.contains(sourceBlock)){
-            mode = modeArray[2];
-        }
-
-        toBreak = mode.getBlocks(world, player, sourceBlockPos, radius, mainHandStack);
+        toBreak = getBlocks(world, player, sourceBlockPos);
 
         for(Object nbt : enchants){
             NbtCompound n = (NbtCompound)nbt;
@@ -127,7 +122,7 @@ public class Miner {
                     }
                     if(mainHand.canMine(currBlockState, world, curr, player)){
                         if (drop){
-                            Block.dropStacks(currBlockState, world, player.getBlockPos().up(), currBlockEntity, player, mainHandStack);
+                            Block.dropStacks(currBlockState, world, player.getBlockPos(), currBlockEntity, player, mainHandStack);
                         }
                         world.breakBlock(curr, false, player);
                     }
@@ -144,7 +139,7 @@ public class Miner {
                     BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
                     if(mainHand.canMine(currBlockState, world, curr, player)){
                         if (drop){
-                            Block.dropStacks(currBlockState, world, player.getBlockPos().up(), currBlockEntity, player, mainHandStack);
+                            Block.dropStacks(currBlockState, world, player.getBlockPos(), currBlockEntity, player, mainHandStack);
                         }
                         world.breakBlock(curr, false, player);
                         if(replaceSeeds){
@@ -175,7 +170,7 @@ public class Miner {
                 if(currMode > modeArray.length - 1) currMode = modeArray.length - 1;
                 else if (currMode < 0) currMode = 0;
                 player.sendMessage(Text.literal("Mode: " + modeArray[currMode].getName()), true);
-                VeinMiner.veinMiner.setMode();
+                SmacksUtil.veinMiner.setMode();
             } else {
                 radius += (int)vertical;
                 player.getInventory().selectedSlot = player.getInventory().selectedSlot + (int)vertical;
@@ -194,31 +189,19 @@ public class Miner {
         return renderPreview;
     }
 
-    public void initModes(ClientWorld world, ClientPlayerEntity player) {
-        isInit = true;
-        for (VeinMode veinMode : modeArray) {
-            veinMode.setPlayer(player);
-            veinMode.setWorld(world);
-        }
-        setMode();
-    }
-
-    public boolean getInitState() {
-        return isInit;
-    }
-
-
     public void drawOutline(MatrixStack matrices, VertexConsumer vertexConsumer, Entity entity,
                             double cameraX, double cameraY, double cameraZ, BlockPos pos,
-                            BlockState state, World world, PlayerEntity player, BlockPos pos1) {
+                            BlockState state, World world, PlayerEntity player) {
         if(isDrawing) return;
         isDrawing = true;
-        List<BlockPos> toRender = VeinMiner.veinMiner.getBlocks(world, player, pos);
-        VoxelShape shape = combine(world, pos,toRender);
+        ArrayList<BlockPos> toRender = (ArrayList<BlockPos>) SmacksUtil.veinMiner.getBlocks(world, player, pos).clone();
+        VoxelShape shape = combine(world, pos, toRender);
 
-        drawCuboidShapeOutline(matrices, vertexConsumer, shape,
+        VertexConsumer vertex = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers().getBuffer(CustomRenderLayer.LINES);
+
+        drawCuboidShapeOutline(matrices, vertex, shape,
                 (double)pos.getX() - cameraX, (double)pos.getY() - cameraY, (double)pos.getZ() - cameraZ,
-                0.0F, 0.0F, 0.0F, 0.4F);
+                1.0F, 1.0F, 1.0F, 0.8F);
         isDrawing = false;
     }
 
@@ -255,4 +238,5 @@ public class Miner {
     public boolean isMining(){
         return isMining;
     }
+
 }

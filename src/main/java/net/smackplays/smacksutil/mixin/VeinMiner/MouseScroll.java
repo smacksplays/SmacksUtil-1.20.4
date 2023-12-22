@@ -1,11 +1,11 @@
-package smackplays.veinminer.mixin;
+package net.smackplays.smacksutil.mixin.VeinMiner;
 
 import net.minecraft.client.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import smackplays.veinminer.Miner;
+import net.smackplays.smacksutil.VeinMiner.Miner;
 
 
 @Mixin(Mouse.class)
