@@ -36,7 +36,7 @@ import java.util.Objects;
 public class Miner {
     public static ArrayList<BlockPos> toBreak;
     public static VeinMode mode;
-    public static final int MAXRADIUS = 6;
+    public static final int MAX_RADIUS = 6;
     public static int radius = 2;
     public boolean renderPreview = false;
     public boolean isMining = false;
@@ -191,7 +191,7 @@ public class Miner {
             } else {
                 radius += (int)vertical;
                 player.getInventory().selectedSlot = player.getInventory().selectedSlot + (int)vertical;
-                if(radius > MAXRADIUS) radius = MAXRADIUS;
+                if(radius > MAX_RADIUS) radius = MAX_RADIUS;
                 else if (radius < 1) radius = 1;
                 player.sendMessage(Text.literal("Radius: " + radius), true);
             }

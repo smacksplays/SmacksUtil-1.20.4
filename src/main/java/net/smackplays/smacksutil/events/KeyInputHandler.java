@@ -41,7 +41,7 @@ public class KeyInputHandler {
                 if(veinpreviewKey.wasPressed()){
                     SmacksUtil.veinMiner.togglePreview();
                     String str = SmacksUtil.veinMiner.renderPreview ? "Active" : "Inactive";
-                    client.player.sendMessage(Text.literal("Veinmienr Preview: " + str), true);
+                    client.player.sendMessage(Text.literal("Veinminer Preview: " + str), true);
                 }
                 if(fastplaceKey.wasPressed()){
                     SmacksUtil.toggleFastPlace();

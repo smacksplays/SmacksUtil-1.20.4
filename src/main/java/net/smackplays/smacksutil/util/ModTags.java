@@ -1,7 +1,6 @@
 package net.smackplays.smacksutil.util;
 
 import net.minecraft.block.Block;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;

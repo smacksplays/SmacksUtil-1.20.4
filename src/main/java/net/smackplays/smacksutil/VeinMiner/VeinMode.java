@@ -2,7 +2,6 @@ package net.smackplays.smacksutil.VeinMiner;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.CropBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -22,12 +21,6 @@ public class VeinMode {
     public static int oldRadius;
     public static BlockPos oldSourcePos;
     public static Block oldToMatch;
-
-
-    public static final ArrayList<Block> blackList = new ArrayList<>(){{
-        add(Blocks.BEDROCK);
-        add(Blocks.AIR);
-    }};
 
     VeinMode(){
     }
@@ -91,7 +84,7 @@ class Shapeless extends VeinMode{
             checked.add(curr);
         }
         if(world.getBlockState(curr).getBlock() == toMatch && player.canHarvest(world.getBlockState(curr))){
-            if(!toBreak.contains(curr) && !blackList.contains(world.getBlockState(curr).getBlock())){
+            if(!toBreak.contains(curr) && !world.getBlockState(curr).isIn(ModTags.Blocks.VEIN_BLACKLIST)){
                 toBreak.add(curr);
             }
         }
@@ -304,7 +297,7 @@ class ShapelessVertical extends VeinMode{
             checked.add(curr);
         }
         if(world.getBlockState(curr).getBlock() == toMatch && player.canHarvest(world.getBlockState(curr))){
-            if(!toBreak.contains(curr) && !blackList.contains(world.getBlockState(curr).getBlock())){
+            if(!toBreak.contains(curr) && !world.getBlockState(curr).isIn(ModTags.Blocks.VEIN_BLACKLIST)){
                 toBreak.add(curr);
             }
         }
@@ -368,11 +361,11 @@ class Tunnel extends VeinMode{
         Direction direction = player.getHorizontalFacing();
 
         for(int i = 0; i < radius * 2; i++){
-            if(!toBreak.contains(curr) && !blackList.contains(world.getBlockState(curr).getBlock())){
+            if(!toBreak.contains(curr) && !world.getBlockState(curr).isIn(ModTags.Blocks.VEIN_BLACKLIST)){
                 if(player.canHarvest(world.getBlockState(curr))){
                     toBreak.add(curr);
                 }
-                if(!toBreak.contains(curr.down()) && !blackList.contains(world.getBlockState(curr.down()).getBlock())){
+                if(!toBreak.contains(curr.down()) && !world.getBlockState(curr).isIn(ModTags.Blocks.VEIN_BLACKLIST)){
                     if(player.canHarvest(world.getBlockState(curr.down()))){
                         toBreak.add(curr.down());
                     }
@@ -424,7 +417,7 @@ class Mineshaft extends VeinMode{
         Direction direction = player.getHorizontalFacing();
 
         for(int i = 0; i < radius *2; i++){
-            if(!toBreak.contains(curr) && !blackList.contains(world.getBlockState(curr).getBlock()) && player.canHarvest(world.getBlockState(curr))){
+            if(!toBreak.contains(curr) && !world.getBlockState(curr).isIn(ModTags.Blocks.VEIN_BLACKLIST) && player.canHarvest(world.getBlockState(curr))){
                 toBreak.add(curr);
             }
             if(direction.equals(Direction.NORTH)){
