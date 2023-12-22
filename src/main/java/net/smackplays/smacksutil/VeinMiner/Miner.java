@@ -2,24 +2,24 @@ package net.smackplays.smacksutil.VeinMiner;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.registry.tag.TagKey;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
@@ -30,6 +30,7 @@ import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("unchecked")
 public class Miner {
@@ -63,6 +64,7 @@ public class Miner {
         BlockState sourceBlockState = worldIn.getBlockState(sourcePosIn);
         ArrayList<BlockPos> matching;
 
+
         if((mode.equals(ShapelessMode) || mode.equals(ShapelessVerticalMode)) && sourceBlockState.isIn(ModTags.Blocks.CROP_BLOCKS)){
             matching = (ArrayList<BlockPos>)CropsMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, playerIn.getMainHandStack()).clone();
         } else if((mode.equals(ShapelessMode) || mode.equals(ShapelessVerticalMode)) && sourceBlockState.isIn(ModTags.Blocks.ORE_BLOCKS)){
@@ -76,23 +78,24 @@ public class Miner {
         return matching;
     }
 
-    public void veinMiner(World world, PlayerEntity player, BlockPos sourceBlockPos){
+    public void veinMiner(World world, PlayerEntity player, BlockPos sourcePos){
         if (isMining) return;
         isMining = true;
         boolean drop = true;
-        boolean replaceSeeds = false;
+        BlockState sourceBlockState = world.getBlockState(sourcePos);
+        boolean replaceSeeds = sourceBlockState.isIn(ModTags.Blocks.CROP_BLOCKS);
         String unbreaking = "";
         ItemStack mainHandStack = player.getMainHandStack();
         Item mainHand = player.getMainHandStack().getItem();
         NbtList enchants = mainHandStack.getEnchantments();
         if(player.isCreative()) drop = false;
 
-        toBreak = getBlocks(world, player, sourceBlockPos);
+        toBreak = getBlocks(world, player, sourcePos);
 
         for(Object nbt : enchants){
             NbtCompound n = (NbtCompound)nbt;
-            if(n.get("id").asString().equals("minecraft:unbreaking")){
-                unbreaking = n.get("lvl").asString();
+            if(Objects.requireNonNull(n.get("id")).asString().equals("minecraft:unbreaking")){
+                unbreaking = Objects.requireNonNull(n.get("lvl")).asString();
             }
         }
         int damage = switch (unbreaking) {
@@ -108,25 +111,32 @@ public class Miner {
                 int i = 0;
                 for( BlockPos curr : toBreak){
                     BlockState currBlockState = world.getBlockState(curr);
-                    Block currBlock = currBlockState.getBlock();
                     BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
 
                     if(currDMG + i == maxDMG - 2) {
                         isMining = false;
                         player.getMainHandStack().setDamage(currDMG + i);
                         toBreak.clear();
-                        if(isMining){
-                            int a = 0;
-                        }
+                        player.sendMessage(Text.literal("Mining stopped! Tool would break ;)"), true);
                         return;
                     }
-                    if(mainHand.canMine(currBlockState, world, curr, player)){
-                        if (drop){
-                            Block.dropStacks(currBlockState, world, player.getBlockPos(), currBlockEntity, player, mainHandStack);
+
+                    LootContextParameterSet.Builder builder =
+                            new LootContextParameterSet.Builder((ServerWorld) world)
+                                    .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(curr))
+                                    .add(LootContextParameters.TOOL, mainHandStack)
+                                    .addOptional(LootContextParameters.BLOCK_ENTITY, currBlockEntity);
+
+                    List<ItemStack> dropList = currBlockState.getDroppedStacks(builder);
+
+                    boolean canHarvest = player.canHarvest(currBlockState);
+                    if(drop && !dropList.isEmpty() && canHarvest){
+                        for (ItemStack st : dropList){
+                            world.spawnEntity(new ItemEntity(world, curr.getX(), curr.getY(), curr.getZ(), st));
                         }
                         world.breakBlock(curr, false, player);
+                        i++;
                     }
-                    i++;
                 }
                 toBreak.clear();
                 player.getMainHandStack().setDamage(currDMG + damage);
@@ -138,12 +148,23 @@ public class Miner {
                     Block currBlock = currBlockState.getBlock();
                     BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
                     if(mainHand.canMine(currBlockState, world, curr, player)){
-                        if (drop){
-                            Block.dropStacks(currBlockState, world, player.getBlockPos(), currBlockEntity, player, mainHandStack);
-                        }
-                        world.breakBlock(curr, false, player);
-                        if(replaceSeeds){
-                            world.setBlockState(curr, currBlock.getDefaultState());
+                        LootContextParameterSet.Builder builder =
+                                new LootContextParameterSet.Builder((ServerWorld) world)
+                                        .add(LootContextParameters.ORIGIN, Vec3d.ofCenter(curr))
+                                        .add(LootContextParameters.TOOL, mainHandStack)
+                                        .addOptional(LootContextParameters.BLOCK_ENTITY, currBlockEntity);
+
+                        List<ItemStack> dropList = currBlockState.getDroppedStacks(builder);
+
+                        boolean canHarvest = player.canHarvest(currBlockState);
+                        if(drop && !dropList.isEmpty() && canHarvest ){
+                            for (ItemStack st : dropList){
+                                world.spawnEntity(new ItemEntity(world, curr.getX(), curr.getY(), curr.getZ(), st));
+                            }
+                            world.breakBlock(curr, false, player);
+                            if(replaceSeeds){
+                                world.setBlockState(curr, currBlock.getDefaultState());
+                            }
                         }
                     }
                 }
@@ -151,16 +172,12 @@ public class Miner {
             }
         }
         isMining = false;
-        mode = modeArray[currMode];
-        if(isMining){
-            int i = 0;
-        }
     }
     public void setMode(){
         mode = modeArray[currMode];
     }
 
-    public static void scroll(long window, double horizontal, double vertical){
+    public static void scroll(double vertical){
         PlayerEntity player = MinecraftClient.getInstance().player;
         Screen scr = MinecraftClient.getInstance().currentScreen;
         if(MinecraftClient.getInstance().player != null && scr == null && KeyInputHandler.veinKey.isPressed()){
@@ -189,23 +206,26 @@ public class Miner {
         return renderPreview;
     }
 
-    public void drawOutline(MatrixStack matrices, VertexConsumer vertexConsumer, Entity entity,
-                            double cameraX, double cameraY, double cameraZ, BlockPos pos,
-                            BlockState state, World world, PlayerEntity player) {
+    public boolean isToBreakEmpty(){
+        if (toBreak == null) return true;
+        return toBreak.isEmpty();
+    }
+
+    public void drawOutline(MatrixStack matrices, double cameraX, double cameraY, double cameraZ, BlockPos pos,
+                            World world, PlayerEntity player) {
         if(isDrawing) return;
         isDrawing = true;
-        ArrayList<BlockPos> toRender = (ArrayList<BlockPos>) SmacksUtil.veinMiner.getBlocks(world, player, pos).clone();
-        VoxelShape shape = combine(world, pos, toRender);
+        toBreak = (ArrayList<BlockPos>) SmacksUtil.veinMiner.getBlocks(world, player, pos).clone();
+        VoxelShape shape = combine(world, pos, toBreak);
 
         VertexConsumer vertex = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers().getBuffer(CustomRenderLayer.LINES);
 
         drawCuboidShapeOutline(matrices, vertex, shape,
-                (double)pos.getX() - cameraX, (double)pos.getY() - cameraY, (double)pos.getZ() - cameraZ,
-                1.0F, 1.0F, 1.0F, 0.8F);
+                (double)pos.getX() - cameraX, (double)pos.getY() - cameraY, (double)pos.getZ() - cameraZ);
         isDrawing = false;
     }
 
-    private static void drawCuboidShapeOutline(MatrixStack matrices, VertexConsumer vertexConsumer, VoxelShape shape, double offsetX, double offsetY, double offsetZ, float red, float green, float blue, float alpha) {
+    private static void drawCuboidShapeOutline(MatrixStack matrices, VertexConsumer vertexConsumer, VoxelShape shape, double offsetX, double offsetY, double offsetZ) {
         MatrixStack.Entry entry = matrices.peek();
         shape.forEachEdge((minX, minY, minZ, maxX, maxY, maxZ) -> {
             float k = (float)(maxX - minX);
@@ -215,8 +235,8 @@ public class Miner {
             k /= n;
             l /= n;
             m /= n;
-            vertexConsumer.vertex(entry.getPositionMatrix(), (float)(minX + offsetX), (float)(minY + offsetY), (float)(minZ + offsetZ)).color(red, green, blue, alpha).normal(entry.getNormalMatrix(), k, l, m).next();
-            vertexConsumer.vertex(entry.getPositionMatrix(), (float)(maxX + offsetX), (float)(maxY + offsetY), (float)(maxZ + offsetZ)).color(red, green, blue, alpha).normal(entry.getNormalMatrix(), k, l, m).next();
+            vertexConsumer.vertex(entry.getPositionMatrix(), (float)(minX + offsetX), (float)(minY + offsetY), (float)(minZ + offsetZ)).color(1.0F, 1.0F, 1.0F, 0.8F).normal(entry.getNormalMatrix(), k, l, m).next();
+            vertexConsumer.vertex(entry.getPositionMatrix(), (float)(maxX + offsetX), (float)(maxY + offsetY), (float)(maxZ + offsetZ)).color(1.0F, 1.0F, 1.0F, 0.8F).normal(entry.getNormalMatrix(), k, l, m).next();
         });
     }
 

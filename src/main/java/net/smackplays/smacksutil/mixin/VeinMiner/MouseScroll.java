@@ -12,6 +12,6 @@ import net.smackplays.smacksutil.VeinMiner.Miner;
 public class MouseScroll {
     @Inject(at = @At("HEAD"), method = "onMouseScroll")
     private void onScroll(long window, double horizontal, double vertical, CallbackInfo ci){
-        Miner.scroll(window, horizontal, vertical);
+        Miner.scroll(vertical);
     }
 }

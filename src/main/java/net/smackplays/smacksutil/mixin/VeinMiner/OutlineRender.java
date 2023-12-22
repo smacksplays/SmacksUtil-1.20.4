@@ -23,12 +23,12 @@ public abstract class OutlineRender {
                           double cameraZ, BlockPos pos, BlockState state, CallbackInfo ci){
         if(SmacksUtil.veinMiner.getRenderPreview() && entity.isPlayer()){
             if (!KeyInputHandler.veinKey.isPressed()) return;
-            //SmacksUtil.outlineRender.setParams(matrices, vertexConsumer, (PlayerEntity) entity, entity.getWorld(), pos, cameraX, cameraY, cameraZ);
-            //SmacksUtil.veinMiner.setToRender(pos, entity.getWorld(), (PlayerEntity) entity);
             SmacksUtil.veinMiner.setMode();
-            SmacksUtil.veinMiner.drawOutline(matrices, vertexConsumer, entity, cameraX, cameraY,
-                    cameraZ, pos, state, entity.getWorld(), (PlayerEntity) entity);
-            ci.cancel();
+            SmacksUtil.veinMiner.drawOutline(matrices, cameraX, cameraY,
+                    cameraZ, pos, entity.getWorld(), (PlayerEntity) entity);
+            if(!SmacksUtil.veinMiner.isToBreakEmpty()){
+                ci.cancel();
+            }
         }
     }
 }

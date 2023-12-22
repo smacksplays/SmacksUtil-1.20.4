@@ -12,13 +12,12 @@ import net.minecraft.world.World;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class VeinMode {
     public String ModeName = "";
-    public static ArrayList<BlockPos> toBreak = new ArrayList<BlockPos>();
-    public static ArrayList<BlockPos> oldToBreak = new ArrayList<BlockPos>();
-    public static ArrayList<BlockPos> checked = new ArrayList<BlockPos>();
+    public static ArrayList<BlockPos> toBreak = new ArrayList<>();
+    public static ArrayList<BlockPos> oldToBreak = new ArrayList<>();
+    public static ArrayList<BlockPos> checked = new ArrayList<>();
 
     public static int oldRadius;
     public static BlockPos oldSourcePos;
@@ -34,7 +33,7 @@ public class VeinMode {
     }
 
     public ArrayList<BlockPos> getBlocks(World world, PlayerEntity player, BlockPos sourcePos, int radius, ItemStack tool) {
-        return new ArrayList<BlockPos>();
+        return new ArrayList<>();
     }
 
     public String getName(){
@@ -60,9 +59,9 @@ class Shapeless extends VeinMode{
         if (!oldToBreak.isEmpty() && oldSourcePos.equals(sourcePos)
                 && oldRadius == radius && oldToMatch.equals(toMatch)) {
             return (ArrayList<BlockPos>) oldToBreak.clone();
-        };
+        }
 
-        shapeless(sourcePos, sourcePos, radius, toMatch, world);
+        shapeless(sourcePos, sourcePos, radius, toMatch, world, player);
 
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         oldRadius = radius;
@@ -72,7 +71,7 @@ class Shapeless extends VeinMode{
         return (ArrayList<BlockPos>) toBreak.clone();
     }
 
-    private static void shapeless(BlockPos curr, BlockPos sourcePos, int radius, Block toMatch, World world){
+    private static void shapeless(BlockPos curr, BlockPos sourcePos, int radius, Block toMatch, World world, PlayerEntity player){
         if(curr.getX() > sourcePos.getX() + radius
                 || curr.getX() < sourcePos.getX() - radius){
             return;
@@ -91,7 +90,7 @@ class Shapeless extends VeinMode{
         else{
             checked.add(curr);
         }
-        if(world.getBlockState(curr).getBlock() == toMatch){
+        if(world.getBlockState(curr).getBlock() == toMatch && player.canHarvest(world.getBlockState(curr))){
             if(!toBreak.contains(curr) && !blackList.contains(world.getBlockState(curr).getBlock())){
                 toBreak.add(curr);
             }
@@ -127,7 +126,7 @@ class Shapeless extends VeinMode{
         surrounding[25] = curr.down().north().west();
         for(BlockPos pos : surrounding){
             if(world.getBlockState(pos).getBlock().equals(toMatch)){
-                shapeless(pos, sourcePos, radius, toMatch, world);
+                shapeless(pos, sourcePos, radius, toMatch, world, player);
             }
         }
     }
@@ -158,7 +157,7 @@ class Vegetation extends VeinMode{
         for(int i = 0; i < radius * 2 + 1; i++){
             for(int j = 0; j < radius * 2 + 1; j++){
                 for(int u = 0; u < 5; u++){
-                    if (world.getBlockState(pos).isIn(ModTags.Blocks.VEGETATION_BLOCKS)){
+                    if (world.getBlockState(pos).isIn(ModTags.Blocks.VEGETATION_BLOCKS) && player.canHarvest(world.getBlockState(pos))){
                         toBreak.add(pos);
                     }
                     pos = pos.add(0,1,0);
@@ -196,7 +195,7 @@ class Ores extends VeinMode{
             return (ArrayList<BlockPos>) oldToBreak.clone();
         }
 
-        ores(sourcePos, world);
+        ores(sourcePos, world, player);
 
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         oldRadius = radius;
@@ -206,14 +205,14 @@ class Ores extends VeinMode{
         return (ArrayList<BlockPos>) toBreak.clone();
     }
 
-    private static void ores(BlockPos curr, World world){
+    private static void ores(BlockPos curr, World world, PlayerEntity player){
         if(checked.contains(curr)){
             return;
         }
         else{
             checked.add(curr);
         }
-        if (world.getBlockState(curr).isIn(ModTags.Blocks.ORE_BLOCKS)){
+        if (world.getBlockState(curr).isIn(ModTags.Blocks.ORE_BLOCKS) && player.canHarvest(world.getBlockState(curr))){
             if(!toBreak.contains(curr)){
                 toBreak.add(curr);
             }
@@ -249,7 +248,7 @@ class Ores extends VeinMode{
         surrounding[25] = curr.down().north().west();
         for(BlockPos pos : surrounding){
             if (world.getBlockState(pos).isIn(ModTags.Blocks.ORE_BLOCKS)){
-                ores(pos, world);
+                ores(pos, world, player);
             }
         }
     }
@@ -290,7 +289,6 @@ class ShapelessVertical extends VeinMode{
                 || curr.getX() < sourcePos.getX() - radius){
             return;
         }
-        double p = player.getY();
         if(curr.getY() > sourcePos.getY() + radius
                 || curr.getY() < player.getY()){
             return;
@@ -305,7 +303,7 @@ class ShapelessVertical extends VeinMode{
         else{
             checked.add(curr);
         }
-        if(world.getBlockState(curr).getBlock() == toMatch){
+        if(world.getBlockState(curr).getBlock() == toMatch && player.canHarvest(world.getBlockState(curr))){
             if(!toBreak.contains(curr) && !blackList.contains(world.getBlockState(curr).getBlock())){
                 toBreak.add(curr);
             }
@@ -366,23 +364,18 @@ class Tunnel extends VeinMode{
                 && oldRadius == radius && oldToMatch.equals(toMatch)) {
             return (ArrayList<BlockPos>) oldToBreak.clone();
         }
+        BlockPos curr = sourcePos;
+        Direction direction = player.getHorizontalFacing();
 
-        tunnel(sourcePos, player.getHorizontalFacing(), radius, world);
-
-        oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
-        oldRadius = radius;
-        oldSourcePos = sourcePos;
-        oldToMatch = toMatch;
-
-        return (ArrayList<BlockPos>) toBreak.clone();
-    }
-
-    private static void tunnel(BlockPos curr, Direction direction, int radius, World world){
         for(int i = 0; i < radius * 2; i++){
             if(!toBreak.contains(curr) && !blackList.contains(world.getBlockState(curr).getBlock())){
-                toBreak.add(curr);
-                if(!toBreak.contains(curr.down()) && !blackList.contains(world.getBlockState(curr).getBlock())){
-                    toBreak.add(curr.down());
+                if(player.canHarvest(world.getBlockState(curr))){
+                    toBreak.add(curr);
+                }
+                if(!toBreak.contains(curr.down()) && !blackList.contains(world.getBlockState(curr.down()).getBlock())){
+                    if(player.canHarvest(world.getBlockState(curr.down()))){
+                        toBreak.add(curr.down());
+                    }
                 }
                 if(direction.equals(Direction.NORTH)){
                     curr = curr.north(1);
@@ -398,6 +391,13 @@ class Tunnel extends VeinMode{
                 }
             }
         }
+
+        oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
+        oldRadius = radius;
+        oldSourcePos = sourcePos;
+        oldToMatch = toMatch;
+
+        return (ArrayList<BlockPos>) toBreak.clone();
     }
 }
 
@@ -424,31 +424,39 @@ class Mineshaft extends VeinMode{
         Direction direction = player.getHorizontalFacing();
 
         for(int i = 0; i < radius *2; i++){
-            if(!toBreak.contains(curr) && !blackList.contains(world.getBlockState(curr).getBlock())){
+            if(!toBreak.contains(curr) && !blackList.contains(world.getBlockState(curr).getBlock()) && player.canHarvest(world.getBlockState(curr))){
                 toBreak.add(curr);
             }
             if(direction.equals(Direction.NORTH)){
-                toBreak.add(curr.north(1));
-                toBreak.add(curr.north(2));
-                toBreak.add(curr.north(3));
+                for(int j = 1; j < 4; j++){
+                    if(player.canHarvest(world.getBlockState(curr.north(j)))){
+                        toBreak.add(curr.north(j));
+                    }
+                }
                 curr = curr.north(1);
             }
             if(direction.equals(Direction.SOUTH)){
-                toBreak.add(curr.south(1));
-                toBreak.add(curr.south(2));
-                toBreak.add(curr.south(3));
+                for(int j = 1; j < 4; j++){
+                    if(player.canHarvest(world.getBlockState(curr.south(j)))){
+                        toBreak.add(curr.south(j));
+                    }
+                }
                 curr = curr.south(1);
             }
             if(direction.equals(Direction.EAST)){
-                toBreak.add(curr.east(1));
-                toBreak.add(curr.east(2));
-                toBreak.add(curr.east(3));
+                for(int j = 1; j < 4; j++){
+                    if(player.canHarvest(world.getBlockState(curr.east(j)))){
+                        toBreak.add(curr.east(j));
+                    }
+                }
                 curr = curr.east(1);
             }
             if(direction.equals(Direction.WEST)){
-                toBreak.add(curr.west(1));
-                toBreak.add(curr.west(2));
-                toBreak.add(curr.west(3));
+                for(int j = 1; j < 4; j++){
+                    if(player.canHarvest(world.getBlockState(curr.west(j)))){
+                        toBreak.add(curr.west(j));
+                    }
+                }
                 curr = curr.west(1);
             }
             curr = curr.down();
@@ -460,10 +468,6 @@ class Mineshaft extends VeinMode{
         oldToMatch = toMatch;
 
         return (ArrayList<BlockPos>) toBreak.clone();
-    }
-
-    private static void mineshaft(BlockPos curr, Direction direction, int radius, World world){
-
     }
 }
 
@@ -494,7 +498,7 @@ class Crops extends VeinMode{
                     BlockState state = world.getBlockState(pos);
                     if (CropBlock.class.isAssignableFrom(state.getBlock().getClass())) {
                         CropBlock crop = (CropBlock) state.getBlock();
-                        if (crop.isMature(state)){
+                        if (crop.isMature(state) && player.canHarvest(world.getBlockState(pos))){
                             toBreak.add(pos);
                         }
                     }
