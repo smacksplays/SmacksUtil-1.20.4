@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.mixin.VeinMiner;
+package net.smackplays.smacksutil.mixin.veinminer;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.VertexConsumer;

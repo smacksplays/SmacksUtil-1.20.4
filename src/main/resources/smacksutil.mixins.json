@@ -3,13 +3,13 @@
   "package": "net.smackplays.smacksutil.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "FastPlace.MinecraftClientMixin",
-    "VeinMiner.MouseScroll"
+    "fastplace.MinecraftClientMixin",
+    "veinminer.MouseScroll"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
-    "VeinMiner.OutlineRender"
+    "veinminer.OutlineRender"
   ]
 }

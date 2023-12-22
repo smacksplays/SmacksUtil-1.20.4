@@ -15,6 +15,8 @@ public class KeyInputHandler {
     public static final String KEY_SMACKSUTIL_VEINPREVIEW = "key.smacksutil.veinpreview";
     public static final String KEY_SMACKSUTIL_FASTPLACE = "key.smacksutil.fastplace";
     public static final String KEY_SMACKSUTIL_EXACTMATCH = "key.smacksutil.exactmatch";
+    private static final int GREEN = 65280;
+    private static final int RED = 16711680;
     public static KeyBinding veinKey;
     public static KeyBinding veinPreviewKey;
     public static KeyBinding fastPlaceKey;
@@ -40,8 +42,6 @@ public class KeyInputHandler {
 
         registerEvents();
     }
-    private static final int GREEN = 65280;
-    private static final int RED = 16711680;
 
     public static void registerEvents() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {

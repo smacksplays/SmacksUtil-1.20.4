@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.VeinMiner;
+package net.smackplays.smacksutil.veinminer;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -25,13 +25,11 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 import net.smackplays.smacksutil.SmacksUtil;
-import net.smackplays.smacksutil.VeinMiner.Modes.*;
+import net.smackplays.smacksutil.veinminer.modes.*;
 import net.smackplays.smacksutil.events.KeyInputHandler;
 import net.smackplays.smacksutil.util.CustomRenderLayer;
 import net.smackplays.smacksutil.util.ModTags;
 
-import java.sql.Time;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -202,7 +200,7 @@ public class Miner {
         isDrawing = true;
         toBreak = (ArrayList<BlockPos>) SmacksUtil.veinMiner.getBlocks(world, player, pos).clone();
 
-        while (toBreak.size() >= 100){
+        while (toBreak.size() >= 100) {
             toBreak.remove(toBreak.size() - 1);
         }
         VoxelShape shape = combine(world, pos, (ArrayList<BlockPos>) toBreak.clone());

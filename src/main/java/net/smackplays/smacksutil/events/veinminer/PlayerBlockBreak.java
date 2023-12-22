@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.events.VeinMiner;
+package net.smackplays.smacksutil.events.veinminer;
 
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.BlockState;

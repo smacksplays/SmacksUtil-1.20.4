@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.VeinMiner.Modes;
+package net.smackplays.smacksutil.veinminer.modes;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,10 +8,7 @@ import net.minecraft.world.World;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
-@SuppressWarnings("unchecked")
 public class VeinMode {
     public static ArrayList<BlockPos> toBreak = new ArrayList<>();
     public static ArrayList<BlockPos> oldToBreak = new ArrayList<>();
@@ -77,12 +74,6 @@ public class VeinMode {
 
     public String getName() {
         return ModeName;
-    }
-
-    public ArrayList<BlockPos> sortByNearest(ArrayList<BlockPos> toSort, PlayerEntity player){
-        ArrayList<BlockPos> sorted = (ArrayList<BlockPos>) toSort.clone();
-        sorted.sort(new BlockPosComparator(player));
-        return sorted;
     }
 }
 

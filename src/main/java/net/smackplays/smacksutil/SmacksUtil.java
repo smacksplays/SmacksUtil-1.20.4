@@ -2,8 +2,8 @@ package net.smackplays.smacksutil;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.smackplays.smacksutil.VeinMiner.Miner;
-import net.smackplays.smacksutil.events.VeinMiner.PlayerBlockBreak;
+import net.smackplays.smacksutil.veinminer.Miner;
+import net.smackplays.smacksutil.events.veinminer.PlayerBlockBreak;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

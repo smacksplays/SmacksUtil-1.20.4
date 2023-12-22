@@ -1,8 +1,8 @@
-package net.smackplays.smacksutil.VeinMiner.Modes;
-
+package net.smackplays.smacksutil.veinminer.modes;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.smackplays.smacksutil.util.ModTags;
@@ -10,9 +10,9 @@ import net.smackplays.smacksutil.util.ModTags;
 import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
-public class Vegetation extends VeinMode {
-    public Vegetation() {
-        ModeName = "Vegetation";
+public class Trees extends VeinMode {
+    public Trees() {
+        ModeName = "Ores";
     }
 
     @Override
@@ -28,20 +28,11 @@ public class Vegetation extends VeinMode {
             return (ArrayList<BlockPos>) oldToBreak.clone();
         }
 
-        BlockPos pos = new BlockPos(sourcePos.getX() - radius, sourcePos.getY() - 2, sourcePos.getZ() - radius);
-
-        for (int i = 0; i < radius * 2 + 1; i++) {
-            for (int j = 0; j < radius * 2 + 1; j++) {
-                for (int u = 0; u < 5; u++) {
-                    if (world.getBlockState(pos).isIn(ModTags.Blocks.VEGETATION_BLOCKS) && player.canHarvest(world.getBlockState(pos))) {
-                        toBreak.add(pos);
-                    }
-                    pos = pos.add(0, 1, 0);
-                }
-                pos = pos.add(0, -5, 1);
-            }
-            pos = pos.add(1, 0, -radius * 2 - 1);
+        TagKey<Block> tag = null;
+        if (world.getBlockState(sourcePos).isIn(ModTags.Blocks.TREE_BLOCKS)) {
+            tag = ModTags.Blocks.TREE_BLOCKS;
         }
+        trees(sourcePos, world, player, isExactMatch, toMatch, tag);
 
         toBreak.sort(new BlockPosComparator(player));
 
@@ -51,5 +42,24 @@ public class Vegetation extends VeinMode {
         oldToMatch = toMatch;
 
         return (ArrayList<BlockPos>) toBreak.clone();
+    }
+
+    private void trees(BlockPos curr, World world, PlayerEntity player, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
+        if (checked.contains(curr)) {
+            return;
+        } else {
+            checked.add(curr);
+        }
+        if (checkMatch(isExactMatch, curr, world, player, toMatch, tag)) {
+            if (!toBreak.contains(curr)) {
+                toBreak.add(curr);
+            }
+        }
+        BlockPos[] surrounding = getSurrounding(curr);
+        for (BlockPos pos : surrounding) {
+            if (checkMatch(isExactMatch, pos, world, player, toMatch, tag)) {
+                trees(pos, world, player, isExactMatch, toMatch, tag);
+            }
+        }
     }
 }

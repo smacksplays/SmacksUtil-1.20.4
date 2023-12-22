@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.mixin.FastPlace;
+package net.smackplays.smacksutil.mixin.fastplace;
 
 
 import net.minecraft.client.MinecraftClient;

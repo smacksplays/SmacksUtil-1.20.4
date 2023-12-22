@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.VeinMiner.Modes;
+package net.smackplays.smacksutil.veinminer.modes;
 
 
 import net.minecraft.block.Block;

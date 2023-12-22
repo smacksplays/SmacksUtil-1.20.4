@@ -1,19 +1,18 @@
-package net.smackplays.smacksutil.VeinMiner.Modes;
+package net.smackplays.smacksutil.veinminer.modes;
 
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.CropBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
-public class Crops extends VeinMode {
-    public Crops() {
-        ModeName = "Crops";
+public class Vegetation extends VeinMode {
+    public Vegetation() {
+        ModeName = "Vegetation";
     }
 
     @Override
@@ -31,15 +30,11 @@ public class Crops extends VeinMode {
 
         BlockPos pos = new BlockPos(sourcePos.getX() - radius, sourcePos.getY() - 2, sourcePos.getZ() - radius);
 
-        for (int x = 0; x < radius * 2 + 1; x++) {
-            for (int z = 0; z < radius * 2 + 1; z++) {
-                for (int y = 0; y < 5; y++) {
-                    BlockState state = world.getBlockState(pos);
-                    if (CropBlock.class.isAssignableFrom(state.getBlock().getClass())) {
-                        CropBlock crop = (CropBlock) state.getBlock();
-                        if (crop.isMature(state) && player.canHarvest(world.getBlockState(pos))) {
-                            toBreak.add(pos);
-                        }
+        for (int i = 0; i < radius * 2 + 1; i++) {
+            for (int j = 0; j < radius * 2 + 1; j++) {
+                for (int u = 0; u < 5; u++) {
+                    if (world.getBlockState(pos).isIn(ModTags.Blocks.VEGETATION_BLOCKS) && player.canHarvest(world.getBlockState(pos))) {
+                        toBreak.add(pos);
                     }
                     pos = pos.add(0, 1, 0);
                 }

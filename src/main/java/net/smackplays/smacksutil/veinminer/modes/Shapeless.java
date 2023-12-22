@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.VeinMiner.Modes;
+package net.smackplays.smacksutil.veinminer.modes;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,15 +10,15 @@ import net.smackplays.smacksutil.util.ModTags;
 import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
-public class Ores extends VeinMode {
-    public Ores() {
-        ModeName = "Ores";
+public class Shapeless extends VeinMode {
+    public Shapeless() {
+        ModeName = "Shapeless";
+        MAX_RADIUS = 4;
     }
 
     @Override
     public ArrayList<BlockPos> getBlocks(World world, PlayerEntity player, BlockPos sourcePos, int radius, boolean isExactMatch) {
         if (world == null || player == null || sourcePos == null) return (ArrayList<BlockPos>) toBreak.clone();
-        oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         toBreak.clear();
         checked.clear();
         Block toMatch = world.getBlockState(sourcePos).getBlock();
@@ -29,10 +29,13 @@ public class Ores extends VeinMode {
         }
 
         TagKey<Block> tag = null;
-        if (world.getBlockState(sourcePos).isIn(ModTags.Blocks.ORE_BLOCKS)) {
-            tag = ModTags.Blocks.ORE_BLOCKS;
+        if (world.getBlockState(sourcePos).isIn(ModTags.Blocks.STONE_BLOCKS)) {
+            tag = ModTags.Blocks.STONE_BLOCKS;
+        } else if (world.getBlockState(sourcePos).isIn(ModTags.Blocks.DIRT_BLOCKS)) {
+            tag = ModTags.Blocks.DIRT_BLOCKS;
         }
-        ores(sourcePos, world, player, isExactMatch, toMatch, tag);
+
+        shapeless(sourcePos, sourcePos, radius, world, player, isExactMatch, toMatch, tag);
 
         toBreak.sort(new BlockPosComparator(player));
 
@@ -44,21 +47,32 @@ public class Ores extends VeinMode {
         return (ArrayList<BlockPos>) toBreak.clone();
     }
 
-    private void ores(BlockPos curr, World world, PlayerEntity player, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
+    private void shapeless(BlockPos curr, BlockPos sourcePos, int radius, World world,
+                           PlayerEntity player, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
+        if (curr.getX() > sourcePos.getX() + radius
+                || curr.getX() < sourcePos.getX() - radius) {
+            return;
+        }
+        if (curr.getY() > sourcePos.getY() + radius
+                || curr.getY() < sourcePos.getY() - radius) {
+            return;
+        }
+        if (curr.getZ() > sourcePos.getZ() + radius
+                || curr.getZ() < sourcePos.getZ() - radius) {
+            return;
+        }
         if (checked.contains(curr)) {
             return;
         } else {
             checked.add(curr);
         }
         if (checkMatch(isExactMatch, curr, world, player, toMatch, tag)) {
-            if (!toBreak.contains(curr)) {
-                toBreak.add(curr);
-            }
+            toBreak.add(curr);
         }
         BlockPos[] surrounding = getSurrounding(curr);
         for (BlockPos pos : surrounding) {
             if (checkMatch(isExactMatch, pos, world, player, toMatch, tag)) {
-                ores(pos, world, player, isExactMatch, toMatch, tag);
+                shapeless(pos, sourcePos, radius, world, player, isExactMatch, toMatch, tag);
             }
         }
     }
