@@ -1,15 +1,15 @@
 {
-	"required": true,
-	"package": "net.smackplays.smacksutil.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"mixins": [
-		"FastPlace.MinecraftClientMixin",
-		"VeinMiner.MouseScroll"
-	],
-	"injectors": {
-		"defaultRequire": 1
-	},
-	"client": [
-		"VeinMiner.OutlineRender"
-	]
+  "required": true,
+  "package": "net.smackplays.smacksutil.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "fastplace.MinecraftClientMixin",
+    "veinminer.MouseScroll"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "veinminer.OutlineRender"
+  ]
 }

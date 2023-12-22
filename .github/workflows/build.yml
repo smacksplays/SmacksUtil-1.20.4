@@ -4,16 +4,16 @@
 # against bad commits.
 
 name: Publish on GitHub, CurseForge
-on: [pull_request, workflow_dispatch ]
-env:                                              #Environment variables that can later be referenced using ${{ env.MINECRAFT_VERSION }}. These are useful for repeating information and allow for quick changes for new mod updates
-  MINECRAFT_VERSION: 1.20.4                        
+on: [ pull_request, workflow_dispatch ]
+env: #Environment variables that can later be referenced using ${{ env.MINECRAFT_VERSION }}. These are useful for repeating information and allow for quick changes for new mod updates
+  MINECRAFT_VERSION: 1.20.4
   JAVA_VERSION: 17
-  VERSION: 0.0.1
-  RELEASE_NAME: Smacksmisc-1.20.4-0.0.1
+  VERSION: 0.0.2
+  RELEASE_NAME: SmackUtil-1.20.4-0.0.2
 
 permissions:
   contents: write
-  
+
 jobs:
   build:
     strategy:
@@ -24,7 +24,7 @@ jobs:
           21,    # Current Java LTS
         ]
         # and run on both Linux and Windows
-        os: [ubuntu-22.04, windows-2022]
+        os: [ ubuntu-22.04, windows-2022 ]
     runs-on: ${{ matrix.os }}
     steps:
       - name: checkout repository
@@ -48,8 +48,8 @@ jobs:
           name: Artifacts
           path: build/libs/
       - name: publish (CurseForge)
-        if: ${{ runner.os == 'Linux' && matrix.java == '21' }} # Only upload artifacts built from latest java on one OS
-        uses: Kir-Antipov/mc-publish@v3.3   
+        if: ${{ runner.os == 'Linux' && matrix.java == '21' && github.event_name == 'workflow_dispatch'}} # Only upload artifacts built from latest java on one OS
+        uses: Kir-Antipov/mc-publish@v3.3
         with:
           curseforge-id: 952860                                             #The id of your CurseForge project
           curseforge-token: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
