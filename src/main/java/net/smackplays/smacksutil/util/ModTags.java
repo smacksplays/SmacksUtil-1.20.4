@@ -18,6 +18,8 @@ public class ModTags {
                 createTag("stone_blocks");
         public static final TagKey<Block> DIRT_BLOCKS =
                 createTag("dirt_blocks");
+        public static final TagKey<Block> TREE_BLOCKS =
+                createTag("tree_blocks");
         public static final TagKey<Block> VEIN_BLACKLIST =
                 createTag("veinminer_blacklist");
         public static final TagKey<Block> VEIN_MINING =

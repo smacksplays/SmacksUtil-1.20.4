@@ -47,6 +47,7 @@ public class Miner {
     public static VeinMode CropsMode = new Crops();
     public static VeinMode OresMode = new Ores();
     public static VeinMode VegetationMode = new Vegetation();
+    public static VeinMode TreeMode = new Trees();
     public static VeinMode[] modeArray = new VeinMode[]{
             ShapelessMode,
             ShapelessVerticalMode,
@@ -109,6 +110,8 @@ public class Miner {
             matching = (ArrayList<BlockPos>) OresMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
         } else if (sourceBlockState.isIn(ModTags.Blocks.VEGETATION_BLOCKS)) {
             matching = (ArrayList<BlockPos>) VegetationMode.getBlocks(worldIn, playerIn, sourcePosIn, 10, isExactMatch).clone();
+        } else if (sourceBlockState.isIn(ModTags.Blocks.TREE_BLOCKS)) {
+            matching = (ArrayList<BlockPos>) TreeMode.getBlocks(worldIn, playerIn, sourcePosIn, 10, isExactMatch).clone();
         } else {
             matching = (ArrayList<BlockPos>) mode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
         }
@@ -168,7 +171,7 @@ public class Miner {
             List<ItemStack> dropList = currBlockState.getDroppedStacks(builder);
 
             boolean canHarvest = (player.canHarvest(currBlockState) || player.isCreative());
-            if (!dropList.isEmpty() && canHarvest) {
+            if (dropList != null && canHarvest) {
                 if (drop) {
                     for (ItemStack st : dropList) {
                         world.spawnEntity(new ItemEntity(world, curr.getX(), curr.getY(), curr.getZ(), st));
@@ -188,6 +191,9 @@ public class Miner {
 
     public void setMode() {
         mode = modeArray[currMode];
+    }
+    public int getRadius(){
+        return radius;
     }
 
     public void togglePreview() {
