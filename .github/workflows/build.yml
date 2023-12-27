@@ -53,4 +53,9 @@ jobs:
         with:
           curseforge-id: 952860                                             #The id of your CurseForge project
           curseforge-token: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
+
+          name: SmacksUtil 0.0.2 for MC 1.20.4
+          version: smacksutil-1.20.4-0.0.2
+          version-type: beta
+          changelog-file: CHANGELOG.*
         
