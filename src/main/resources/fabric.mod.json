@@ -3,13 +3,13 @@
   "id": "smacksutil",
   "version": "${version}",
   "name": "SmacksUtil",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "This mod implements a simple client side Veinminer and enables fast block placing.",
   "authors": [
-    "Me!"
+    "smack_plays"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/smacksplays/SmacksUtil",
+    "sources": "https://github.com/smacksplays/SmacksUtil"
   },
   "license": "CC0-1.0",
   "icon": "assets/smacksutil/icon.png",
