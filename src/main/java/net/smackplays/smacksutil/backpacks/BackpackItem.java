@@ -1,41 +1,18 @@
 package net.smackplays.smacksutil.backpacks;
 
-import com.sun.jna.platform.win32.Guid;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
-import net.fabricmc.fabric.api.screenhandler.v1.FabricScreenHandlerFactory;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.DoubleBlockProperties;
-import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.DoubleInventory;
-import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.structure.OceanMonumentGenerator;
 import net.minecraft.text.Text;
-import net.minecraft.util.ClickType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
-import java.util.OptionalInt;
 
 public class BackpackItem extends Item implements ImplementedInventory{
 

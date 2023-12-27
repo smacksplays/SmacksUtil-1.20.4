@@ -8,14 +8,12 @@ import net.minecraft.screen.slot.Slot;
 public class BackpackScreenHandler extends ScreenHandler {
     private final ImplementedInventory backpackInventory; // Chest inventory
     private static final int INVENTORY_SIZE = 54; // 6 rows * 9 cols
-    private static int selected_slot;
 
     protected BackpackScreenHandler(int syncId, ImplementedInventory backpackInventory, PlayerEntity player) {
         super(ScreenHandlerType.GENERIC_9X6, syncId); // Since we didn't create a ScreenHandlerType, we will place null here.
         this.backpackInventory = backpackInventory;
         checkSize(backpackInventory, INVENTORY_SIZE);
         backpackInventory.onOpen(player);
-        selected_slot = player.getInventory().selectedSlot;
 
         // Creating Slots for GUI. A Slot is essentially a corresponding from inventory ItemStacks to the GUI position.
         int i;
@@ -45,7 +43,7 @@ public class BackpackScreenHandler extends ScreenHandler {
     public ItemStack quickMove(PlayerEntity player, int slot) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot2 = (Slot)this.slots.get(slot);
-        if (slot2 != null && slot2.hasStack()) {
+        if (slot2.hasStack()) {
             ItemStack itemStack2 = slot2.getStack();
             itemStack = itemStack2.copy();
             if (slot < 6 * 9 ? !this.insertItem(itemStack2, 6 * 9, this.slots.size(), true) : !this.insertItem(itemStack2, 0, 6 * 9, false)) {
