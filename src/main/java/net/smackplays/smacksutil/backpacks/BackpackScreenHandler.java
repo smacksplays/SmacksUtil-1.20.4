@@ -1,70 +1,72 @@
 package net.smackplays.smacksutil.backpacks;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.*;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 
-public class BackpackScreenHandler extends ScreenHandler {
-    private final ImplementedInventory backpackInventory; // Chest inventory
-    private static final int INVENTORY_SIZE = 54; // 6 rows * 9 cols
+public class BackpackScreenHandler extends ScreenHandler
+{
+    private final Inventory inventory;
+    private final int rows = 6;
 
-    protected BackpackScreenHandler(int syncId, ImplementedInventory backpackInventory, PlayerEntity player) {
-        super(ScreenHandlerType.GENERIC_9X6, syncId); // Since we didn't create a ScreenHandlerType, we will place null here.
-        this.backpackInventory = backpackInventory;
-        checkSize(backpackInventory, INVENTORY_SIZE);
-        backpackInventory.onOpen(player);
+    public BackpackScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
+        super(ScreenHandlerType.GENERIC_9X6, syncId);
+        checkSize(inventory, rows * 9);
+        this.inventory = inventory;
+        inventory.onOpen(playerInventory.player);
+        int i = (this.rows - 4) * 18;
 
-        // Creating Slots for GUI. A Slot is essentially a corresponding from inventory ItemStacks to the GUI position.
-        int i;
         int j;
-
-        // Chest Inventory
-        for (i = 0; i < 6; i++) {
-            for (j = 0; j < 9; j++) {
-                this.addSlot(new BackpackSlot(backpackInventory, i * 9 + j, 8 + j * 18, 18 + i * 18));
+        int k;
+        for(j = 0; j < this.rows; ++j) {
+            for(k = 0; k < 9; ++k) {
+                this.addSlot(new BackpackSlot(inventory, k + j * 9, 8 + k * 18, 18 + j * 18));
             }
         }
 
-        // Player Inventory (27 storage + 9 hotbar)
-        for (i = 0; i < 3; i++) {
-            for (j = 0; j < 9; j++) {
-                this.addSlot(new BackpackSlot(player.getInventory(), i * 9 + j + 9, 8 + j * 18, 18 + i * 18 + 103 + 18));
+        for(j = 0; j < 3; ++j) {
+            for(k = 0; k < 9; ++k) {
+                this.addSlot(new BackpackSlot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + i));
             }
         }
 
-
-        for (j = 0; j < 9; j++) {
-            this.addSlot(new BackpackSlot(player.getInventory(), j, 8 + j * 18, 18 + 161 + 18));
+        for(j = 0; j < 9; ++j) {
+            this.addSlot(new BackpackSlot(playerInventory, j, 8 + j * 18, 161 + i));
         }
+
+    }
+
+    public boolean canUse(PlayerEntity player) {
+        return this.inventory.canPlayerUse(player);
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int slot) {
+    public ItemStack quickMove(PlayerEntity player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
-        Slot slot2 = (Slot)this.slots.get(slot);
-        if (slot2.hasStack()) {
-            ItemStack itemStack2 = slot2.getStack();
+        Slot slot = this.slots.get(index);
+
+        if (slot.hasStack()) {
+            ItemStack itemStack2 = slot.getStack();
             itemStack = itemStack2.copy();
-            if (slot < 6 * 9 ? !this.insertItem(itemStack2, 6 * 9, this.slots.size(), true) : !this.insertItem(itemStack2, 0, 6 * 9, false)) {
+            if (index < this.rows * 9) {
+                if (!this.insertItem(itemStack2, this.rows * 9, this.slots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.insertItem(itemStack2, 0, this.rows * 9, false)) {
                 return ItemStack.EMPTY;
             }
+
             if (itemStack2.isEmpty()) {
-                slot2.setStack(ItemStack.EMPTY);
+                slot.setStack(ItemStack.EMPTY);
             } else {
-                slot2.markDirty();
+                slot.markDirty();
             }
         }
+
         return itemStack;
-    }
-
-    @Override
-    public boolean canUse(PlayerEntity player) {
-        return this.backpackInventory.canPlayerUse(player);
-    }
-
-    @Override
-    public boolean isValid(int slot) {
-        return super.isValid(slot);
     }
 }
