@@ -1,6 +1,5 @@
 package net.smackplays.smacksutil.backpacks;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.screen.NamedScreenHandlerFactory;
