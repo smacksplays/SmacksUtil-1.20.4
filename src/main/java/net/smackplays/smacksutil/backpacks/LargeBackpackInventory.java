@@ -5,12 +5,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 
-public class BackpackInventory implements ImplementedInventory
+public class LargeBackpackInventory implements ImplementedInventory
 {
     private final ItemStack stack;
-    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(9 * 6, ItemStack.EMPTY);
+    private final DefaultedList<ItemStack> items = DefaultedList.ofSize(13 * 9, ItemStack.EMPTY);
 
-    BackpackInventory(ItemStack stack)
+    LargeBackpackInventory(ItemStack stack)
     {
         this.stack = stack;
         NbtCompound tag = stack.getSubNbt("backpack");

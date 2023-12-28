@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "smacksutil:item/large_backpack_item",
+    "layer1": "smacksutil:item/large_backpack_overlay"
+  }
+}

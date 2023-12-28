@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.3] - 2023.12.28
+
+### Added
+
+#### Backpacks
+
+Backpacks are added to the mod.
+Size is fixed at 6 * 9 (54) slots and are dyeable.
+
+### Changed
+
+### Fixed
+
+
 ## [0.0.2] - 2023.12.22
 
 ### Added

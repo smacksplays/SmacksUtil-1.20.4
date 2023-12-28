@@ -4,18 +4,27 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
+import net.smackplays.smacksutil.ModClient;
+import net.smackplays.smacksutil.SmacksUtil;
 
-public class BackpackScreenHandler extends ScreenHandler
+public class LargeBackpackScreenHandler extends ScreenHandler
 {
     private final Inventory inventory;
-    private final int rows = 6;
+    private final int rows = 9;
+    private final int cols = 13;
 
-    public BackpackScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
-        super(ScreenHandlerType.GENERIC_9X6, syncId);
-        checkSize(inventory, rows * 9);
+    public static LargeBackpackScreenHandler createGeneric13x9(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+        return new LargeBackpackScreenHandler(syncId, playerInventory, ImplementedInventory.ofSize(13 * 9));
+    }
+
+    public LargeBackpackScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
+        super(SmacksUtil.GENERIC_13X9, syncId);
+        checkSize(inventory, rows * cols);
         this.inventory = inventory;
         inventory.onOpen(playerInventory.player);
         int i = (this.rows - 4) * 18;
@@ -23,8 +32,8 @@ public class BackpackScreenHandler extends ScreenHandler
         int j;
         int k;
         for(j = 0; j < this.rows; ++j) {
-            for(k = 0; k < 9; ++k) {
-                this.addSlot(new BackpackSlot(inventory, k + j * 9, 8 + k * 18, 18 + j * 18));
+            for(k = 0; k < this.cols; ++k) {
+                this.addSlot(new BackpackSlot(inventory, k + j * 9, 8 + k * 18 - 18 * 2, 18 + j * 18));
             }
         }
 
@@ -66,7 +75,7 @@ public class BackpackScreenHandler extends ScreenHandler
                 slot.markDirty();
             }
         }
-
         return itemStack;
     }
+
 }
