@@ -3,5 +3,7 @@
   "key.smacksutil.veinactivate": "Activate",
   "key.smacksutil.veinpreview": "Outline Rendering",
   "key.smacksutil.fastplace": "Fast Place",
-  "key.smacksutil.exactmatch": "Exact Match"
+  "key.smacksutil.exactmatch": "Exact Match",
+  "item.smacksutil.backpack_item": "Backpack",
+  "smacksutil.screen.backpack.item": "Backpack"
 }
