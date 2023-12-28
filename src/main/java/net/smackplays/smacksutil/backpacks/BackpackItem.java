@@ -2,6 +2,7 @@ package net.smackplays.smacksutil.backpacks;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
+import net.minecraft.screen.GenericContainerScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.util.*;
@@ -25,6 +26,6 @@ public class BackpackItem extends Item implements DyeableItem {
 
     private NamedScreenHandlerFactory createScreenHandlerFactory(ItemStack stack) {
         return new SimpleNamedScreenHandlerFactory((i, playerInventory, playerEntity) ->
-                new BackpackScreenHandler(i, playerInventory, new BackpackInventory(stack)), stack.getName());
+                GenericContainerScreenHandler.createGeneric9x6(i, playerInventory, new BackpackInventory(stack)), stack.getName());
     }
 }

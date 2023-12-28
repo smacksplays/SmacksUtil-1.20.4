@@ -19,4 +19,24 @@ public class BackpackSlot extends Slot {
         }
         return super.canTakeItems(playerEntity);
     }
+
+    @Override
+    protected void onTake(int amount) {
+        super.onTake(amount);
+    }
+
+    @Override
+    public ItemStack takeStack(int amount) {
+        return super.takeStack(amount);
+    }
+
+    @Override
+    public ItemStack takeStackRange(int min, int max, PlayerEntity player) {
+        return super.takeStackRange(min, max, player);
+    }
+
+    @Override
+    public boolean canTakePartial(PlayerEntity player) {
+        return super.canTakePartial(player);
+    }
 }

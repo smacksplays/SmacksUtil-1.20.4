@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "backpack",
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "B": {
+      "item": "smacksutil:backpack_item"
+    }
+  },
+  "pattern": [
+    "LCL",
+    "CBC",
+    "LCL"
+  ],
+  "result": {
+    "item": "smacksutil:large_backpack_item"
+  }
+}

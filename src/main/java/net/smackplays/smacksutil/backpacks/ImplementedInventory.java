@@ -8,46 +8,16 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 
 public interface ImplementedInventory extends SidedInventory {
-    /**
-     * Gets the item list of this inventory.
-     * Must return the same instance every time it's called.
-     *
-     * @return the item list
-     */
     DefaultedList<ItemStack> getItems();
 
-    // Creation
-
-    /**
-     * Creates an inventory from the item list.
-     *
-     * @param items the item list
-     * @return a new inventory
-     */
     static ImplementedInventory of(DefaultedList<ItemStack> items) {
         return () -> items;
     }
 
-    /**
-     * Creates a new inventory with the size.
-     *
-     * @param size the inventory size
-     * @return a new inventory
-     */
     static ImplementedInventory ofSize(int size) {
         return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
     }
 
-    // SidedInventory
-
-    /**
-     * Gets the available slots to automation on the side.
-     *
-     * <p>The default implementation returns an array of all slots.
-     *
-     * @param side the side
-     * @return the available slots
-     */
     @Override
     default int[] getAvailableSlots(Direction side) {
         int[] result = new int[getItems().size()];
@@ -59,53 +29,21 @@ public interface ImplementedInventory extends SidedInventory {
         return result;
     }
 
-    /**
-     * Returns true if the stack can be inserted in the slot at the side.
-     *
-     * <p>The default implementation returns true.
-     *
-     * @param slot  the slot
-     * @param stack the stack
-     * @param side  the side
-     * @return true if the stack can be inserted
-     */
     @Override
     default boolean canInsert(int slot, ItemStack stack, Direction side) {
         return true;
     }
 
-    /**
-     * Returns true if the stack can be extracted from the slot at the side.
-     *
-     * <p>The default implementation returns true.
-     *
-     * @param slot  the slot
-     * @param stack the stack
-     * @param side  the side
-     * @return true if the stack can be extracted
-     */
     @Override
     default boolean canExtract(int slot, ItemStack stack, Direction side) {
         return true;
     }
 
-    // Inventory
-
-    /**
-     * Returns the inventory size.
-     *
-     * <p>The default implementation returns the size of {@link #getItems()}.
-     *
-     * @return the inventory size
-     */
     @Override
     default int size() {
         return getItems().size();
     }
 
-    /**
-     * @return true if this inventory has only empty stacks, false otherwise
-     */
     @Override
     default boolean isEmpty() {
         for (int i = 0; i < size(); i++) {
@@ -119,12 +57,6 @@ public interface ImplementedInventory extends SidedInventory {
         return true;
     }
 
-    /**
-     * Gets the item in the slot.
-     *
-     * @param slot the slot
-     * @return the item in the slot
-     */
     @Override
     default ItemStack getStack(int slot) {
         return getItems().get(slot);
@@ -149,15 +81,11 @@ public interface ImplementedInventory extends SidedInventory {
     @Override
     default void setStack(int slot, ItemStack stack) {
         getItems().set(slot, stack);
-
         if (stack.getCount() > getMaxCountPerStack()) {
             stack.setCount(getMaxCountPerStack());
         }
     }
 
-    /**
-     * Clears {@linkplain #getItems() the item list}}.
-     */
     @Override
     default void clear() {
         getItems().clear();
@@ -165,11 +93,15 @@ public interface ImplementedInventory extends SidedInventory {
 
     @Override
     default void markDirty() {
-        // Override if you want behavior.
     }
 
     @Override
     default boolean canPlayerUse(PlayerEntity player) {
         return true;
+    }
+
+    @Override
+    default int getMaxCountPerStack() {
+        return 256;
     }
 }
