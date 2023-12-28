@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.4] - 2023.12.28
+
+### Added
+
+#### Backpacks
+
+Large Backpack added.
+Size is fixed at 13 * 9 (117) slots and backpacks are dyeable.
+**BUG: Inventory is not copied when crafting large backpack!**
+
+### Changed
+
+### Fixed
+
 ## [0.0.3] - 2023.12.28
 
 ### Added

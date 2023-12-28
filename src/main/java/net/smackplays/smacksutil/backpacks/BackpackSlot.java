@@ -1,16 +1,13 @@
 package net.smackplays.smacksutil.backpacks;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
 
 public class BackpackSlot extends Slot {
-    private final int index;
     public BackpackSlot(Inventory inventory, int index, int x, int y) {
         super(inventory, index, x, y);
-        this.index = index;
     }
 
     @Override
@@ -26,5 +23,20 @@ public class BackpackSlot extends Slot {
     @Override
     protected void onTake(int amount) {
         super.onTake(amount);
+    }
+
+    @Override
+    public ItemStack takeStack(int amount) {
+        return super.takeStack(amount);
+    }
+
+    @Override
+    public ItemStack takeStackRange(int min, int max, PlayerEntity player) {
+        return super.takeStackRange(min, max, player);
+    }
+
+    @Override
+    public boolean canTakePartial(PlayerEntity player) {
+        return super.canTakePartial(player);
     }
 }

@@ -3,18 +3,15 @@ package net.smackplays.smacksutil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
 import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.smackplays.smacksutil.backpacks.BackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackScreen;
-import net.smackplays.smacksutil.backpacks.LargeBackpackScreenHandler;
 import net.smackplays.smacksutil.events.KeyInputHandler;
 
 public class ModClient implements ClientModInitializer {

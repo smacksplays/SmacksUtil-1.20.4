@@ -13,6 +13,7 @@ public class LargeBackpackScreen extends HandledScreen<LargeBackpackScreenHandle
     //A path to the gui texture. In this example we use the texture from the dispenser
     protected int backgroundWidth = 248;
     protected int backgroundHeight = 281;
+
     private static final Identifier TEXTURE = new Identifier(SmacksUtil.MOD_ID, "textures/gui/container/large_backpack.png");
 
     public LargeBackpackScreen(LargeBackpackScreenHandler handler, PlayerInventory inventory, Text title) {
@@ -25,9 +26,10 @@ public class LargeBackpackScreen extends HandledScreen<LargeBackpackScreenHandle
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
-        int y = (height - backgroundHeight) / 2 + 57;
+        int y = (height - backgroundHeight) / 2 ;
         context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight, 512, 512);
         //in 1.20 or above,this method is in DrawContext class.
+
     }
 
     @Override
@@ -39,8 +41,8 @@ public class LargeBackpackScreen extends HandledScreen<LargeBackpackScreenHandle
 
     @Override
     protected void drawForeground(DrawContext context, int mouseX, int mouseY) {
-        context.drawText(this.textRenderer, this.title, this.titleX - 112, this.titleY, 0x404040, false);
-        context.drawText(this.textRenderer, this.playerInventoryTitle, this.playerInventoryTitleX - 36, this.playerInventoryTitleY + 110, 0x404040, false);
+        context.drawText(this.textRenderer, this.title, this.titleX - 112, this.titleY - 56, 0x404040, false);
+        context.drawText(this.textRenderer, this.playerInventoryTitle, this.playerInventoryTitleX - 36, this.playerInventoryTitleY + 53, 0x404040, false);
     }
 
     @Override
@@ -48,5 +50,14 @@ public class LargeBackpackScreen extends HandledScreen<LargeBackpackScreenHandle
         super.init();
         // Center the title
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+    }
+
+    @Override
+    protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
+        boolean c1 = mouseX < 360;
+        boolean c2 = mouseY < 128;
+        boolean c3 = mouseX > 600;
+        boolean c4 = mouseY > 400;
+        return  c1 || c2 || c3 || c4;
     }
 }

@@ -4,12 +4,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import net.smackplays.smacksutil.ModClient;
+import net.minecraft.util.ClickType;
 import net.smackplays.smacksutil.SmacksUtil;
 
 public class LargeBackpackScreenHandler extends ScreenHandler
@@ -33,18 +33,18 @@ public class LargeBackpackScreenHandler extends ScreenHandler
         int k;
         for(j = 0; j < this.rows; ++j) {
             for(k = 0; k < this.cols; ++k) {
-                this.addSlot(new BackpackSlot(inventory, k + j * 9, 8 + k * 18 - 18 * 2, 18 + j * 18));
+                this.addSlot(new BackpackSlot(inventory, k + j * this.cols, 8 + k * 18 - 18 * 2, 18 + j * 18 - 3 - 3 * 18));
             }
         }
 
         for(j = 0; j < 3; ++j) {
             for(k = 0; k < 9; ++k) {
-                this.addSlot(new BackpackSlot(playerInventory, k + j * 9 + 9, 8 + k * 18, 103 + j * 18 + i));
+                this.addSlot(new BackpackSlot(playerInventory, k + j * 9 + 9, 8 + k * 18, 46 + j * 18 + i));
             }
         }
 
         for(j = 0; j < 9; ++j) {
-            this.addSlot(new BackpackSlot(playerInventory, j, 8 + j * 18, 161 + i));
+            this.addSlot(new BackpackSlot(playerInventory, j, 8 + j * 18, 104 + i));
         }
 
     }

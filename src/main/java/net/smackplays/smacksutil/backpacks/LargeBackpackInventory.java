@@ -13,7 +13,7 @@ public class LargeBackpackInventory implements ImplementedInventory
     LargeBackpackInventory(ItemStack stack)
     {
         this.stack = stack;
-        NbtCompound tag = stack.getSubNbt("backpack");
+        NbtCompound tag = stack.getSubNbt("large_backpack");
 
         if (tag != null)
         {
@@ -29,7 +29,7 @@ public class LargeBackpackInventory implements ImplementedInventory
     @Override
     public void markDirty()
     {
-        NbtCompound tag = stack.getOrCreateSubNbt("backpack");
+        NbtCompound tag = stack.getOrCreateSubNbt("large_backpack");
         Inventories.writeNbt(tag, items);
     }
 
