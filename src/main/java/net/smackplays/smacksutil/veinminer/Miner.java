@@ -25,10 +25,10 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 import net.smackplays.smacksutil.SmacksUtil;
-import net.smackplays.smacksutil.veinminer.modes.*;
 import net.smackplays.smacksutil.events.KeyInputHandler;
 import net.smackplays.smacksutil.util.CustomRenderLayer;
 import net.smackplays.smacksutil.util.ModTags;
+import net.smackplays.smacksutil.veinminer.modes.*;
 
 import java.util.ArrayList;
 import java.util.List;

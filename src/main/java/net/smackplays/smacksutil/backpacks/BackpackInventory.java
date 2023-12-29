@@ -5,18 +5,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.collection.DefaultedList;
 
-public class BackpackInventory implements ImplementedInventory
-{
+public class BackpackInventory implements ImplementedInventory {
     private final ItemStack stack;
     private final DefaultedList<ItemStack> items = DefaultedList.ofSize(9 * 6, ItemStack.EMPTY);
 
-    BackpackInventory(ItemStack stack)
-    {
+    BackpackInventory(ItemStack stack) {
         this.stack = stack;
         NbtCompound tag = stack.getSubNbt("backpack");
 
-        if (tag != null)
-        {
+        if (tag != null) {
             Inventories.readNbt(tag, items);
         }
     }
@@ -27,8 +24,7 @@ public class BackpackInventory implements ImplementedInventory
     }
 
     @Override
-    public void markDirty()
-    {
+    public void markDirty() {
         NbtCompound tag = stack.getOrCreateSubNbt("backpack");
         Inventories.writeNbt(tag, items);
     }
