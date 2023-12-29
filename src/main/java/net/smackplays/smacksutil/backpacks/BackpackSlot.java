@@ -14,7 +14,7 @@ public class BackpackSlot extends Slot {
     public boolean canTakeItems(PlayerEntity playerEntity) {
         int sel = playerEntity.getInventory().selectedSlot;
         ItemStack s = playerEntity.getInventory().main.get(sel);
-        if (this.getStack().equals(s)){
+        if (this.getStack().equals(s)) {
             return false;
         }
         return super.canTakeItems(playerEntity);

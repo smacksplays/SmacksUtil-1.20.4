@@ -8,8 +8,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.Direction;
 
 public interface ImplementedInventory extends SidedInventory {
-    DefaultedList<ItemStack> getItems();
-
     static ImplementedInventory of(DefaultedList<ItemStack> items) {
         return () -> items;
     }
@@ -17,6 +15,8 @@ public interface ImplementedInventory extends SidedInventory {
     static ImplementedInventory ofSize(int size) {
         return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
     }
+
+    DefaultedList<ItemStack> getItems();
 
     @Override
     default int[] getAvailableSlots(Direction side) {
