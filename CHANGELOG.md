@@ -1,6 +1,20 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.0.5] - 2023.12.29
+
+### Added
+Backpacks are now in the recipe book.
+
+### Changed
+
+#### Backpacks
+Large backpack recipe doesn't contain small anymore to prevent item loss on upgrade.
+
+### Fixed
+
+#### Backpacks
+No Blocks will be placed when a backpack is opened.
 
 ## [0.0.4] - 2023.12.28
 
