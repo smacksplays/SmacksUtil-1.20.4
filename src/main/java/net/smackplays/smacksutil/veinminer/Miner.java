@@ -157,10 +157,11 @@ public class Miner {
             if (dropList != null && canHarvest) {
                 if (drop) {
                     for (ItemStack stack : dropList) {
-                        world.spawnEntity(new ItemEntity(world, player.getX(), player.getY(), player.getZ(), stack));
+                        world.spawnEntity(new ItemEntity(world, curr.getX(), curr.getY(), curr.getZ(), stack));
+                        currBlockState.onStacksDropped((ServerWorld)world, curr, mainHandStack, true);
                     }
                 }
-                //world.breakBlock(curr.north(), false, player);
+                //world.breakBlock(curr, drop, player);
                 world.setBlockState(curr, Blocks.AIR.getDefaultState());
                 if (mainHandStack.isDamageable()) {
                     mainHandStack.damage(1, player.getRandom(), (ServerPlayerEntity) player);
