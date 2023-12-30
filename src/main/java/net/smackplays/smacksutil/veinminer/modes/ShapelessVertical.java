@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class ShapelessVertical extends VeinMode {
     public ShapelessVertical() {
         ModeName = "ShapelessVertical";
-        MAX_RADIUS = 5;
+        MAX_RADIUS = 6;
     }
 
     @Override
@@ -78,5 +78,10 @@ public class ShapelessVertical extends VeinMode {
                 shapeless_vert(pos, sourcePos, radius, player, world, isExactMatch, toMatch, tag);
             }
         }
+    }
+
+    @Override
+    public boolean doRender(int radius) {
+        return radius > 3;
     }
 }

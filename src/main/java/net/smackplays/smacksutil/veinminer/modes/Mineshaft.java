@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Mineshaft extends VeinMode {
     public Mineshaft() {
         ModeName = "Mineshaft";
+        MAX_RADIUS = 10;
     }
 
     @Override

@@ -6,5 +6,6 @@
   "key.smacksutil.exactmatch": "Exact Match",
   "item.smacksutil.backpack_item": "Backpack",
   "item.smacksutil.large_backpack_item": "Large Backpack",
-  "smacksutil.screen.backpack.item": "Backpack"
+  "smacksutil.screen.backpack.item": "Backpack",
+  "smacksutil.configsceren.title": "Config"
 }

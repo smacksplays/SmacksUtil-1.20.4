@@ -139,7 +139,7 @@ public class Miner {
             Block currBlock = world.getBlockState(curr).getBlock();
             BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
 
-            if (mainHandIsTool && mainHandStack.getDamage() >= maxDMG - 10) {
+            if (mainHandIsTool && mainHandStack.getDamage() >= maxDMG - 1) {
                 isMining = false;
                 player.sendMessage(Text.literal("Mining stopped! Tool would break ;)"), true);
                 return;
@@ -201,9 +201,11 @@ public class Miner {
         isDrawing = true;
         toBreak = (ArrayList<BlockPos>) SmacksUtil.veinMiner.getBlocks(world, player, pos).clone();
 
-        while (toBreak.size() >= 100) {
-            toBreak.remove(toBreak.size() - 1);
+        if (toBreak.size() > 150){
+            player.sendMessage(Text.literal("Rendering reduced by " + (toBreak.size() - 150)), true);
+            toBreak = new ArrayList<>(toBreak.subList(0, 150));
         }
+
         VoxelShape shape = combine(world, pos, (ArrayList<BlockPos>) toBreak.clone());
 
         VertexConsumer vertex = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers().getBuffer(CustomRenderLayer.LINES);
@@ -239,5 +241,13 @@ public class Miner {
 
     public boolean isExactMatch() {
         return isExactMatch;
+    }
+
+    public VeinMode getMode() {
+        return mode;
+    }
+
+    public int getRadius() {
+        return radius;
     }
 }
