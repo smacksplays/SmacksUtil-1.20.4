@@ -25,7 +25,7 @@
       "net.smackplays.smacksutil.SmacksUtilDataGenerator"
     ],
     "modmenu": [
-      "net.smackplays.smacksutil.ModMenu"
+      "net.smackplays.smacksutil.config.ModMenuIntegration"
     ]
   },
   "mixins": [

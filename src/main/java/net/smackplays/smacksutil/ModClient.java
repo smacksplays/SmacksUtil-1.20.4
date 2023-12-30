@@ -37,5 +37,7 @@ public class ModClient implements ClientModInitializer {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.COLORED_BLOCKS).register(itemGroup -> itemGroup.add(LARGE_BACKPACK_ITEM));
 
         HandledScreens.register(SmacksUtil.GENERIC_13X9, LargeBackpackScreen::new);
+
+        ModConfig.init();
     }
 }

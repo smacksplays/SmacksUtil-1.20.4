@@ -76,7 +76,7 @@ public class VeinMode {
         return ModeName;
     }
 
-    public boolean doRender(int radius){
+    public boolean doRender(int radius) {
         return false;
     }
 }

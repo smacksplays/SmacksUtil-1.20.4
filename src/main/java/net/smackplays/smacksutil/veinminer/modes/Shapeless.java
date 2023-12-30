@@ -5,6 +5,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.smackplays.smacksutil.ModConfig;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
@@ -79,6 +80,6 @@ public class Shapeless extends VeinMode {
 
     @Override
     public boolean doRender(int radius) {
-        return radius > 3;
+        return radius > ModConfig.INSTANCE.maxRenderShapelessRadius;
     }
 }
