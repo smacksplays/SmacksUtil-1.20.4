@@ -1,6 +1,5 @@
 package net.smackplays.smacksutil.backpacks;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
