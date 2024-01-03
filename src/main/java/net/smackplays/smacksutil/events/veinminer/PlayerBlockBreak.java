@@ -1,11 +1,11 @@
 package net.smackplays.smacksutil.events.veinminer;
 
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.events.KeyInputHandler;
 import org.jetbrains.annotations.Nullable;
@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 public class PlayerBlockBreak implements PlayerBlockBreakEvents.Before {
 
     @Override
-    public boolean beforeBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
-        if (!KeyInputHandler.veinKey.isPressed() || SmacksUtil.veinMiner.isDrawing() || SmacksUtil.veinMiner.isMining()) {
+    public boolean beforeBlockBreak(Level world, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
+        if (!KeyInputHandler.veinKey.isDown() || SmacksUtil.veinMiner.isDrawing() || SmacksUtil.veinMiner.isMining()) {
             SmacksUtil.veinMiner.isMining = false;
             return true;
         }

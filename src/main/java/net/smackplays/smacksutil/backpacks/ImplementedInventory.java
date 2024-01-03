@@ -1,25 +1,25 @@
 package net.smackplays.smacksutil.backpacks;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventories;
-import net.minecraft.inventory.SidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.Direction;
 
-public interface ImplementedInventory extends SidedInventory {
-    static ImplementedInventory of(DefaultedList<ItemStack> items) {
+import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
+public interface ImplementedInventory extends WorldlyContainer {
+    static ImplementedInventory of(NonNullList<ItemStack> items) {
         return () -> items;
     }
 
     static ImplementedInventory ofSize(int size) {
-        return of(DefaultedList.ofSize(size, ItemStack.EMPTY));
+        return of(NonNullList.withSize(size, ItemStack.EMPTY));
     }
 
-    DefaultedList<ItemStack> getItems();
+    NonNullList<ItemStack> getItems();
 
     @Override
-    default int[] getAvailableSlots(Direction side) {
+    default int[] getSlotsForFace(Direction side) {
         int[] result = new int[getItems().size()];
 
         for (int i = 0; i < result.length; i++) {
@@ -30,24 +30,24 @@ public interface ImplementedInventory extends SidedInventory {
     }
 
     @Override
-    default boolean canInsert(int slot, ItemStack stack, Direction side) {
+    default boolean canPlaceItemThroughFace(int slot, ItemStack stack, Direction side) {
         return true;
     }
 
     @Override
-    default boolean canExtract(int slot, ItemStack stack, Direction side) {
+    default boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
         return true;
     }
 
     @Override
-    default int size() {
+    default int getContainerSize() {
         return getItems().size();
     }
 
     @Override
     default boolean isEmpty() {
-        for (int i = 0; i < size(); i++) {
-            ItemStack stack = getStack(i);
+        for (int i = 0; i < getContainerSize(); i++) {
+            ItemStack stack = getItem(i);
 
             if (!stack.isEmpty()) {
                 return false;
@@ -58,50 +58,50 @@ public interface ImplementedInventory extends SidedInventory {
     }
 
     @Override
-    default ItemStack getStack(int slot) {
+    default ItemStack getItem(int slot) {
         return getItems().get(slot);
     }
 
     @Override
-    default ItemStack removeStack(int slot, int count) {
+    default ItemStack removeItem(int slot, int count) {
         ItemStack result = Inventories.splitStack(getItems(), slot, count);
 
         if (!result.isEmpty()) {
-            markDirty();
+            setChanged();
         }
 
         return result;
     }
 
     @Override
-    default ItemStack removeStack(int slot) {
+    default ItemStack removeItemNoUpdate(int slot) {
         return Inventories.removeStack(getItems(), slot);
     }
 
     @Override
-    default void setStack(int slot, ItemStack stack) {
+    default void setItem(int slot, ItemStack stack) {
         getItems().set(slot, stack);
-        if (stack.getCount() > getMaxCountPerStack()) {
-            stack.setCount(getMaxCountPerStack());
+        if (stack.getCount() > getMaxStackSize()) {
+            stack.setCount(getMaxStackSize());
         }
     }
 
     @Override
-    default void clear() {
+    default void clearContent() {
         getItems().clear();
     }
 
     @Override
-    default void markDirty() {
+    default void setChanged() {
     }
 
     @Override
-    default boolean canPlayerUse(PlayerEntity player) {
+    default boolean stillValid(Player player) {
         return true;
     }
 
     @Override
-    default int getMaxCountPerStack() {
-        return 256;
+    default int getMaxStackSize() {
+        return 64;
     }
 }

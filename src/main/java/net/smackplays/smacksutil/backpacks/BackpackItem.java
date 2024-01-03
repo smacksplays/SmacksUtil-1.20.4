@@ -1,46 +1,44 @@
 package net.smackplays.smacksutil.backpacks;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeableItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
-import net.minecraft.screen.GenericContainerScreenHandler;
-import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Rarity;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
 
-public class BackpackItem extends Item implements DyeableItem {
+import net.minecraft.world.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+
+public class BackpackItem extends Item implements DyeableLeatherItem {
 
     public BackpackItem() {
-        super(new Item.Settings().maxCount(1).rarity(Rarity.EPIC));
+        super(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC));
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        if (world.isClient) return TypedActionResult.pass(player.getStackInHand(hand));
-        if (player.isSneaking()) return TypedActionResult.pass(player.getStackInHand(hand));
-        if (hand.equals(Hand.OFF_HAND)) return TypedActionResult.pass(player.getStackInHand(hand));
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (world.isClientSide) return InteractionResultHolder.pass(stack);
+        if (player.isCrouching()) return InteractionResultHolder.pass(stack);
+        if (hand.equals(InteractionHand.OFF_HAND)) return InteractionResultHolder.pass(stack);
 
-        player.openHandledScreen(createScreenHandlerFactory(player.getMainHandStack()));
+        player.openMenu(createScreenHandlerFactory(player.getMainHandItem()));
 
-        return TypedActionResult.pass(player.getStackInHand(hand));
+        return InteractionResultHolder.pass(stack);
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        if (context.getPlayer() == null) return ActionResult.FAIL;
-        if (context.getPlayer().isSneaking()) return ActionResult.PASS;
-        use(context.getWorld(), context.getPlayer(), context.getHand());
-        return ActionResult.CONSUME;
+    public InteractionResult useOn(UseOnContext context) {
+        if (context.getPlayer() == null) return InteractionResult.FAIL;
+        if (context.getPlayer().isCrouching()) return InteractionResult.PASS;
+        use(context.getLevel(), context.getPlayer(), context.getHand());
+        return InteractionResult.CONSUME;
     }
 
-    public NamedScreenHandlerFactory createScreenHandlerFactory(ItemStack stack) {
-        return new SimpleNamedScreenHandlerFactory((i, playerInventory, playerEntity) ->
-                GenericContainerScreenHandler.createGeneric9x6(i, playerInventory, new BackpackInventory(stack)), stack.getName());
+    public MenuProvider createScreenHandlerFactory(ItemStack stack) {
+        return new SimpleMenuProvider((i, playerInventory, playerEntity) ->
+                ChestMenu.sixRows(i, playerInventory, new BackpackInventory(stack)), stack.getHoverName());
     }
 }

@@ -1,10 +1,10 @@
 package net.smackplays.smacksutil.veinminer.modes;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class Trees extends VeinMode {
     }
 
     @Override
-    public ArrayList<BlockPos> getBlocks(World world, PlayerEntity player, BlockPos sourcePos, int radius, boolean isExactMatch) {
+    public ArrayList<BlockPos> getBlocks(Level world, Player player, BlockPos sourcePos, int radius, boolean isExactMatch) {
         if (world == null || player == null || sourcePos == null) return (ArrayList<BlockPos>) toBreak.clone();
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         toBreak.clear();
@@ -29,7 +29,7 @@ public class Trees extends VeinMode {
         }
 
         TagKey<Block> tag = null;
-        if (world.getBlockState(sourcePos).isIn(ModTags.Blocks.TREE_BLOCKS)) {
+        if (world.getBlockState(sourcePos).is(ModTags.Blocks.TREE_BLOCKS)) {
             tag = ModTags.Blocks.TREE_BLOCKS;
         }
         trees(sourcePos, world, player, isExactMatch, toMatch, tag);
@@ -44,7 +44,7 @@ public class Trees extends VeinMode {
         return (ArrayList<BlockPos>) toBreak.clone();
     }
 
-    private void trees(BlockPos curr, World world, PlayerEntity player, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
+    private void trees(BlockPos curr, Level world, Player player, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
         if (checked.contains(curr)) {
             return;
         } else {
