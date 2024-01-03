@@ -1,5 +1,6 @@
 package net.smackplays.smacksutil.backpacks;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -12,7 +13,6 @@ public class BackpackInventory implements ImplementedInventory {
     BackpackInventory(ItemStack stack) {
         this.stack = stack;
         NbtCompound tag = stack.getSubNbt("backpack");
-
         if (tag != null) {
             Inventories.readNbt(tag, items);
         }
