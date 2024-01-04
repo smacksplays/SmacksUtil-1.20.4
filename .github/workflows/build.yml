@@ -45,8 +45,10 @@ jobs:
         if: ${{ runner.os == 'Linux' && matrix.java == '21' }} # Only upload artifacts built from latest java on one OS
         uses: actions/upload-artifact@v3
         with:
-          name: Artifacts
-          path: build/libs/
+          fabric-name: Fabric Artifacts
+          fabric-path: fabric/build/libs/
+          forge-name: Forge Artifacts
+          forge-path: forge/build/libs/
       - name: publish (CurseForge)
         if: ${{ runner.os == 'Linux' && matrix.java == '21' && github.event_name == 'workflow_dispatch'}} # Only upload artifacts built from latest java on one OS
         uses: Kir-Antipov/mc-publish@v3.3
