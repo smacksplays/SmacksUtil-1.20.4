@@ -41,14 +41,18 @@ jobs:
         run: chmod +x ./gradlew
       - name: build
         run: ./gradlew build
-      - name: capture build artifacts
+      - name: capture build artifacts fabric
         if: ${{ runner.os == 'Linux' && matrix.java == '21' }} # Only upload artifacts built from latest java on one OS
         uses: actions/upload-artifact@v3
         with:
-          fabric-name: Fabric Artifacts
-          fabric-path: fabric/build/libs/
-          forge-name: Forge Artifacts
-          forge-path: forge/build/libs/
+          name: Fabric Artifacts
+          path: fabric/build/libs/
+      - name: capture build artifacts forge
+        if: ${{ runner.os == 'Linux' && matrix.java == '21' }} # Only upload artifacts built from latest java on one OS
+        uses: actions/upload-artifact@v3
+        with:
+          name: Forge Artifacts
+          path: forge/build/libs/
       - name: publish (CurseForge)
         if: ${{ runner.os == 'Linux' && matrix.java == '21' && github.event_name == 'workflow_dispatch'}} # Only upload artifacts built from latest java on one OS
         uses: Kir-Antipov/mc-publish@v3.3
