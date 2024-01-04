@@ -2,6 +2,7 @@ package net.smackplays.smacksutil;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
@@ -85,6 +86,8 @@ public class SmacksUtil {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             MenuScreens.register(SmacksUtil.GENERIC_13X9.get(), LargeBackpackScreen::new);
+            CauldronInteraction.WATER.map().putIfAbsent(BACKPACK_ITEM.get(), CauldronInteraction.SHULKER_BOX);
+            CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM.get(), CauldronInteraction.SHULKER_BOX);
         }
     }
 }
