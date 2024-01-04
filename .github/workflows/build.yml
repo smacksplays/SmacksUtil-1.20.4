@@ -64,4 +64,12 @@ jobs:
           version: smacksutil-1.20.4-0.0.5
           version-type: beta
           changelog-file: CHANGELOG.*
+
+          files: |
+            forge/build/libs/*.jar
+            fabric/build/libs/*.jar
+
+          loaders: |
+            forge
+            fabric
         
