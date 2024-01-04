@@ -133,7 +133,7 @@ public abstract class AMiner {
             Block currBlock = world.getBlockState(curr).getBlock();
             BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
 
-            if (mainHandIsTool && mainHandStack.getMaxDamage() >= maxDMG - 10) {
+            if (mainHandIsTool && mainHandStack.getDamageValue() == maxDMG - 1) {
                 isMining = false;
                 player.displayClientMessage(Component.literal("Mining stopped! Tool would break ;)"), true);
                 return;
