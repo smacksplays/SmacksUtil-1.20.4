@@ -1,11 +1,11 @@
 package net.smackplays.smacksutil.veinminer.modes;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class Mineshaft extends VeinMode {
     }
 
     @Override
-    public ArrayList<BlockPos> getBlocks(World world, PlayerEntity player, BlockPos sourcePos, int radius, boolean isExactMatch) {
+    public ArrayList<BlockPos> getBlocks(Level world, Player player, BlockPos sourcePos, int radius, boolean isExactMatch) {
         if (world == null || player == null || sourcePos == null) return (ArrayList<BlockPos>) toBreak.clone();
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         toBreak.clear();
@@ -31,15 +31,15 @@ public class Mineshaft extends VeinMode {
         }
 
         TagKey<Block> tag = null;
-        if (world.getBlockState(sourcePos).isIn(ModTags.Blocks.VEIN_MINING)) {
+        if (world.getBlockState(sourcePos).is(ModTags.Blocks.VEIN_MINING)) {
             tag = ModTags.Blocks.VEIN_MINING;
-        } else if (world.getBlockState(sourcePos).isIn(ModTags.Blocks.STONE_BLOCKS)) {
+        } else if (world.getBlockState(sourcePos).is(ModTags.Blocks.STONE_BLOCKS)) {
             tag = ModTags.Blocks.STONE_BLOCKS;
-        } else if (world.getBlockState(sourcePos).isIn(ModTags.Blocks.DIRT_BLOCKS)) {
+        } else if (world.getBlockState(sourcePos).is(ModTags.Blocks.DIRT_BLOCKS)) {
             tag = ModTags.Blocks.DIRT_BLOCKS;
         }
 
-        mineshaft(sourcePos, player.getHorizontalFacing(), radius, player, world, isExactMatch, toMatch, tag);
+        mineshaft(sourcePos, player.getDirection(), radius, player, world, isExactMatch, toMatch, tag);
 
         toBreak.sort(new BlockPosComparator(player));
 
@@ -51,18 +51,18 @@ public class Mineshaft extends VeinMode {
         return (ArrayList<BlockPos>) toBreak.clone();
     }
 
-    public void mineshaft(BlockPos curr, Direction direction, int radius, PlayerEntity player, World world, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
+    public void mineshaft(BlockPos curr, Direction direction, int radius, Player player, Level world, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
         for (int i = 0; i < radius * 2; i++) {
             if (checkMatch(isExactMatch, curr, world, player, toMatch, tag)) {
                 toBreak.add(curr);
                 for (int j = 1; j < 4; j++) {
-                    if (checkMatch(isExactMatch, curr.offset(direction, j), world, player, toMatch, tag)) {
-                        toBreak.add(curr.offset(direction, j));
+                    if (checkMatch(isExactMatch, curr.relative(direction, j), world, player, toMatch, tag)) {
+                        toBreak.add(curr.relative(direction, j));
                     }
                 }
-                curr = curr.offset(direction, 1);
+                curr = curr.relative(direction, 1);
             }
-            curr = curr.down();
+            curr = curr.below();
         }
     }
 }

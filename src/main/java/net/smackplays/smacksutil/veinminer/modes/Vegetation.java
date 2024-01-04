@@ -1,10 +1,9 @@
 package net.smackplays.smacksutil.veinminer.modes;
 
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class Vegetation extends VeinMode {
     }
 
     @Override
-    public ArrayList<BlockPos> getBlocks(World world, PlayerEntity player, BlockPos sourcePos, int radius, boolean isExactMatch) {
+    public ArrayList<BlockPos> getBlocks(Level world, Player player, BlockPos sourcePos, int radius, boolean isExactMatch) {
         if (world == null || player == null || sourcePos == null) return (ArrayList<BlockPos>) toBreak.clone();
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         toBreak.clear();
@@ -33,14 +32,14 @@ public class Vegetation extends VeinMode {
         for (int i = 0; i < radius * 2 + 1; i++) {
             for (int j = 0; j < radius * 2 + 1; j++) {
                 for (int u = 0; u < 5; u++) {
-                    if (world.getBlockState(pos).isIn(ModTags.Blocks.VEGETATION_BLOCKS) && player.canHarvest(world.getBlockState(pos))) {
+                    if (world.getBlockState(pos).is(ModTags.Blocks.VEGETATION_BLOCKS) && player.hasCorrectToolForDrops(world.getBlockState(pos))) {
                         toBreak.add(pos);
                     }
-                    pos = pos.add(0, 1, 0);
+                    pos = pos.offset(0, 1, 0);
                 }
-                pos = pos.add(0, -5, 1);
+                pos = pos.offset(0, -5, 1);
             }
-            pos = pos.add(1, 0, -radius * 2 - 1);
+            pos = pos.offset(1, 0, -radius * 2 - 1);
         }
 
         toBreak.sort(new BlockPosComparator(player));

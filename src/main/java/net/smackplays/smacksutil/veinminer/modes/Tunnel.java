@@ -1,12 +1,11 @@
 package net.smackplays.smacksutil.veinminer.modes;
 
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class Tunnel extends VeinMode {
     }
 
     @Override
-    public ArrayList<BlockPos> getBlocks(World world, PlayerEntity player, BlockPos sourcePos, int radius, boolean isExactMatch) {
+    public ArrayList<BlockPos> getBlocks(Level world, Player player, BlockPos sourcePos, int radius, boolean isExactMatch) {
         if (world == null || player == null || sourcePos == null) return (ArrayList<BlockPos>) toBreak.clone();
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         toBreak.clear();
@@ -32,15 +31,15 @@ public class Tunnel extends VeinMode {
         }
 
         TagKey<Block> tag = null;
-        if (world.getBlockState(sourcePos).isIn(ModTags.Blocks.VEIN_MINING)) {
+        if (world.getBlockState(sourcePos).is(ModTags.Blocks.VEIN_MINING)) {
             tag = ModTags.Blocks.VEIN_MINING;
-        } else if (world.getBlockState(sourcePos).isIn(ModTags.Blocks.STONE_BLOCKS)) {
+        } else if (world.getBlockState(sourcePos).is(ModTags.Blocks.STONE_BLOCKS)) {
             tag = ModTags.Blocks.STONE_BLOCKS;
-        } else if (world.getBlockState(sourcePos).isIn(ModTags.Blocks.DIRT_BLOCKS)) {
+        } else if (world.getBlockState(sourcePos).is(ModTags.Blocks.DIRT_BLOCKS)) {
             tag = ModTags.Blocks.DIRT_BLOCKS;
         }
 
-        tunnel(sourcePos, player.getHorizontalFacing(), radius, player, world, isExactMatch, toMatch, tag);
+        tunnel(sourcePos, player.getDirection(), radius, player, world, isExactMatch, toMatch, tag);
 
         toBreak.sort(new BlockPosComparator(player));
 
@@ -52,13 +51,13 @@ public class Tunnel extends VeinMode {
         return (ArrayList<BlockPos>) toBreak.clone();
     }
 
-    public void tunnel(BlockPos curr, Direction direction, int radius, PlayerEntity player,
-                       World world, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
+    public void tunnel(BlockPos curr, Direction direction, int radius, Player player,
+                       Level world, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
         for (int i = 0; i < radius * 2; i++) {
             if (checkMatch(isExactMatch, curr, world, player, toMatch, tag)) {
                 toBreak.add(curr);
-                if (checkMatch(isExactMatch, curr.down(), world, player, toMatch, tag)) {
-                    toBreak.add(curr.down());
+                if (checkMatch(isExactMatch, curr.below(), world, player, toMatch, tag)) {
+                    toBreak.add(curr.below());
                 }
                 if (direction.equals(Direction.NORTH)) {
                     curr = curr.north(1);

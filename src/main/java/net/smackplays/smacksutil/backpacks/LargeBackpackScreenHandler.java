@@ -1,26 +1,26 @@
 package net.smackplays.smacksutil.backpacks;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.SmacksUtil;
 
-public class LargeBackpackScreenHandler extends ScreenHandler {
-    private final Inventory inventory;
-    private final PlayerInventory playerInventory;
+public class LargeBackpackScreenHandler extends AbstractContainerMenu {
+    private final Container inventory;
+    private final Inventory playerInventory;
     private final int rows = 9;
     private final int cols = 13;
 
-    public LargeBackpackScreenHandler(int syncId, PlayerInventory playerInv, Inventory inv) {
+    public LargeBackpackScreenHandler(int syncId, Inventory playerInv, Container inv) {
         super(SmacksUtil.GENERIC_13X9, syncId);
-        checkSize(inv, rows * cols);
+        checkContainerSize(inv, rows * cols);
         this.inventory = inv;
         this.playerInventory = playerInv;
-        inv.onOpen(playerInventory.player);
+        inv.startOpen(playerInventory.player);
         int i = (this.rows - 4) * 18;
 
         int j;
@@ -42,34 +42,34 @@ public class LargeBackpackScreenHandler extends ScreenHandler {
         }
     }
 
-    public static LargeBackpackScreenHandler createGeneric13x9(int syncId, PlayerInventory playerInventory, PacketByteBuf buf) {
+    public static LargeBackpackScreenHandler createGeneric13x9(int syncId, Inventory playerInventory, FriendlyByteBuf buf) {
         return new LargeBackpackScreenHandler(syncId, playerInventory, ImplementedInventory.ofSize(13 * 9));
     }
 
-    public boolean canUse(PlayerEntity player) {
-        return this.inventory.canPlayerUse(player);
+    public boolean stillValid(Player player) {
+        return this.inventory.stillValid(player);
     }
 
     @Override
-    public ItemStack quickMove(PlayerEntity player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 
-        if (slot.hasStack()) {
-            ItemStack itemStack2 = slot.getStack();
+        if (slot.hasItem()) {
+            ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if (index < this.rows * this.cols) {
-                if (!this.insertItem(itemStack2, this.rows * this.cols, this.slots.size(), true)) {
+                if (!this.moveItemStackTo(itemStack2, this.rows * this.cols, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(itemStack2, 0, this.rows * this.cols, false)) {
+            } else if (!this.moveItemStackTo(itemStack2, 0, this.rows * this.cols, false)) {
                 return ItemStack.EMPTY;
             }
 
             if (itemStack2.isEmpty()) {
-                slot.setStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.markDirty();
+                slot.setChanged();
             }
         }
         return itemStack;

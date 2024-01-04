@@ -1,9 +1,9 @@
 package net.smackplays.smacksutil.util;
 
-import net.minecraft.block.Block;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 import net.smackplays.smacksutil.SmacksUtil;
 
 public class ModTags {
@@ -26,7 +26,7 @@ public class ModTags {
                 createTag("veinminer_mineing");
 
         private static TagKey<Block> createTag(String name) {
-            return TagKey.of(RegistryKeys.BLOCK, new Identifier(SmacksUtil.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(SmacksUtil.MOD_ID, name));
         }
     }
 

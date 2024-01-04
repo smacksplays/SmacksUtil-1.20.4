@@ -1,12 +1,12 @@
 package net.smackplays.smacksutil.mixin.veinminer;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.WorldRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.BlockPos;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.state.BlockState;
 import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.events.KeyInputHandler;
 import net.smackplays.smacksutil.veinminer.modes.Vegetation;
@@ -15,20 +15,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(WorldRenderer.class)
+@Mixin(LevelRenderer.class)
 public abstract class OutlineRender {
 
-    @Inject(at = @At("HEAD"), method = "drawBlockOutline", cancellable = true)
-    private void drawBlockOutline(MatrixStack matrices, VertexConsumer vertexConsumer,
+    @Inject(at = @At("HEAD"), method = "renderHitOutline", cancellable = true)
+    private void drawBlockOutline(PoseStack matrices, VertexConsumer vertexConsumer,
                                   Entity entity, double cameraX, double cameraY,
                                   double cameraZ, BlockPos pos, BlockState state, CallbackInfo ci) {
-        if (SmacksUtil.veinMiner.getRenderPreview() && entity.isPlayer()) {
-            if (!KeyInputHandler.veinKey.isPressed()) return;
+        if (SmacksUtil.veinMiner.getRenderPreview() && entity.isAlwaysTicking()) {
+            if (!KeyInputHandler.veinKey.isDown()) return;
             SmacksUtil.veinMiner.setMode();
             if (SmacksUtil.veinMiner.getMode().doRender(SmacksUtil.veinMiner.getRadius())) return;
             if (SmacksUtil.veinMiner.getMode().getClass().equals(Vegetation.class)) return;
             SmacksUtil.veinMiner.drawOutline(matrices, cameraX, cameraY,
-                    cameraZ, pos, entity.getWorld(), (PlayerEntity) entity);
+                    cameraZ, pos, entity.level(), (Player) entity);
             if (!SmacksUtil.veinMiner.isToBreakEmpty()) {
                 ci.cancel();
             }
