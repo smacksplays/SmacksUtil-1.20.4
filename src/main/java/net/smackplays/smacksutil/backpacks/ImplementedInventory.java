@@ -3,6 +3,7 @@ package net.smackplays.smacksutil.backpacks;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +26,6 @@ public interface ImplementedInventory extends WorldlyContainer {
         for (int i = 0; i < result.length; i++) {
             result[i] = i;
         }
-
         return result;
     }
 
@@ -64,7 +64,7 @@ public interface ImplementedInventory extends WorldlyContainer {
 
     @Override
     default ItemStack removeItem(int slot, int count) {
-        ItemStack result = Inventories.splitStack(getItems(), slot, count);
+        ItemStack result = ContainerHelper.removeItem(getItems(), slot, count);
 
         if (!result.isEmpty()) {
             setChanged();
@@ -75,7 +75,7 @@ public interface ImplementedInventory extends WorldlyContainer {
 
     @Override
     default ItemStack removeItemNoUpdate(int slot) {
-        return Inventories.removeStack(getItems(), slot);
+        return ContainerHelper.takeItem(getItems(), slot);
     }
 
     @Override

@@ -50,6 +50,7 @@ public class Trees extends VeinMode {
         } else {
             checked.add(curr);
         }
+        if (toBreak.size() > 200) return;
         if (checkMatch(isExactMatch, curr, world, player, toMatch, tag)) {
             if (!toBreak.contains(curr)) {
                 toBreak.add(curr);

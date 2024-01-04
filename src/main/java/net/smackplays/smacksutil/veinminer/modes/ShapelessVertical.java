@@ -5,6 +5,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.smackplays.smacksutil.ModConfig;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
@@ -77,5 +78,10 @@ public class ShapelessVertical extends VeinMode {
                 shapeless_vert(pos, sourcePos, radius, player, world, isExactMatch, toMatch, tag);
             }
         }
+    }
+
+    @Override
+    public boolean doRender(int radius) {
+        return radius > ModConfig.INSTANCE.maxRenderShapelessVerticalRadius;
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.events.KeyInputHandler;
+import net.smackplays.smacksutil.veinminer.modes.Vegetation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,6 +25,8 @@ public abstract class OutlineRender {
         if (SmacksUtil.veinMiner.getRenderPreview() && entity.isAlwaysTicking()) {
             if (!KeyInputHandler.veinKey.isDown()) return;
             SmacksUtil.veinMiner.setMode();
+            if (SmacksUtil.veinMiner.getMode().doRender(SmacksUtil.veinMiner.getRadius())) return;
+            if (SmacksUtil.veinMiner.getMode().getClass().equals(Vegetation.class)) return;
             SmacksUtil.veinMiner.drawOutline(matrices, cameraX, cameraY,
                     cameraZ, pos, entity.level(), (Player) entity);
             if (!SmacksUtil.veinMiner.isToBreakEmpty()) {
