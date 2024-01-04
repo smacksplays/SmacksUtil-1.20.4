@@ -6,17 +6,25 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.smackplays.smacksutil.ModConfig;
 import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.events.KeyInputHandler;
 import net.smackplays.smacksutil.util.CustomRenderLayer;
@@ -58,13 +66,8 @@ public class Miner {
 
     public static void scroll(double vertical) {
         Player player = Minecraft.getInstance().player;
-        Screen scr = Minecraft.getInstance().currentScreen;
+        Screen scr = Minecraft.getInstance().screen;
 
-        if (ModConfig.INSTANCE.enableShapelessMode && !modeList.contains(ShapelessMode)) {
-            modeList.add(ShapelessMode);
-        } else if (!ModConfig.INSTANCE.enableShapelessMode) {
-            modeList.remove(ShapelessMode);
-        }
         ShapelessMode.MAX_RADIUS = ModConfig.INSTANCE.maxShapelessRadius;
         if (ModConfig.INSTANCE.enableShapelessVerticalMode && !modeList.contains(ShapelessVerticalMode)) {
             modeList.add(ShapelessVerticalMode);
@@ -87,9 +90,9 @@ public class Miner {
             if (player.isCrouching()) {
                 currMode += (int) vertical;
                 player.getInventory().selected = player.getInventory().selected + (int) vertical;
-                if (currMode > modeArray.length - 1) currMode = modeArray.length - 1;
+                if (currMode > modeList.size() - 1) currMode = modeList.size() - 1;
                 else if (currMode < 0) currMode = 0;
-                player.displayClientMessage(Component.literal("Mode: " + modeArray[currMode].getName()), true);
+                player.displayClientMessage(Component.literal("Mode: " + modeList.get(currMode).getName()), true);
                 SmacksUtil.veinMiner.setMode();
             } else {
                 radius += (int) vertical;
@@ -139,7 +142,7 @@ public class Miner {
             matching = (ArrayList<BlockPos>) VegetationMode.getBlocks(worldIn, playerIn, sourcePosIn, 10, isExactMatch).clone();
         } else if (sourceBlockState.is(ModTags.Blocks.TREE_BLOCKS)) {
             matching = (ArrayList<BlockPos>) TreeMode.getBlocks(worldIn, playerIn, sourcePosIn, 10, isExactMatch).clone();
-        } else if (mode.equals(ShapelessMode) && ModConfig.INSTANCE.enableShapelessMode) {
+        } else if (mode.equals(ShapelessMode)) {
             matching = (ArrayList<BlockPos>) ShapelessMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
         } else if (mode.equals(ShapelessVerticalMode) && ModConfig.INSTANCE.enableShapelessVerticalMode) {
             matching = (ArrayList<BlockPos>) ShapelessVerticalMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
@@ -172,7 +175,7 @@ public class Miner {
         for (BlockPos curr : toBreak) {
             BlockState currBlockState = world.getBlockState(curr);
             Block currBlock = world.getBlockState(curr).getBlock();
-            // BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
+            BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
 
             if (mainHandIsTool && mainHandStack.getMaxDamage() >= maxDMG - 10) {
                 isMining = false;
@@ -180,9 +183,23 @@ public class Miner {
                 return;
             }
 
+            LootParams.Builder builder =
+                    new LootParams.Builder((ServerLevel) world)
+                            .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(curr))
+                            .withParameter(LootContextParams.TOOL, mainHandStack)
+                            .withOptionalParameter(LootContextParams.BLOCK_ENTITY, currBlockEntity);
+
+            List<ItemStack> dropList = currBlockState.getDrops(builder);
+
             boolean canHarvest = (player.hasCorrectToolForDrops(currBlockState) || player.isCreative());
-            if (canHarvest) {
-                world.destroyBlock(curr.north(), drop, player);
+            if (dropList != null && canHarvest) {
+                if (drop) {
+                    for (ItemStack stack : dropList) {
+                        world.addFreshEntity(new ItemEntity(world, player.getX(), player.getY(), player.getZ(), stack));
+                    }
+                }
+                //world.destroyBlock(curr.north(), drop, player);
+                world.setBlockAndUpdate(curr, Blocks.AIR.defaultBlockState());
                 if (mainHandStack.isDamageableItem()) {
                     mainHandStack.hurt(1, player.getRandom(), (ServerPlayer) player);
                 }
@@ -222,7 +239,7 @@ public class Miner {
         toBreak = (ArrayList<BlockPos>) SmacksUtil.veinMiner.getBlocks(world, player, pos).clone();
 
         if (toBreak.size() > ModConfig.INSTANCE.maxRenderBlocks) {
-            player.sendMessage(Text.literal("Rendering reduced by " + (toBreak.size() - ModConfig.INSTANCE.maxRenderBlocks)), true);
+            player.displayClientMessage(Component.literal("Rendering reduced by " + (toBreak.size() - ModConfig.INSTANCE.maxRenderBlocks)), true);
             toBreak = new ArrayList<>(toBreak.subList(0, ModConfig.INSTANCE.maxRenderBlocks));
         }
 

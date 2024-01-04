@@ -3,6 +3,7 @@ package net.smackplays.smacksutil.backpacks;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
 
 public class BackpackInventory implements ImplementedInventory {
@@ -14,7 +15,7 @@ public class BackpackInventory implements ImplementedInventory {
         CompoundTag tag = stack.getTagElement("backpack");
 
         if (tag != null) {
-            Inventories.readNbt(tag, items);
+            ContainerHelper.loadAllItems(tag, items);
         }
     }
 
@@ -26,7 +27,7 @@ public class BackpackInventory implements ImplementedInventory {
     @Override
     public void setChanged() {
         CompoundTag tag = stack.getOrCreateTagElement("backpack");
-        Inventories.writeNbt(tag, items);
+        ContainerHelper.saveAllItems(tag, items);
     }
 
     @Override

@@ -15,9 +15,6 @@ public class ModConfig implements ConfigData {
     @Comment("Maximum blocks that are allowed to be rendered.")
     public int maxRenderBlocks = 150;
     @ConfigEntry.Gui.Tooltip()
-    @Comment("Enable Shapeless Mode.")
-    public boolean enableShapelessMode = true;
-    @ConfigEntry.Gui.Tooltip()
     @Comment("Maximum radius in Shapeless mode.")
     public int maxShapelessRadius = 6;
     @ConfigEntry.Gui.Tooltip()
