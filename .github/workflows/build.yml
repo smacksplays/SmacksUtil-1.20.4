@@ -9,7 +9,7 @@ env: #Environment variables that can later be referenced using ${{ env.MINECRAFT
   MINECRAFT_VERSION: 1.20.4
   JAVA_VERSION: 17
   VERSION: 0.0.6
-  RELEASE_NAME: SmackUtil-1.20.4-0.0.6
+  RELEASE_NAME: SmackUtil-1.20.4-${{ env.VERSION }}
 
 permissions:
   contents: write
@@ -60,8 +60,8 @@ jobs:
           curseforge-id: 952860                                             #The id of your CurseForge project
           curseforge-token: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
 
-          name: SmacksUtil Fabric ${{ env.$VERSION }} for MC 1.20.4
-          version: smacksutil-fabric-1.20.4-${{ env.$VERSION }}
+          name: SmacksUtil Fabric ${{ env.VERSION }} for MC 1.20.4
+          version: smacksutil-fabric-1.20.4-${{ env.VERSION }}
           version-type: beta
           changelog-file: CHANGELOG.*
 
@@ -81,8 +81,8 @@ jobs:
           curseforge-id: 952860                                             #The id of your CurseForge project
           curseforge-token: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
 
-          name: SmacksUtil Forge ${{ env.$VERSION }} for MC 1.20.4
-          version: smacksutil-forge-1.20.4-${{ env.$VERSION }}
+          name: SmacksUtil Forge ${{ env.VERSION }} for MC 1.20.4
+          version: smacksutil-forge-1.20.4-${{ env.VERSION }}
           version-type: beta
           changelog-file: CHANGELOG.*
 
