@@ -7,9 +7,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.smackplays.smacksutil.CommonClass;
 import net.smackplays.smacksutil.Constants;
-import net.smackplays.smacksutil.SmacksUtil;
 
 
 public class LargeBackpackScreen extends AbstractContainerScreen<LargeBackpackScreenHandler> {

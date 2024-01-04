@@ -8,22 +8,14 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.smackplays.smacksutil.backpacks.LargeBackpackScreenHandler;
-import net.smackplays.smacksutil.events.veinminer.PlayerBlockBreak;
+import net.smackplays.smacksutil.event.veinminer.PlayerBlockBreak;
 import net.smackplays.smacksutil.veinminer.Miner;
 
 public class SmacksUtil implements ModInitializer {
 
     public static final MenuType<LargeBackpackScreenHandler> GENERIC_13X9 = new ExtendedScreenHandlerType<>(LargeBackpackScreenHandler::createGeneric13x9);
     public static Miner veinMiner;
-    public static boolean fastPlace;
 
-    public static void toggleFastPlace() {
-        fastPlace = !fastPlace;
-    }
-
-    public static boolean getFastPlace() {
-        return fastPlace;
-    }
     @Override
     public void onInitialize() {
         PlayerBlockBreakEvents.BEFORE.register(new PlayerBlockBreak());
