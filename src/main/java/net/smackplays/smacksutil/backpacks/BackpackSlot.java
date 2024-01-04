@@ -1,42 +1,43 @@
 package net.smackplays.smacksutil.backpacks;
 
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.slot.Slot;
+
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
 public class BackpackSlot extends Slot {
-    public BackpackSlot(Inventory inventory, int index, int x, int y) {
+    public BackpackSlot(Container inventory, int index, int x, int y) {
         super(inventory, index, x, y);
     }
 
     @Override
-    public boolean canTakeItems(PlayerEntity playerEntity) {
-        int sel = playerEntity.getInventory().selectedSlot;
-        ItemStack s = playerEntity.getInventory().main.get(sel);
-        if (this.getStack().equals(s)) {
+    public boolean mayPickup(Player player) {
+        int sel = player.getInventory().selected;
+        ItemStack s = player.getInventory().items.get(sel);
+        if (this.getItem().equals(s)) {
             return false;
         }
-        return super.canTakeItems(playerEntity);
+        return super.mayPickup(player);
     }
 
     @Override
-    protected void onTake(int amount) {
-        super.onTake(amount);
+    protected void onSwapCraft(int amount) {
+        super.onSwapCraft(amount);
     }
 
     @Override
-    public ItemStack takeStack(int amount) {
-        return super.takeStack(amount);
+    public ItemStack remove(int amount) {
+        return super.remove(amount);
     }
 
     @Override
-    public ItemStack takeStackRange(int min, int max, PlayerEntity player) {
-        return super.takeStackRange(min, max, player);
+    public ItemStack safeTake(int min, int max, Player player) {
+        return super.safeTake(min, max, player);
     }
 
     @Override
-    public boolean canTakePartial(PlayerEntity player) {
-        return super.canTakePartial(player);
+    public boolean allowModification(Player player) {
+        return super.allowModification(player);
     }
 }

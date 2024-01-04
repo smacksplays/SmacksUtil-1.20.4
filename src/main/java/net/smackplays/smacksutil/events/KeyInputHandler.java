@@ -1,10 +1,10 @@
 package net.smackplays.smacksutil.events;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.Text;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.network.chat.Component;
 import net.smackplays.smacksutil.SmacksUtil;
 import org.lwjgl.glfw.GLFW;
 
@@ -17,26 +17,26 @@ public class KeyInputHandler {
     public static final String KEY_SMACKSUTIL_EXACTMATCH = "key.smacksutil.exactmatch";
     private static final int GREEN = 65280;
     private static final int RED = 16711680;
-    public static KeyBinding veinKey;
-    public static KeyBinding veinPreviewKey;
-    public static KeyBinding fastPlaceKey;
-    public static KeyBinding exactMatchKey;
+    public static KeyMapping veinKey;
+    public static KeyMapping veinPreviewKey;
+    public static KeyMapping fastPlaceKey;
+    public static KeyMapping exactMatchKey;
 
     public static void register() {
-        veinKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                KEY_SMACKSUTIL_VEINACTIVATE, InputUtil.Type.KEYSYM,
+        veinKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+                KEY_SMACKSUTIL_VEINACTIVATE, InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_X, KEY_CATEGORY_SMACKSUTIL
         ));
-        veinPreviewKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                KEY_SMACKSUTIL_VEINPREVIEW, InputUtil.Type.KEYSYM,
+        veinPreviewKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+                KEY_SMACKSUTIL_VEINPREVIEW, InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_Y, KEY_CATEGORY_SMACKSUTIL
         ));
-        fastPlaceKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                KEY_SMACKSUTIL_FASTPLACE, InputUtil.Type.KEYSYM,
+        fastPlaceKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+                KEY_SMACKSUTIL_FASTPLACE, InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_Z, KEY_CATEGORY_SMACKSUTIL
         ));
-        exactMatchKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                KEY_SMACKSUTIL_EXACTMATCH, InputUtil.Type.KEYSYM,
+        exactMatchKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+                KEY_SMACKSUTIL_EXACTMATCH, InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_PERIOD, KEY_CATEGORY_SMACKSUTIL
         ));
 
@@ -45,26 +45,26 @@ public class KeyInputHandler {
 
     public static void registerEvents() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (client.player != null && client.world != null) {
-                if (veinPreviewKey.wasPressed()) {
+            if (client.player != null && client.level != null) {
+                if (veinPreviewKey.consumeClick()) {
                     SmacksUtil.veinMiner.togglePreview();
                     String str = SmacksUtil.veinMiner.renderPreview ? "Active" : "Inactive";
                     int color = SmacksUtil.veinMiner.renderPreview ? GREEN : RED;
-                    client.player.sendMessage(Text
+                    client.player.displayClientMessage(Component
                             .literal("Veinminer Preview: " + str).withColor(color), true);
                 }
-                if (fastPlaceKey.wasPressed()) {
+                if (fastPlaceKey.consumeClick()) {
                     SmacksUtil.toggleFastPlace();
                     String str = SmacksUtil.getFastPlace() ? "Active" : "Inactive";
                     int color = SmacksUtil.getFastPlace() ? GREEN : RED;
-                    client.player.sendMessage(Text
+                    client.player.displayClientMessage(Component
                             .literal("Fastplace: " + str).withColor(color), true);
                 }
-                if (exactMatchKey.wasPressed()) {
+                if (exactMatchKey.consumeClick()) {
                     SmacksUtil.veinMiner.toggleExactMatch();
                     String str = SmacksUtil.veinMiner.isExactMatch() ? "Active" : "Inactive";
                     int color = SmacksUtil.veinMiner.isExactMatch() ? GREEN : RED;
-                    client.player.sendMessage(Text
+                    client.player.displayClientMessage(Component
                             .literal("Exact Match: " + str).withColor(color), true);
                 }
             }
