@@ -1,7 +1,7 @@
 package net.smackplays.smacksutil.platform;
 
-import net.smackplays.smacksutil.platform.services.IPlatformHelper;
 import net.fabricmc.loader.api.FabricLoader;
+import net.smackplays.smacksutil.platform.services.IPlatformHelper;
 
 public class FabricPlatformHelper implements IPlatformHelper {
 

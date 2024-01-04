@@ -5,12 +5,12 @@ import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.smackplays.smacksutil.ModConfig;
+import net.smackplays.smacksutil.platform.FabricModConfig;
 
 @Environment(EnvType.CLIENT)
 public class ModMenuIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return parent -> AutoConfig.getConfigScreen(ModConfig.class, parent).get();
+        return parent -> AutoConfig.getConfigScreen(FabricModConfig.class, parent).get();
     }
 }

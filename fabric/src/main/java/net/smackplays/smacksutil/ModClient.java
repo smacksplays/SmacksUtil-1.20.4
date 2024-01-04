@@ -14,7 +14,7 @@ import net.minecraft.world.item.Item;
 import net.smackplays.smacksutil.backpacks.BackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackScreen;
-import net.smackplays.smacksutil.events.KeyInputHandler;
+import net.smackplays.smacksutil.event.KeyInputHandler;
 
 public class ModClient implements ClientModInitializer {
 
@@ -38,7 +38,5 @@ public class ModClient implements ClientModInitializer {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(itemGroup -> itemGroup.accept(LARGE_BACKPACK_ITEM));
 
         MenuScreens.register(SmacksUtil.GENERIC_13X9, LargeBackpackScreen::new);
-
-        ModConfig.init();
     }
 }
