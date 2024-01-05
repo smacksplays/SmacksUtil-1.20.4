@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file.
 Items bugging into walls fixed.
 Tool break warning fixed.
 
+### Backpack Bugfixes
+Forge Backpacks dyeing now working.
+
 ## [0.0.7] - 2024.01.04
 
 ### Added
