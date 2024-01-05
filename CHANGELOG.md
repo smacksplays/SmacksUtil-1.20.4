@@ -4,11 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## [0.0.8] - 2024.01.05
 
-### Added
-
-### Changed
-
-### Fixed
+### Veinminer Bugfixes
+Items bugging into walls fixed.
+Tool break warning fixed.
 
 ## [0.0.7] - 2024.01.04
 

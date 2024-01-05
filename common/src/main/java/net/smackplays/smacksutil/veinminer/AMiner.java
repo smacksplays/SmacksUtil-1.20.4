@@ -116,13 +116,13 @@ public abstract class AMiner {
     public void veinMiner(Level world, Player player, BlockPos sourcePos) {
         if (isMining) return;
         isMining = true;
-        boolean drop = true;
+        boolean isCreative = false;
         BlockState sourceBlockState = world.getBlockState(sourcePos);
         boolean replaceSeeds = sourceBlockState.is(ModTags.Blocks.CROP_BLOCKS);
         ItemStack mainHandStack = player.getMainHandItem();
         Item mainHand = player.getMainHandItem().getItem();
         boolean mainHandIsTool = TieredItem.class.isAssignableFrom(mainHand.getClass());
-        if (player.isCreative()) drop = false;
+        if (player.isCreative()) isCreative = true;
 
         toBreak = getBlocks(world, player, sourcePos);
 
@@ -149,17 +149,16 @@ public abstract class AMiner {
 
             boolean canHarvest = (player.hasCorrectToolForDrops(currBlockState) || player.isCreative());
             if (dropList != null && canHarvest) {
-                if (drop) {
+                world.setBlockAndUpdate(curr, Blocks.AIR.defaultBlockState());
+                //world.destroyBlock(curr, false);
+                if (!isCreative) {
                     for (ItemStack stack : dropList) {
-                        world.addFreshEntity(new ItemEntity(world, curr.getX(), curr.getY(), curr.getZ(), stack));
+                        world.addFreshEntity(new ItemEntity(world, curr.getCenter().x, curr.getCenter().y, curr.getCenter().z, stack));
+                    }
+                    if (mainHandStack.isDamageableItem()) {
+                        mainHandStack.hurt(1, player.getRandom(), (ServerPlayer) player);
                     }
                 }
-                //world.destroyBlock(curr, drop, player);
-                world.setBlockAndUpdate(curr, Blocks.AIR.defaultBlockState());
-                if (mainHandStack.isDamageableItem()) {
-                    mainHandStack.hurt(1, player.getRandom(), (ServerPlayer) player);
-                }
-
                 if (replaceSeeds) {
                     world.setBlockAndUpdate(curr, currBlock.defaultBlockState());
                 }
