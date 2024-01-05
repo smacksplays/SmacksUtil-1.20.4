@@ -73,9 +73,9 @@ public class ForgeModConfig implements IModConfig, ConfigData {
 
         config.addEntry(entryBuilder
                 .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enableShapelessVerticalMode")
+                        Component.translatable("text.autoconfig.smacksutil.option.enabledShapelessVerticalMode")
                         , Services.CONFIG.isEnabledShapelessVerticalMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enableShapelessVerticalMode.@Tooltip"))
+                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledShapelessVerticalMode.@Tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(Services.CONFIG::setEnabledShapelessVerticalMode)
                 .build());
@@ -100,72 +100,72 @@ public class ForgeModConfig implements IModConfig, ConfigData {
 
         config.addEntry(entryBuilder
                 .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enableTunnelMode")
+                        Component.translatable("text.autoconfig.smacksutil.option.enabledTunnelMode")
                         , Services.CONFIG.isEnabledTunnelMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enableTunnelMode.@Tooltip"))
+                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledTunnelMode.@Tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(Services.CONFIG::setEnabledTunnelMode)
                 .build());
 
         config.addEntry(entryBuilder
                 .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enableMineshaftMode")
+                        Component.translatable("text.autoconfig.smacksutil.option.enabledMineshaftMode")
                         , Services.CONFIG.isEnabledMineshaftMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enableMineshaftMode.@Tooltip"))
+                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledMineshaftMode.@Tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(Services.CONFIG::setEnabledMineshaftMode)
                 .build());
 
         config.addEntry(entryBuilder
                 .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enableVegetationMode")
+                        Component.translatable("text.autoconfig.smacksutil.option.enabledVegetationMode")
                         , Services.CONFIG.isEnabledVegetationMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enableVegetationMode.@Tooltip"))
+                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledVegetationMode.@Tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(Services.CONFIG::setEnabledVegetationMode)
                 .build());
 
         config.addEntry(entryBuilder
                 .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enableOresMode")
+                        Component.translatable("text.autoconfig.smacksutil.option.enabledOresMode")
                         , Services.CONFIG.isEnabledOresMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enableOresMode.@Tooltip"))
+                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledOresMode.@Tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(Services.CONFIG::setEnabledOresMode)
                 .build());
 
         config.addEntry(entryBuilder
                 .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enableCropsMode")
+                        Component.translatable("text.autoconfig.smacksutil.option.enabledCropsMode")
                         , Services.CONFIG.isEnabledCropsMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enableCropsMode.@Tooltip"))
+                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledCropsMode.@Tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(Services.CONFIG::setEnabledCropsMode)
                 .build());
 
         config.addEntry(entryBuilder
                 .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enableTreesMode")
+                        Component.translatable("text.autoconfig.smacksutil.option.enabledTreesMode")
                         , Services.CONFIG.isEnabledTreesMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enableTreesMode.@Tooltip"))
+                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledTreesMode.@Tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(Services.CONFIG::setEnabledTreesMode)
                 .build());
 
         config.addEntry(entryBuilder
                 .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enableFastEat")
+                        Component.translatable("text.autoconfig.smacksutil.option.enabledFastEat")
                         , INSTANCE.isEnabledFastPlace())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enableFastEat.@Tooltip"))
+                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastEat.@Tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(Services.CONFIG::setEnabledFastEat)
                 .build());
 
         config.addEntry(entryBuilder
                 .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enableFastPlace")
+                        Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace")
                         , Services.CONFIG.isEnabledFastPlace())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enableFastPlace.@Tooltip"))
+                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace.@Tooltip"))
                 .setDefaultValue(true)
                 .setSaveConsumer(Services.CONFIG::setEnabledFastPlace)
                 .build());

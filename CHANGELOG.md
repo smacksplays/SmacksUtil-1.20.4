@@ -1,5 +1,15 @@
 # Changelog
-All notable changes to this project will be documented in this file.## 
+All notable changes to this project will be documented in this file.
+
+
+## [0.0.8] - 2024.01.05
+
+### Veinminer Bugfixes
+Items bugging into walls fixed.
+Tool break warning fixed.
+
+### Backpack Bugfixes
+Forge Backpacks dyeing now working.
 
 ## [0.0.7] - 2024.01.04
 

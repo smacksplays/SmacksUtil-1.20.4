@@ -13,8 +13,8 @@ public interface IModConfig {
     boolean enabledOresMode = true;
     boolean enabledCropsMode = true;
     boolean enabledTreesMode = true;
-    boolean enabledFastEat = true;
-    boolean enabledFastPlace = true;
+    boolean enabledFastEat = false;
+    boolean enabledFastPlace = false;
 
     void init();
 

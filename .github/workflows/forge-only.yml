@@ -53,26 +53,6 @@ jobs:
         with:
           name: Forge Artifacts
           path: forge/build/libs/
-      - name: publish (CurseForge Fabric)
-        if: ${{ runner.os == 'Linux' && matrix.java == '21' && github.event_name == 'workflow_dispatch'}} # Only upload artifacts built from latest java on one OS
-        uses: Kir-Antipov/mc-publish@v3.3
-        with:
-          curseforge-id: 952860                                             #The id of your CurseForge project
-          curseforge-token: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
-
-          name: SmacksUtil Fabric ${{ env.VERSION }} for MC 1.20.4
-          version: smacksutil-fabric-1.20.4-${{ env.VERSION }}
-          version-type: beta
-          changelog-file: CHANGELOG.*
-
-          files: |
-            fabric/build/libs/*.jar
-
-          loaders: |
-            fabric
-
-          game-versions: |
-            1.20.4
 
       - name: publish (CurseForge Forge)
         if: ${{ runner.os == 'Linux' && matrix.java == '21' && github.event_name == 'workflow_dispatch'}} # Only upload artifacts built from latest java on one OS

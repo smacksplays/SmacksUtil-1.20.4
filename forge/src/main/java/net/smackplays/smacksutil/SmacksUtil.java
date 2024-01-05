@@ -2,9 +2,13 @@ package net.smackplays.smacksutil;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -85,6 +89,16 @@ public class SmacksUtil {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             MenuScreens.register(SmacksUtil.GENERIC_13X9.get(), LargeBackpackScreen::new);
+            CauldronInteraction.WATER.map().putIfAbsent(BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
+            CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
+        }
+
+        @SubscribeEvent
+        public static void colors(RegisterColorHandlersEvent.Item event) {
+            event.register((ItemStack stack, int tintIndex) -> tintIndex == 0 ?
+                    ((DyeableLeatherItem) BACKPACK_ITEM.get()).getColor(stack) : 0xFFFFFF, BACKPACK_ITEM.get());
+            event.register((ItemStack stack, int tintIndex) -> tintIndex == 0 ?
+                    ((DyeableLeatherItem) LARGE_BACKPACK_ITEM.get()).getColor(stack) : 0xFFFFFF, LARGE_BACKPACK_ITEM.get());
         }
     }
 }
