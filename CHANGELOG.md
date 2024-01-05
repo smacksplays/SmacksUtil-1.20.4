@@ -1,5 +1,14 @@
 # Changelog
-All notable changes to this project will be documented in this file.## 
+All notable changes to this project will be documented in this file.
+
+
+## [0.0.8] - 2024.01.05
+
+### Added
+
+### Changed
+
+### Fixed
 
 ## [0.0.7] - 2024.01.04
 
