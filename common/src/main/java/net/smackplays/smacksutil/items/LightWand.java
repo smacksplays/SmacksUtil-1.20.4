@@ -16,8 +16,8 @@ import net.minecraft.world.level.block.Blocks;
 public class LightWand extends Item {
 
 
-    public LightWand() {
-        super(new Item.Properties().rarity(Rarity.EPIC).durability(200));
+    public LightWand(Item.Properties props) {
+        super(props);
     }
 
     @Override

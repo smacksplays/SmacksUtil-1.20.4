@@ -14,13 +14,15 @@ import net.smackplays.smacksutil.backpacks.BackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackScreen;
 import net.smackplays.smacksutil.event.KeyInputHandler;
+import net.smackplays.smacksutil.items.AutoLightWand;
 import net.smackplays.smacksutil.items.LightWand;
 
 public class ModClient implements ClientModInitializer {
 
     public static final Item BACKPACK_ITEM = new BackpackItem();
     public static final Item LARGE_BACKPACK_ITEM = new LargeBackpackItem();
-    public static final Item LIGHT_WAND = new LightWand();
+    public static final Item LIGHT_WAND = new LightWand(new Item.Properties().rarity(Rarity.EPIC).durability(200));
+    public static final Item AUTO_LIGHT_WAND = new AutoLightWand(new Item.Properties().rarity(Rarity.EPIC).durability(2000));
 
     @Override
     public void onInitializeClient() {
@@ -39,6 +41,7 @@ public class ModClient implements ClientModInitializer {
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(itemGroup -> itemGroup.accept(LARGE_BACKPACK_ITEM));
 
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "light_wand"),LIGHT_WAND);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "auto_light_wand"),AUTO_LIGHT_WAND);
 
         MenuScreens.register(SmacksUtil.GENERIC_13X9, LargeBackpackScreen::new);
     }

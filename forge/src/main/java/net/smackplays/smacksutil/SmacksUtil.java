@@ -7,6 +7,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,6 +29,7 @@ import net.smackplays.smacksutil.backpacks.LargeBackpackContainerMenu;
 import net.smackplays.smacksutil.backpacks.LargeBackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackScreen;
 import net.smackplays.smacksutil.config.ClothConfigForge;
+import net.smackplays.smacksutil.items.AutoLightWand;
 import net.smackplays.smacksutil.items.LightWand;
 import net.smackplays.smacksutil.veinminer.Miner;
 import org.slf4j.Logger;
@@ -39,7 +41,10 @@ public class SmacksUtil {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
     public static final RegistryObject<Item> BACKPACK_ITEM = ITEMS.register("backpack_item", BackpackItem::new);
     public static final RegistryObject<Item> LARGE_BACKPACK_ITEM = ITEMS.register("large_backpack_item", LargeBackpackItem::new);
-    public static final RegistryObject<Item> LIGHT_WAND = ITEMS.register("light_wand", LightWand::new);
+    public static final RegistryObject<Item> LIGHT_WAND = ITEMS.register("light_wand", () ->
+            new LightWand(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
+    public static final RegistryObject<Item> AUTO_LIGHT_WAND = ITEMS.register("auto_light_wand", () ->
+            new AutoLightWand(new Item.Properties().rarity(Rarity.EPIC).durability(2000)));
     public static final DeferredRegister<MenuType<?>> SCREEN = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
     public static final RegistryObject<MenuType<LargeBackpackContainerMenu>> GENERIC_13X9 =
             SCREEN.register("large_backpack_screen", () -> IForgeMenuType.create(LargeBackpackContainerMenu::createGeneric13x9));
