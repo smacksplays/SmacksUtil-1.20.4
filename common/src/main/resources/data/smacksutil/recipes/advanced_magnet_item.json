@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LER",
+    "GMG",
+    "GGG"
+  ],
+  "key": {
+    "M": {
+      "item": "smacksutil:magnet_item"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "item": "smacksutil:advanced_magnet_item"
+  }
+}
