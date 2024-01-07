@@ -8,8 +8,10 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.smackplays.smacksutil.backpacks.BackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackScreen;
@@ -27,6 +29,7 @@ public class ModClient implements ClientModInitializer {
     public static final Item AUTO_LIGHT_WAND = new AutoLightWand(new Item.Properties().rarity(Rarity.EPIC).durability(2000));
     public static final Item MAGNET_ITEM = new MagnetItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1));
     public static final Item ADVANCED_MAGNET_ITEM = new AdvancedMagnetItem(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1));
+
     @Override
     public void onInitializeClient() {
         KeyInputHandler.register();
@@ -43,10 +46,10 @@ public class ModClient implements ClientModInitializer {
         CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM, CauldronInteraction.SHULKER_BOX);
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(itemGroup -> itemGroup.accept(LARGE_BACKPACK_ITEM));
 
-        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "light_wand"),LIGHT_WAND);
-        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "auto_light_wand"),AUTO_LIGHT_WAND);
-        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "magnet_item"),MAGNET_ITEM);
-        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "advanced_magnet_item"),ADVANCED_MAGNET_ITEM);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "light_wand"), LIGHT_WAND);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "auto_light_wand"), AUTO_LIGHT_WAND);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "magnet_item"), MAGNET_ITEM);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "advanced_magnet_item"), ADVANCED_MAGNET_ITEM);
 
         MenuScreens.register(SmacksUtil.GENERIC_13X9, LargeBackpackScreen::new);
     }

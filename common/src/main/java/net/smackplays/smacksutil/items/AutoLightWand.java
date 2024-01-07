@@ -81,6 +81,7 @@ public class AutoLightWand extends LightWand {
     public void setEnable_wand(boolean enable_wand) {
         this.enable_wand = enable_wand;
     }
+
     @Override
 
     public boolean isFoil(ItemStack $$0) {
