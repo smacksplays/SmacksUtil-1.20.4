@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.0.9] - 2024.01.07
+
+### Added
+Light Wand: Creates and removes light sources
+Auto Light Wand: Can automatically create light sources in dark areas.
+Magnet: Attracts items and Exp Orbs in a 10x10x10 area.
+Advanced Magnet: Attracts items and Exp Orbs in a 20x20x20 area.
 
 ## [0.0.8] - 2024.01.05
 

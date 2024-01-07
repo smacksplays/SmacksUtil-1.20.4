@@ -7,8 +7,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -29,9 +27,9 @@ public class LightWand extends Item {
         if (world.isClientSide) return super.useOn(context);
         BlockPos toPlace = pos.relative(face, 1);
 
-        if(world.getBlockState(toPlace).is(Blocks.AIR) && !player.isCrouching()){
+        if (world.getBlockState(toPlace).is(Blocks.AIR) && !player.isCrouching()) {
             world.setBlockAndUpdate(toPlace, Blocks.LIGHT.defaultBlockState());
-            if (!player.isCreative()){
+            if (!player.isCreative()) {
                 context.getItemInHand().hurt(1, player.getRandom(), (ServerPlayer) player);
             }
         }
@@ -39,7 +37,7 @@ public class LightWand extends Item {
     }
 
     @Override
-    public int getEnchantmentValue() {
-        return 15;
+    public boolean isEnchantable(ItemStack $$0) {
+        return false;
     }
 }

@@ -12,26 +12,23 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.AABB;
-import net.smackplays.smacksutil.util.ModTags;
 import net.smackplays.smacksutil.veinminer.modes.BlockPosComparator;
 
 import java.util.ArrayList;
 
-public class AutoLightWand extends LightWand{
-    public boolean enable_wand;
+public class AutoLightWand extends LightWand {
     private static final int GREEN = 65280;
     private static final int RED = 16711680;
+    public boolean enable_wand;
 
-    public AutoLightWand(Item.Properties props){
+    public AutoLightWand(Item.Properties props) {
         super(props);
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand interactionHand) {
         if (world.isClientSide) return super.use(world, player, interactionHand);
-        if (player.isCrouching()){
+        if (player.isCrouching()) {
             ItemStack stack = player.getItemInHand(interactionHand);
             CompoundTag tag = stack.getTag();
             setEnable_wand(tag.getBoolean("auto_light_wand"));
@@ -49,7 +46,7 @@ public class AutoLightWand extends LightWand{
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int $$3, boolean $$4) {
         if (world.isClientSide) return;
         if (!isEnable_wand()) return;
-        Player player = (Player)entity;
+        Player player = (Player) entity;
 
         BlockPos sourcePos = player.blockPosition();
         BlockPos pos = new BlockPos(sourcePos.getX() - 4, sourcePos.getY() - 2, sourcePos.getZ() - 4);
@@ -58,11 +55,11 @@ public class AutoLightWand extends LightWand{
         for (int x = 0; x < 4 * 2; x++) {
             for (int y = 0; y < 5; y++) {
                 for (int z = 0; z < 4 * 2; z++) {
-                    BlockPos curr = pos.offset(x, y ,z);
+                    BlockPos curr = pos.offset(x, y, z);
                     int light = world.getBrightness(LightLayer.BLOCK, curr);
                     if (light <= 9 && !world.getBlockState(curr.below()).is(Blocks.AIR)
                             && world.getBlockState(curr).is(Blocks.AIR)
-                            && world.getBlockState(curr).getFluidState().isEmpty()){
+                            && world.getBlockState(curr).getFluidState().isEmpty()) {
                         toDark.add(curr);
                     }
                 }
@@ -70,7 +67,7 @@ public class AutoLightWand extends LightWand{
         }
 
         toDark.sort(new BlockPosComparator(player));
-        if(!toDark.isEmpty()){
+        if (!toDark.isEmpty()) {
             world.setBlockAndUpdate(toDark.get(0), Blocks.LIGHT.defaultBlockState());
         }
 
@@ -83,5 +80,10 @@ public class AutoLightWand extends LightWand{
 
     public void setEnable_wand(boolean enable_wand) {
         this.enable_wand = enable_wand;
+    }
+    @Override
+
+    public boolean isFoil(ItemStack $$0) {
+        return isEnable_wand();
     }
 }
