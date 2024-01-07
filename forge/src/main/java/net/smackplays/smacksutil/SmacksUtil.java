@@ -28,6 +28,7 @@ import net.smackplays.smacksutil.backpacks.LargeBackpackContainerMenu;
 import net.smackplays.smacksutil.backpacks.LargeBackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackScreen;
 import net.smackplays.smacksutil.config.ClothConfigForge;
+import net.smackplays.smacksutil.items.LightWand;
 import net.smackplays.smacksutil.veinminer.Miner;
 import org.slf4j.Logger;
 
@@ -38,6 +39,7 @@ public class SmacksUtil {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
     public static final RegistryObject<Item> BACKPACK_ITEM = ITEMS.register("backpack_item", BackpackItem::new);
     public static final RegistryObject<Item> LARGE_BACKPACK_ITEM = ITEMS.register("large_backpack_item", LargeBackpackItem::new);
+    public static final RegistryObject<Item> LIGHT_WAND = ITEMS.register("light_wand", LightWand::new);
     public static final DeferredRegister<MenuType<?>> SCREEN = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
     public static final RegistryObject<MenuType<LargeBackpackContainerMenu>> GENERIC_13X9 =
             SCREEN.register("large_backpack_screen", () -> IForgeMenuType.create(LargeBackpackContainerMenu::createGeneric13x9));
