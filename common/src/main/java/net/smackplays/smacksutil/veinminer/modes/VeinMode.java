@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.Block;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class VeinMode {
     public static ArrayList<BlockPos> toBreak = new ArrayList<>();
@@ -29,111 +28,89 @@ public class VeinMode {
         return new ArrayList<>();
     }
 
+    public boolean checkForSurrounding(BlockPos curr, Level world, boolean isExactMatch, Block block, TagKey<Block> tag) {
+        return ((isExactMatch || tag == null) && world.getBlockState(curr).is(block)) || (!(tag == null) && !isExactMatch && world.getBlockState(curr).is(tag));
+    }
+
     public ArrayList<BlockPos> getSurrounding(BlockPos curr, Level world, boolean isExactMatch, Block block, TagKey<Block> tag) {
         ArrayList<BlockPos> surrounding = new ArrayList<>();
-        BlockPos c = curr.north();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.north(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.north());
         }
-        c = curr.north().east();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.north().east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.north().east());
         }
-        c = curr.east();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.east());
         }
-        c = curr.east().south();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.east().south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.east().south());
         }
-        c = curr.south();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.south());
         }
-        c = curr.south().west();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.south().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.south().west());
         }
-        c = curr.west();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.west());
         }
-        c = curr.north().west();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.north().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.north().west());
         }
-        c = curr.above();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.above(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above());
         }
-        c = curr.above().north();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.above().north(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().north());
         }
-        c = curr.above().north().east();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.above().north().east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().north().east());
         }
-        c = curr.above().east();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.above().east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().east());
         }
-        c = curr.above().east().south();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.above().east().south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().east().south());
         }
-        c = curr.above().south();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.above().south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().south());
         }
-        c = curr.above().south().west();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.above().south().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().south().west());
         }
-        c = curr.above().west();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.above().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().west());
         }
-        c = curr.above().north().west();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.above().north().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().north().west());
         }
-        c = curr.below();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.below(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below());
         }
-        c = curr.below().north();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.below().north(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().north());
         }
-        c = curr.below().north().east();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.below().north().east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().north().east());
         }
-        c = curr.below().east();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.below().east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().east());
         }
-        c = curr.below().east().south();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.below().east().south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().east().south());
         }
-        c = curr.below().south();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.below().south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().south());
         }
-        c = curr.below().south().west();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.below().south().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().south().west());
         }
-        c = curr.below().west();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.below().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().west());
         }
-        c = curr.below().north().west();
-        if ((isExactMatch && world.getBlockState(c).is(block)) || (!isExactMatch && world.getBlockState(c).is(tag))){
-            surrounding.add(c);
+        if (checkForSurrounding(curr.below().north().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().north().west());
         }
         return surrounding;
     }

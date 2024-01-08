@@ -10,7 +10,7 @@ import net.smackplays.smacksutil.util.ModTags;
 import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
-public class Trees extends VeinMode {
+public class Trees extends Ores {
     public Trees() {
         ModeName = "Ores";
     }
@@ -32,7 +32,7 @@ public class Trees extends VeinMode {
         if (world.getBlockState(sourcePos).is(ModTags.Blocks.TREE_BLOCKS)) {
             tag = ModTags.Blocks.TREE_BLOCKS;
         }
-        trees(sourcePos, world, player, isExactMatch, toMatch, tag);
+        ores(sourcePos, world, player, isExactMatch, toMatch, tag);
 
         toBreak.sort(new BlockPosComparator(player));
 
@@ -43,26 +43,5 @@ public class Trees extends VeinMode {
         oldIsExactMatch = isExactMatch;
 
         return (ArrayList<BlockPos>) toBreak.clone();
-    }
-
-    private void trees(BlockPos curr, Level world, Player player, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
-        if (checked.contains(curr)) {
-            return;
-        } else {
-            checked.add(curr);
-        }
-        if (toBreak.size() > 200) return;
-        if (checkMatch(isExactMatch, curr, world, player, toMatch, tag)) {
-            if (!toBreak.contains(curr)) {
-                toBreak.add(curr);
-            }
-        }
-        ArrayList<BlockPos> surrounding = getSurrounding(curr, world, isExactMatch, toMatch, tag);
-        surrounding.sort(new BlockPosComparator(player));
-        for (BlockPos pos : surrounding) {
-            if (checkMatch(isExactMatch, pos, world, player, toMatch, tag)) {
-                trees(pos, world, player, isExactMatch, toMatch, tag);
-            }
-        }
     }
 }

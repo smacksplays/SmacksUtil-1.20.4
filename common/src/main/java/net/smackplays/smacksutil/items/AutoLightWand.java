@@ -11,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.smackplays.smacksutil.veinminer.modes.BlockPosComparator;
 
@@ -59,7 +60,8 @@ public class AutoLightWand extends LightWand {
                     int light = world.getBrightness(LightLayer.BLOCK, curr);
                     if (light <= 9 && !world.getBlockState(curr.below()).is(Blocks.AIR)
                             && world.getBlockState(curr).is(Blocks.AIR)
-                            && world.getBlockState(curr).getFluidState().isEmpty()) {
+                            && world.getBlockState(curr).getFluidState().isEmpty()
+                            && Block.isShapeFullBlock(world.getBlockState(curr.below()).getShape(world, curr))) {
                         toDark.add(curr);
                     }
                 }

@@ -8,7 +8,6 @@ import net.minecraft.world.level.block.Block;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("unchecked")
 public class Ores extends VeinMode {
@@ -47,9 +46,9 @@ public class Ores extends VeinMode {
         return (ArrayList<BlockPos>) toBreak.clone();
     }
 
-    private void ores(BlockPos curr, Level world, Player player, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
+    public void ores(BlockPos curr, Level world, Player player, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
         toCheck.add(curr);
-        while (toBreak.size() <= 200 && !toCheck.isEmpty()){
+        while (toBreak.size() <= 200 && !toCheck.isEmpty()) {
             BlockPos currPos = toCheck.get(0);
             if (checkMatch(isExactMatch, currPos, world, player, toMatch, tag)) {
                 toBreak.add(currPos);
@@ -59,7 +58,7 @@ public class Ores extends VeinMode {
             toCheck.remove(currPos);
             // remove duplicates
             ArrayList<BlockPos> newList = new ArrayList<>();
-            for (BlockPos p : toCheck){
+            for (BlockPos p : toCheck) {
                 if (!newList.contains(p) && !toBreak.contains(p)) newList.add(p);
             }
             toCheck = newList;

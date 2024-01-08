@@ -15,11 +15,11 @@ import net.minecraft.world.item.Rarity;
 import net.smackplays.smacksutil.backpacks.BackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackItem;
 import net.smackplays.smacksutil.backpacks.LargeBackpackScreen;
-import net.smackplays.smacksutil.event.KeyInputHandler;
 import net.smackplays.smacksutil.items.AdvancedMagnetItem;
 import net.smackplays.smacksutil.items.AutoLightWand;
 import net.smackplays.smacksutil.items.LightWand;
 import net.smackplays.smacksutil.items.MagnetItem;
+import net.smackplays.smacksutil.platform.Services;
 
 public class ModClient implements ClientModInitializer {
 
@@ -32,8 +32,7 @@ public class ModClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        KeyInputHandler.register();
-
+        Services.KEY_HANDLER.register();
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, "backpack_item"), BACKPACK_ITEM);
 
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex == 0 ? ((DyeableLeatherItem) BACKPACK_ITEM).getColor(stack) : 0xFFFFFF, BACKPACK_ITEM);
