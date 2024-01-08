@@ -5,11 +5,12 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "LightBlockMixin",
     "fasteat.ItemMixin"
   ],
   "client": [
-    "fastplace.MinecraftClientMixin"
+    "fastplace.MinecraftClientMixin",
+    "veinminer.MouseScroll",
+    "veinminer.OutlineRender"
   ],
   "server": [
   ],

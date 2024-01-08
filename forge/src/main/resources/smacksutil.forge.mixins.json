@@ -8,9 +8,7 @@
     "LightBlockMixin"
   ],
   "client": [
-    "ClientLevelMixin",
-    "veinminer.MouseScroll",
-    "veinminer.OutlineRender"
+    "ClientLevelMixin"
   ],
   "server": [
   ],
