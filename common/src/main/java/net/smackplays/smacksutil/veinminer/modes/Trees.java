@@ -57,7 +57,8 @@ public class Trees extends VeinMode {
                 toBreak.add(curr);
             }
         }
-        BlockPos[] surrounding = getSurrounding(curr);
+        ArrayList<BlockPos> surrounding = getSurrounding(curr, world, isExactMatch, toMatch, tag);
+        surrounding.sort(new BlockPosComparator(player));
         for (BlockPos pos : surrounding) {
             if (checkMatch(isExactMatch, pos, world, player, toMatch, tag)) {
                 trees(pos, world, player, isExactMatch, toMatch, tag);

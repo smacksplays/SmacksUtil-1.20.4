@@ -25,12 +25,12 @@ public class AdvancedMagnetItem extends MagnetItem {
         Player player = (Player) entity;
         List<ItemEntity> entities = world.getEntitiesOfClass(ItemEntity.class, area);
         for (ItemEntity e : entities) {
+            e.setPos(player.position());
             e.setPickUpDelay(0);
-            e.playerTouch(player);
         }
+
         List<ExperienceOrb> orbs = world.getEntitiesOfClass(ExperienceOrb.class, area);
         for (ExperienceOrb e : orbs) {
-            e.invulnerableTime = 0;
             player.takeXpDelay = 0;
             e.playerTouch(player);
         }

@@ -139,22 +139,22 @@ public abstract class AMiner {
                 return;
             }
 
-            LootParams.Builder builder =
-                    new LootParams.Builder((ServerLevel) world)
-                            .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(curr))
-                            .withParameter(LootContextParams.TOOL, mainHandStack)
-                            .withOptionalParameter(LootContextParams.BLOCK_ENTITY, currBlockEntity);
+            //LootParams.Builder builder =
+            //        new LootParams.Builder((ServerLevel) world)
+            //                .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(curr))
+            //                .withParameter(LootContextParams.TOOL, mainHandStack)
+            //                .withOptionalParameter(LootContextParams.BLOCK_ENTITY, currBlockEntity);
 
-            List<ItemStack> dropList = currBlockState.getDrops(builder);
+            //List<ItemStack> dropList = currBlockState.getDrops(builder);
 
             boolean canHarvest = (player.hasCorrectToolForDrops(currBlockState) || player.isCreative());
-            if (dropList != null && canHarvest) {
-                world.setBlockAndUpdate(curr, Blocks.AIR.defaultBlockState());
-                //world.destroyBlock(curr, false);
+            if (canHarvest) {
+                //world.setBlockAndUpdate(curr, Blocks.AIR.defaultBlockState());
+                world.destroyBlock(curr, !isCreative);
                 if (!isCreative) {
-                    for (ItemStack stack : dropList) {
-                        world.addFreshEntity(new ItemEntity(world, curr.getCenter().x, curr.getCenter().y, curr.getCenter().z, stack));
-                    }
+                    //for (ItemStack stack : dropList) {
+                    //    world.addFreshEntity(new ItemEntity(world, curr.getCenter().x, curr.getCenter().y, curr.getCenter().z, stack));
+                    //}
                     if (mainHandStack.isDamageableItem()) {
                         mainHandStack.hurt(1, player.getRandom(), (ServerPlayer) player);
                     }
