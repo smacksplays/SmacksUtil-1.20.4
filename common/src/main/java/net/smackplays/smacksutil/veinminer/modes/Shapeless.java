@@ -35,8 +35,7 @@ public class Shapeless extends VeinMode {
         } else if (world.getBlockState(sourcePos).is(ModTags.Blocks.DIRT_BLOCKS)) {
             tag = ModTags.Blocks.DIRT_BLOCKS;
         }
-
-        shapeless(sourcePos, sourcePos, radius, world, player, isExactMatch, toMatch, tag);
+        shapeless(new BlockPos(sourcePos), world, player, radius, isExactMatch, toMatch, tag);
 
         toBreak.sort(new BlockPosComparator(player));
 
@@ -49,36 +48,25 @@ public class Shapeless extends VeinMode {
         return (ArrayList<BlockPos>) toBreak.clone();
     }
 
-    private void shapeless(BlockPos curr, BlockPos sourcePos, int radius, Level world,
-                           Player player, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
-        if (curr.getX() > sourcePos.getX() + radius
-                || curr.getX() < sourcePos.getX() - radius) {
-            return;
-        }
-        if (curr.getY() > sourcePos.getY() + radius
-                || curr.getY() < sourcePos.getY() - radius) {
-            return;
-        }
-        if (curr.getZ() > sourcePos.getZ() + radius
-                || curr.getZ() < sourcePos.getZ() - radius) {
-            return;
-        }
-        if (checked.contains(curr)) {
-            return;
-        } else {
-            checked.add(curr);
-        }
-        if (checkMatch(isExactMatch, curr, world, player, toMatch, tag)) {
-            toBreak.add(curr);
-        }
-        BlockPos[] surrounding = getSurrounding(curr);
-        for (BlockPos pos : surrounding) {
-            if (checkMatch(isExactMatch, pos, world, player, toMatch, tag)) {
-                shapeless(pos, sourcePos, radius, world, player, isExactMatch, toMatch, tag);
+    private void shapeless(BlockPos curr, Level world, Player player, int radius, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
+        toCheck.add(curr);
+        while (!toCheck.isEmpty() && toCheck.get(0).distToCenterSqr(curr.getCenter()) < radius) {
+            BlockPos currPos = toCheck.get(0);
+            if (checkMatch(isExactMatch, currPos, world, player, toMatch, tag)) {
+                toBreak.add(currPos);
+                ArrayList<BlockPos> surrounding = getSurrounding(currPos, world, isExactMatch, toMatch, tag);
+                toCheck.addAll(surrounding);
             }
+            toCheck.remove(currPos);
+            // remove duplicates
+            ArrayList<BlockPos> newList = new ArrayList<>();
+            for (BlockPos p : toCheck) {
+                if (!newList.contains(p) && !toBreak.contains(p)) newList.add(p);
+            }
+            toCheck = newList;
+            toCheck.sort(new BlockPosComparator(player));
         }
     }
-
     @Override
     public boolean doRender(int radius) {
         return radius <= Services.CONFIG.getMaxRenderShapelessRadius();

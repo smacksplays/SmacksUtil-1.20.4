@@ -33,7 +33,6 @@ import net.smackplays.smacksutil.items.AdvancedMagnetItem;
 import net.smackplays.smacksutil.items.AutoLightWand;
 import net.smackplays.smacksutil.items.LightWand;
 import net.smackplays.smacksutil.items.MagnetItem;
-import net.smackplays.smacksutil.veinminer.Miner;
 import org.slf4j.Logger;
 
 
@@ -55,7 +54,6 @@ public class SmacksUtil {
     public static final RegistryObject<MenuType<LargeBackpackContainerMenu>> GENERIC_13X9 =
             SCREEN.register("large_backpack_screen", () -> IForgeMenuType.create(LargeBackpackContainerMenu::createGeneric13x9));
     private static final Logger LOGGER = LogUtils.getLogger();
-    public static Miner veinMiner;
 
     public SmacksUtil() {
         // This method is invoked by the Forge mod loader when it is ready
@@ -65,7 +63,6 @@ public class SmacksUtil {
         // Use Forge to bootstrap the Common mod.
         Constants.LOG.info("Hello Forge world!");
         CommonClass.init();
-        veinMiner = new Miner();
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 

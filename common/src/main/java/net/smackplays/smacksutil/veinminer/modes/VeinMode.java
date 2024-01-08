@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class VeinMode {
     public static ArrayList<BlockPos> toBreak = new ArrayList<>();
+    public static ArrayList<BlockPos> toCheck = new ArrayList<>();
     public static ArrayList<BlockPos> oldToBreak = new ArrayList<>();
     public static ArrayList<BlockPos> checked = new ArrayList<>();
     public static int oldRadius;
@@ -27,36 +28,90 @@ public class VeinMode {
         return new ArrayList<>();
     }
 
-    public BlockPos[] getSurrounding(BlockPos curr) {
-        BlockPos[] surrounding = new BlockPos[26];
-        surrounding[0] = curr.north();
-        surrounding[1] = curr.north().east();
-        surrounding[2] = curr.east();
-        surrounding[3] = curr.east().south();
-        surrounding[4] = curr.south();
-        surrounding[5] = curr.south().west();
-        surrounding[6] = curr.west();
-        surrounding[7] = curr.north().west();
+    public boolean checkForSurrounding(BlockPos curr, Level world, boolean isExactMatch, Block block, TagKey<Block> tag) {
+        return ((isExactMatch || tag == null) && world.getBlockState(curr).is(block)) || (!(tag == null) && !isExactMatch && world.getBlockState(curr).is(tag));
+    }
 
-        surrounding[8] = curr.above();
-        surrounding[9] = curr.above().north();
-        surrounding[10] = curr.above().north().east();
-        surrounding[11] = curr.above().east();
-        surrounding[12] = curr.above().east().south();
-        surrounding[13] = curr.above().south();
-        surrounding[14] = curr.above().south().west();
-        surrounding[15] = curr.above().west();
-        surrounding[16] = curr.above().north().west();
-
-        surrounding[17] = curr.below();
-        surrounding[18] = curr.below().north();
-        surrounding[19] = curr.below().north().east();
-        surrounding[20] = curr.below().east();
-        surrounding[21] = curr.below().east().south();
-        surrounding[22] = curr.below().south();
-        surrounding[23] = curr.below().south().west();
-        surrounding[24] = curr.below().west();
-        surrounding[25] = curr.below().north().west();
+    public ArrayList<BlockPos> getSurrounding(BlockPos curr, Level world, boolean isExactMatch, Block block, TagKey<Block> tag) {
+        ArrayList<BlockPos> surrounding = new ArrayList<>();
+        if (checkForSurrounding(curr.north(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.north());
+        }
+        if (checkForSurrounding(curr.north().east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.north().east());
+        }
+        if (checkForSurrounding(curr.east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.east());
+        }
+        if (checkForSurrounding(curr.east().south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.east().south());
+        }
+        if (checkForSurrounding(curr.south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.south());
+        }
+        if (checkForSurrounding(curr.south().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.south().west());
+        }
+        if (checkForSurrounding(curr.west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.west());
+        }
+        if (checkForSurrounding(curr.north().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.north().west());
+        }
+        if (checkForSurrounding(curr.above(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above());
+        }
+        if (checkForSurrounding(curr.above().north(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().north());
+        }
+        if (checkForSurrounding(curr.above().north().east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().north().east());
+        }
+        if (checkForSurrounding(curr.above().east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().east());
+        }
+        if (checkForSurrounding(curr.above().east().south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().east().south());
+        }
+        if (checkForSurrounding(curr.above().south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().south());
+        }
+        if (checkForSurrounding(curr.above().south().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().south().west());
+        }
+        if (checkForSurrounding(curr.above().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().west());
+        }
+        if (checkForSurrounding(curr.above().north().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.above().north().west());
+        }
+        if (checkForSurrounding(curr.below(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below());
+        }
+        if (checkForSurrounding(curr.below().north(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().north());
+        }
+        if (checkForSurrounding(curr.below().north().east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().north().east());
+        }
+        if (checkForSurrounding(curr.below().east(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().east());
+        }
+        if (checkForSurrounding(curr.below().east().south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().east().south());
+        }
+        if (checkForSurrounding(curr.below().south(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().south());
+        }
+        if (checkForSurrounding(curr.below().south().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().south().west());
+        }
+        if (checkForSurrounding(curr.below().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().west());
+        }
+        if (checkForSurrounding(curr.below().north().west(), world, isExactMatch, block, tag)) {
+            surrounding.add(curr.below().north().west());
+        }
         return surrounding;
     }
 

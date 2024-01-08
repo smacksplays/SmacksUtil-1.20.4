@@ -1,25 +1,20 @@
-package net.smackplays.smacksutil.veinminer;
+package net.smackplays.smacksutil.platform.services;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.smackplays.smacksutil.platform.Services;
@@ -29,7 +24,7 @@ import net.smackplays.smacksutil.veinminer.modes.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AMiner {
+public abstract class IVeinMiner {
     public static int MAX_RADIUS = 6;
     public static ArrayList<BlockPos> toBreak;
     public static VeinMode mode;
@@ -53,10 +48,6 @@ public abstract class AMiner {
     public boolean isMining = false;
     public boolean isDrawing = false;
     public boolean isExactMatch = false;
-
-    public AMiner() {
-
-    }
 
     public static void drawCuboidShapeOutline(PoseStack poseStack, VertexConsumer vertexConsumer, VoxelShape shape, double offsetX, double offsetY, double offsetZ) {
         PoseStack.Pose pose = poseStack.last();
@@ -83,7 +74,8 @@ public abstract class AMiner {
         });
     }
 
-    abstract void scroll(double vertical);
+    abstract public void drawOutline(PoseStack pose, double cameraX, double cameraY, double cameraZ, BlockPos pos,
+                                     Level world, Player player);
 
     public ArrayList<BlockPos> getBlocks(Level worldIn, Player playerIn, BlockPos sourcePosIn) {
         BlockState sourceBlockState = worldIn.getBlockState(sourcePosIn);
@@ -131,7 +123,6 @@ public abstract class AMiner {
         for (BlockPos curr : toBreak) {
             BlockState currBlockState = world.getBlockState(curr);
             Block currBlock = world.getBlockState(curr).getBlock();
-            BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
 
             if (mainHandIsTool && mainHandStack.getDamageValue() == maxDMG - 1) {
                 isMining = false;
@@ -139,22 +130,10 @@ public abstract class AMiner {
                 return;
             }
 
-            LootParams.Builder builder =
-                    new LootParams.Builder((ServerLevel) world)
-                            .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(curr))
-                            .withParameter(LootContextParams.TOOL, mainHandStack)
-                            .withOptionalParameter(LootContextParams.BLOCK_ENTITY, currBlockEntity);
-
-            List<ItemStack> dropList = currBlockState.getDrops(builder);
-
             boolean canHarvest = (player.hasCorrectToolForDrops(currBlockState) || player.isCreative());
-            if (dropList != null && canHarvest) {
-                world.setBlockAndUpdate(curr, Blocks.AIR.defaultBlockState());
-                //world.destroyBlock(curr, false);
+            if (canHarvest) {
+                world.destroyBlock(curr, !isCreative);
                 if (!isCreative) {
-                    for (ItemStack stack : dropList) {
-                        world.addFreshEntity(new ItemEntity(world, curr.getCenter().x, curr.getCenter().y, curr.getCenter().z, stack));
-                    }
                     if (mainHandStack.isDamageableItem()) {
                         mainHandStack.hurt(1, player.getRandom(), (ServerPlayer) player);
                     }
@@ -186,9 +165,6 @@ public abstract class AMiner {
         if (toBreak == null) return true;
         return toBreak.isEmpty();
     }
-
-    abstract void drawOutline(PoseStack pose, double cameraX, double cameraY, double cameraZ, BlockPos pos,
-                              Level world, Player player);
 
     public VoxelShape combine(Level world, BlockPos pos, List<BlockPos> toRender) {
         VoxelShape shape = Shapes.empty();
@@ -239,6 +215,46 @@ public abstract class AMiner {
             return MineshaftMode;
         }
         return mode;
+    }
+
+    public void scroll(double vertical) {
+        Player player = Minecraft.getInstance().player;
+        Screen scr = Minecraft.getInstance().screen;
+
+        ShapelessMode.MAX_RADIUS = Services.CONFIG.getMaxShapelessRadius();
+        if (Services.CONFIG.isEnabledShapelessVerticalMode() && !modeList.contains(ShapelessVerticalMode)) {
+            modeList.add(ShapelessVerticalMode);
+        } else if (!Services.CONFIG.isEnabledShapelessVerticalMode()) {
+            modeList.remove(ShapelessVerticalMode);
+        }
+        ShapelessVerticalMode.MAX_RADIUS = Services.CONFIG.getMaxShapelessVerticalRadius();
+        if (Services.CONFIG.isEnabledTunnelMode() && !modeList.contains(TunnelMode)) {
+            modeList.add(TunnelMode);
+        } else if (!Services.CONFIG.isEnabledTunnelMode()) {
+            modeList.remove(TunnelMode);
+        }
+        if (Services.CONFIG.isEnabledMineshaftMode() && !modeList.contains(MineshaftMode)) {
+            modeList.add(MineshaftMode);
+        } else if (!Services.CONFIG.isEnabledMineshaftMode()) {
+            modeList.remove(MineshaftMode);
+        }
+
+        if (player != null && scr == null && Services.KEY_HANDLER.veinKey.isDown()) {
+            if (player.isCrouching()) {
+                currMode += (int) vertical;
+                player.getInventory().selected = player.getInventory().selected + (int) vertical;
+                if (currMode > modeList.size() - 1) currMode = modeList.size() - 1;
+                else if (currMode < 0) currMode = 0;
+                player.displayClientMessage(Component.literal("Mode: " + modeList.get(currMode).getName()), true);
+                Services.VEIN_MINER.setMode();
+            } else {
+                radius += (int) vertical;
+                player.getInventory().selected = player.getInventory().selected + (int) vertical;
+                if (radius > MAX_RADIUS) radius = MAX_RADIUS;
+                else if (radius < 1) radius = 1;
+                player.displayClientMessage(Component.literal("Radius: " + radius), true);
+            }
+        }
     }
 
     public int getRadius() {
