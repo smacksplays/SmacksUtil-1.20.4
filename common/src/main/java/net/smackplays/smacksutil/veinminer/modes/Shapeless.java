@@ -67,6 +67,7 @@ public class Shapeless extends VeinMode {
             toCheck.sort(new BlockPosComparator(player));
         }
     }
+
     @Override
     public boolean doRender(int radius) {
         return radius <= Services.CONFIG.getMaxRenderShapelessRadius();
