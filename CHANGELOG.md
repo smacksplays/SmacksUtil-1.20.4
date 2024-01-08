@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.0.10] - 2024.01.08
+
+### Changed
+Light Wand & Auto Light Wand: Render light block when holding.
+Veinminer: Some improvements to reduce lag.
+
 ## [0.0.9] - 2024.01.07
 
 ### Added
