@@ -23,7 +23,7 @@ public class ModTags {
         public static final TagKey<Block> VEIN_BLACKLIST =
                 createTag("veinminer_blacklist");
         public static final TagKey<Block> VEIN_MINING =
-                createTag("veinminer_mineing");
+                createTag("veinminer_mining");
 
         private static TagKey<Block> createTag(String name) {
             return TagKey.create(Registries.BLOCK, new ResourceLocation(Constants.MOD_ID, name));
