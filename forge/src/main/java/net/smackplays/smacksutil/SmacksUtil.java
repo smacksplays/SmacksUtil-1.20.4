@@ -4,10 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.DyeableLeatherItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -56,11 +53,6 @@ public class SmacksUtil {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public SmacksUtil() {
-        // This method is invoked by the Forge mod loader when it is ready
-        // to load your mod. You can access Forge and Common code in this
-        // project.
-
-        // Use Forge to bootstrap the Common mod.
         Constants.LOG.info("Hello Forge world!");
         CommonClass.init();
 
@@ -74,26 +66,29 @@ public class SmacksUtil {
 
         MinecraftForge.EVENT_BUS.register(this);
 
-        // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
-        //ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClothConfigForge::registerModsPage);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
     }
 
-    // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES){
+            event.accept(BACKPACK_ITEM);
+            event.accept(LARGE_BACKPACK_ITEM);
+            event.accept(LIGHT_WAND);
+            event.accept(AUTO_LIGHT_WAND);
+            event.accept(MAGNET_ITEM);
+            event.accept(ADVANCED_MAGNET_ITEM);
+        }
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
     }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents {
         @SubscribeEvent

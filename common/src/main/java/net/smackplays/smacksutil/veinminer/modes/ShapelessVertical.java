@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.smackplays.smacksutil.platform.Services;
+import net.smackplays.smacksutil.util.BlockPosComparator;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class ShapelessVertical extends VeinMode {
         if (world == null || player == null || sourcePos == null) return (ArrayList<BlockPos>) toBreak.clone();
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         toBreak.clear();
+        toCheck.clear();
         checked.clear();
         Block toMatch = world.getBlockState(sourcePos).getBlock();
 
@@ -39,7 +41,7 @@ public class ShapelessVertical extends VeinMode {
 
         shapeless_vert(sourcePos, sourcePos, radius, player, world, isExactMatch, toMatch, tag);
 
-        toBreak.sort(new BlockPosComparator(player));
+        toBreak.sort(new BlockPosComparator(sourcePos));
 
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         oldRadius = radius;
@@ -73,7 +75,7 @@ public class ShapelessVertical extends VeinMode {
             toBreak.add(curr);
         }
         ArrayList<BlockPos> surrounding = getSurrounding(curr, world, isExactMatch, toMatch, tag);
-        surrounding.sort(new BlockPosComparator(player));
+        surrounding.sort(new BlockPosComparator(curr));
         for (BlockPos pos : surrounding) {
             if (checkMatch(isExactMatch, pos, world, player, toMatch, tag)) {
                 shapeless_vert(pos, sourcePos, radius, player, world, isExactMatch, toMatch, tag);
