@@ -13,7 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.smackplays.smacksutil.util.BlockPosComparator;
 import net.smackplays.smacksutil.util.PlayerComparator;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class AutoLightWand extends LightWand {
 
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int $$3, boolean $$4) {
-        if (!world.isClientSide && isEnable_wand(stack)){
+        if (!world.isClientSide && isEnable_wand(stack)) {
             Player player = (Player) entity;
 
             BlockPos sourcePos = player.blockPosition();

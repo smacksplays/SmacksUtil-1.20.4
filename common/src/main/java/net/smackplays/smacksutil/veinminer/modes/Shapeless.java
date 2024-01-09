@@ -62,11 +62,11 @@ public class Shapeless extends VeinMode {
             toCheck.remove(currPos);
             // remove duplicates
             ArrayList<BlockPos> newList = new ArrayList<>();
-            for (BlockPos p : (ArrayList<BlockPos>)toCheck.clone()) {
+            for (BlockPos p : (ArrayList<BlockPos>) toCheck.clone()) {
                 if (!newList.contains(p) && !toBreak.contains(p)
                         && !((p.getX() > sourcePos.getX() + radius) || (p.getX() < sourcePos.getX() - radius))
                         && !((p.getY() > sourcePos.getY() + radius) || (p.getY() < sourcePos.getY() - radius))
-                        && !((p.getZ() > sourcePos.getZ() + radius) || (p.getZ() < sourcePos.getZ() - radius))){
+                        && !((p.getZ() > sourcePos.getZ() + radius) || (p.getZ() < sourcePos.getZ() - radius))) {
                     newList.add(p);
                 }
             }

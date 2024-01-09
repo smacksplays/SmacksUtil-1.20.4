@@ -2,7 +2,6 @@ package net.smackplays.smacksutil.util;
 
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.Comparator;
 

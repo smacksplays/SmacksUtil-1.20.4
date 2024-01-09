@@ -59,7 +59,7 @@ public class Ores extends VeinMode {
             toCheck.remove(currPos);
             // remove duplicates
             ArrayList<BlockPos> newList = new ArrayList<>();
-            for (BlockPos p : (ArrayList<BlockPos>)toCheck.clone()) {
+            for (BlockPos p : (ArrayList<BlockPos>) toCheck.clone()) {
                 if (!newList.contains(p) && !toBreak.contains(p)) newList.add(p);
             }
             toCheck = (ArrayList<BlockPos>) newList.clone();

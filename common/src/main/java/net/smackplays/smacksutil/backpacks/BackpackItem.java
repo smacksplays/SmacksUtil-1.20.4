@@ -23,7 +23,6 @@ public class BackpackItem extends Item implements DyeableLeatherItem {
         if (world.isClientSide) return InteractionResultHolder.pass(stack);
         if (player.isCrouching()) return InteractionResultHolder.pass(stack);
         if (hand.equals(InteractionHand.OFF_HAND)) return InteractionResultHolder.pass(stack);
-
         player.openMenu(createScreenHandlerFactory(player.getMainHandItem()));
 
         return InteractionResultHolder.pass(stack);
