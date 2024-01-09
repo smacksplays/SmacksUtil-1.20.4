@@ -1,18 +1,29 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.0.11] - 2024.01.09
+
+### Fixed
+Veinminer Shapeless Mode
+
+Fixed state of activatable items when restarting the game.
+
 ## [0.0.10] - 2024.01.08
 
 ### Changed
 Light Wand & Auto Light Wand: Render light block when holding.
+
 Veinminer: Some improvements to reduce lag.
 
 ## [0.0.9] - 2024.01.07
 
 ### Added
 Light Wand: Creates and removes light sources
+
 Auto Light Wand: Can automatically create light sources in dark areas.
+
 Magnet: Attracts items and Exp Orbs in a 10x10x10 area.
+
 Advanced Magnet: Attracts items and Exp Orbs in a 20x20x20 area.
 
 ## [0.0.8] - 2024.01.05
@@ -68,6 +79,7 @@ No Blocks will be placed when a backpack is opened.
 
 Large Backpack added.
 Size is fixed at 13 * 9 (117) slots and backpacks are dyeable.
+
 **BUG: Inventory is not copied when crafting large backpack!**
 
 ### Changed
@@ -81,6 +93,7 @@ Size is fixed at 13 * 9 (117) slots and backpacks are dyeable.
 #### Backpacks
 
 Backpacks are added to the mod.
+
 Size is fixed at 6 * 9 (54) slots and are dyeable.
 
 ### Changed

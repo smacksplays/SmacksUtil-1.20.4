@@ -13,7 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.smackplays.smacksutil.veinminer.modes.BlockPosComparator;
+import net.smackplays.smacksutil.util.BlockPosComparator;
+import net.smackplays.smacksutil.util.PlayerComparator;
 
 import java.util.ArrayList;
 
@@ -31,10 +32,10 @@ public class AutoLightWand extends LightWand {
         if (world.isClientSide) return super.use(world, player, interactionHand);
         if (player.isCrouching()) {
             ItemStack stack = player.getItemInHand(interactionHand);
-            CompoundTag tag = stack.getTag();
-            setEnable_wand(tag.getBoolean("auto_light_wand"));
-            stack.getOrCreateTag().putBoolean("auto_light_wand", !isEnable_wand());
-            boolean auto_wand = isEnable_wand();
+            CompoundTag tag = stack.getOrCreateTag();
+            setEnable_wand(tag.getBoolean("enabled"));
+            stack.getOrCreateTag().putBoolean("enabled", !isEnable_wand(stack));
+            boolean auto_wand = isEnable_wand(stack);
             String str = auto_wand ? "Active" : "Inactive";
             int color = auto_wand ? GREEN : RED;
             player.displayClientMessage(Component
@@ -45,38 +46,39 @@ public class AutoLightWand extends LightWand {
 
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int $$3, boolean $$4) {
-        if (world.isClientSide) return;
-        if (!isEnable_wand()) return;
-        Player player = (Player) entity;
+        if (!world.isClientSide && isEnable_wand(stack)){
+            Player player = (Player) entity;
 
-        BlockPos sourcePos = player.blockPosition();
-        BlockPos pos = new BlockPos(sourcePos.getX() - 4, sourcePos.getY() - 2, sourcePos.getZ() - 4);
-        ArrayList<BlockPos> toDark = new ArrayList<>();
+            BlockPos sourcePos = player.blockPosition();
+            BlockPos pos = new BlockPos(sourcePos.getX() - 4, sourcePos.getY() - 2, sourcePos.getZ() - 4);
+            ArrayList<BlockPos> toDark = new ArrayList<>();
 
-        for (int x = 0; x < 4 * 2; x++) {
-            for (int y = 0; y < 5; y++) {
-                for (int z = 0; z < 4 * 2; z++) {
-                    BlockPos curr = pos.offset(x, y, z);
-                    int light = world.getBrightness(LightLayer.BLOCK, curr);
-                    if (light <= 9 && !world.getBlockState(curr.below()).is(Blocks.AIR)
-                            && world.getBlockState(curr).is(Blocks.AIR)
-                            && world.getBlockState(curr).getFluidState().isEmpty()
-                            && Block.isShapeFullBlock(world.getBlockState(curr.below()).getShape(world, curr))) {
-                        toDark.add(curr);
+            for (int x = 0; x < 4 * 2; x++) {
+                for (int y = 0; y < 5; y++) {
+                    for (int z = 0; z < 4 * 2; z++) {
+                        BlockPos curr = pos.offset(x, y, z);
+                        int light = world.getBrightness(LightLayer.BLOCK, curr);
+                        if (light <= 9 && !world.getBlockState(curr.below()).is(Blocks.AIR)
+                                && world.getBlockState(curr).is(Blocks.AIR)
+                                && world.getBlockState(curr).getFluidState().isEmpty()
+                                && Block.isShapeFullBlock(world.getBlockState(curr.below()).getShape(world, curr))) {
+                            toDark.add(curr);
+                        }
                     }
                 }
             }
-        }
 
-        toDark.sort(new BlockPosComparator(player));
-        if (!toDark.isEmpty()) {
-            world.setBlockAndUpdate(toDark.get(0), Blocks.LIGHT.defaultBlockState());
+            toDark.sort(new PlayerComparator(player));
+            if (!toDark.isEmpty()) {
+                world.setBlockAndUpdate(toDark.get(0), Blocks.LIGHT.defaultBlockState());
+            }
         }
-
         super.inventoryTick(stack, world, entity, $$3, $$4);
     }
 
-    public boolean isEnable_wand() {
+    public boolean isEnable_wand(ItemStack stack) {
+        CompoundTag tag = stack.getOrCreateTag();
+        enable_wand = tag.getBoolean("enabled");
         return enable_wand;
     }
 
@@ -86,7 +88,7 @@ public class AutoLightWand extends LightWand {
 
     @Override
 
-    public boolean isFoil(ItemStack $$0) {
-        return isEnable_wand();
+    public boolean isFoil(ItemStack stack) {
+        return isEnable_wand(stack);
     }
 }

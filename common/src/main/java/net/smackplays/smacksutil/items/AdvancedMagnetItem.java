@@ -16,11 +16,10 @@ public class AdvancedMagnetItem extends MagnetItem {
         super($$0);
     }
 
-
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int $$3, boolean $$4) {
         if (world.isClientSide) return;
-        if (!isEnable_magnet()) return;
+        if (!isEnable_magnet(stack)) return;
         AABB area = new AABB(entity.position().add(-10, -10, -10), entity.position().add(10, 10, 10));
         Player player = (Player) entity;
         List<ItemEntity> entities = world.getEntitiesOfClass(ItemEntity.class, area);

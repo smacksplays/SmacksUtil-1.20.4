@@ -5,6 +5,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.smackplays.smacksutil.util.BlockPosComparator;
 import net.smackplays.smacksutil.util.ModTags;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class Ores extends VeinMode {
         }
         ores(new BlockPos(sourcePos), world, player, isExactMatch, toMatch, tag);
 
-        toBreak.sort(new BlockPosComparator(player));
+        toBreak.sort(new BlockPosComparator(sourcePos));
 
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         oldRadius = radius;
@@ -46,8 +47,8 @@ public class Ores extends VeinMode {
         return (ArrayList<BlockPos>) toBreak.clone();
     }
 
-    public void ores(BlockPos curr, Level world, Player player, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
-        toCheck.add(curr);
+    public void ores(BlockPos sourcePos, Level world, Player player, boolean isExactMatch, Block toMatch, TagKey<Block> tag) {
+        toCheck.add(sourcePos);
         while (toBreak.size() <= 200 && !toCheck.isEmpty()) {
             BlockPos currPos = toCheck.get(0);
             if (checkMatch(isExactMatch, currPos, world, player, toMatch, tag)) {
@@ -58,11 +59,11 @@ public class Ores extends VeinMode {
             toCheck.remove(currPos);
             // remove duplicates
             ArrayList<BlockPos> newList = new ArrayList<>();
-            for (BlockPos p : toCheck) {
+            for (BlockPos p : (ArrayList<BlockPos>)toCheck.clone()) {
                 if (!newList.contains(p) && !toBreak.contains(p)) newList.add(p);
             }
-            toCheck = newList;
-            toCheck.sort(new BlockPosComparator(player));
+            toCheck = (ArrayList<BlockPos>) newList.clone();
+            toCheck.sort(new BlockPosComparator(sourcePos));
         }
     }
 }

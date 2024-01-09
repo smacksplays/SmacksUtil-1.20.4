@@ -37,9 +37,9 @@ public class MagnetItem extends Item {
                 stack.getOrCreateTag();
                 tag = stack.getTag();
             }
-            setEnable_magnet(tag.getBoolean("magnet_item"));
-            stack.getOrCreateTag().putBoolean("magnet_item", !isEnable_magnet());
-            boolean auto_wand = isEnable_magnet();
+            setEnable_magnet(tag.getBoolean("enabled"));
+            stack.getOrCreateTag().putBoolean("enabled", !isEnable_magnet(stack));
+            boolean auto_wand = isEnable_magnet(stack);
             String str = auto_wand ? "Active" : "Inactive";
             int color = auto_wand ? GREEN : RED;
             player.displayClientMessage(Component
@@ -51,7 +51,7 @@ public class MagnetItem extends Item {
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int $$3, boolean $$4) {
         if (world.isClientSide) return;
-        if (!isEnable_magnet()) return;
+        if (!isEnable_magnet(stack)) return;
         AABB area = new AABB(entity.position().add(-5, -5, -5), entity.position().add(5, 5, 5));
         Player player = (Player) entity;
         List<ItemEntity> entities = world.getEntitiesOfClass(ItemEntity.class, area);
@@ -69,7 +69,9 @@ public class MagnetItem extends Item {
         super.inventoryTick(stack, world, entity, $$3, $$4);
     }
 
-    public boolean isEnable_magnet() {
+    public boolean isEnable_magnet(ItemStack stack) {
+        CompoundTag tag = stack.getOrCreateTag();
+        enable_magnet = tag.getBoolean("enabled");
         return enable_magnet;
     }
 
@@ -78,12 +80,12 @@ public class MagnetItem extends Item {
     }
 
     @Override
-    public boolean isEnchantable(ItemStack $$0) {
+    public boolean isEnchantable(ItemStack stack) {
         return false;
     }
 
     @Override
-    public boolean isFoil(ItemStack $$0) {
-        return isEnable_magnet();
+    public boolean isFoil(ItemStack stack) {
+        return isEnable_magnet(stack);
     }
 }

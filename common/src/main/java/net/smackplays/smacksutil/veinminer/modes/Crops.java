@@ -7,6 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.smackplays.smacksutil.util.BlockPosComparator;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class Crops extends VeinMode {
         if (world == null || player == null || sourcePos == null) return (ArrayList<BlockPos>) toBreak.clone();
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         toBreak.clear();
+        toCheck.clear();
         checked.clear();
         Block toMatch = world.getBlockState(sourcePos).getBlock();
 
@@ -48,7 +50,7 @@ public class Crops extends VeinMode {
             pos = pos.offset(1, 0, -radius * 2 - 1);
         }
 
-        toBreak.sort(new BlockPosComparator(player));
+        toBreak.sort(new BlockPosComparator(sourcePos));
 
         oldToBreak = (ArrayList<BlockPos>) toBreak.clone();
         oldRadius = radius;
