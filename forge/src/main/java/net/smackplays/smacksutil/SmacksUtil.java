@@ -47,6 +47,8 @@ public class SmacksUtil {
             new MagnetItem(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
     public static final RegistryObject<Item> ADVANCED_MAGNET_ITEM = ITEMS.register("advanced_magnet_item", () ->
             new AdvancedMagnetItem(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
+    public static final RegistryObject<Item> MOB_TOOL_ITEM = ITEMS.register("mob_imprisonment_tool", () ->
+            new AdvancedMagnetItem(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
     public static final DeferredRegister<MenuType<?>> SCREEN = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
     public static final RegistryObject<MenuType<LargeBackpackContainerMenu>> GENERIC_13X9 =
             SCREEN.register("large_backpack_screen", () -> IForgeMenuType.create(LargeBackpackContainerMenu::createGeneric13x9));
