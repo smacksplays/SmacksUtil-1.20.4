@@ -1,10 +1,7 @@
 package net.smackplays.smacksutil.platform;
 
 import net.smackplays.smacksutil.Constants;
-import net.smackplays.smacksutil.platform.services.IKeyHandler;
-import net.smackplays.smacksutil.platform.services.IModConfig;
-import net.smackplays.smacksutil.platform.services.IPlatformHelper;
-import net.smackplays.smacksutil.platform.services.IVeinMiner;
+import net.smackplays.smacksutil.platform.services.*;
 
 import java.util.ServiceLoader;
 
@@ -20,6 +17,7 @@ public class Services {
     public static final IModConfig CONFIG = load(IModConfig.class);
     public static final IVeinMiner VEIN_MINER = load(IVeinMiner.class);
     public static final IKeyHandler KEY_HANDLER = load(IKeyHandler.class);
+    public static final IStorageNetworkHelper NETWORK_HELPER = load(IStorageNetworkHelper.class);
 
     // This code is used to load a service for the current environment. Your implementation of the service must be defined
     // manually by including a text file in META-INF/services named with the fully qualified class name of the service.

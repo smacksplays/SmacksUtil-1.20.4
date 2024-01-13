@@ -16,11 +16,12 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 
-public abstract class AbstractDiskReaderBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
+public abstract class AbstractItemMonitorBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 
-    protected NonNullList<ItemStack> items = NonNullList.withSize(11 * 9, ItemStack.EMPTY);
+    public NonNullList<ItemStack> networkItems;
+    protected NonNullList<ItemStack> items = NonNullList.withSize(8, ItemStack.EMPTY);
 
-    protected AbstractDiskReaderBlockEntity(BlockEntityType<?> $$0, BlockPos $$1, BlockState $$2) {
+    protected AbstractItemMonitorBlockEntity(BlockEntityType<?> $$0, BlockPos $$1, BlockState $$2) {
         super($$0, $$1, $$2);
     }
 
@@ -39,8 +40,8 @@ public abstract class AbstractDiskReaderBlockEntity extends BaseContainerBlockEn
         return true;
     }
 
-    public NonNullList<ItemStack> getItems() {
-        return this.items;
+    public void setItems(NonNullList<ItemStack> items) {
+        networkItems = items;
     }
 
     @Override

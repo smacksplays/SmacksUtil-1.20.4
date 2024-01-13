@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "smacksutil:block/item_monitor_block"
+    },
+    "facing=east": {
+      "model": "smacksutil:block/item_monitor_block",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "smacksutil:block/item_monitor_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "smacksutil:block/item_monitor_block",
+      "y": 270
+    }
+  }
+}

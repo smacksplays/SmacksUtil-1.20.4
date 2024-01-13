@@ -11,35 +11,36 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.smackplays.smacksutil.blockEntities.FabricDiskReaderBlockEntity;
-import net.smackplays.smacksutil.menus.FabricDiskReaderMenu;
+import net.smackplays.smacksutil.blockEntities.FabricItemMonitorBlockEntity;
+import net.smackplays.smacksutil.menus.FabricItemMonitorMenu;
 import org.jetbrains.annotations.Nullable;
 
-public class FabricDiskReaderBlock extends AbstractDiskReaderBlock {
-    public static final MapCodec<FabricDiskReaderBlock> CODEC = simpleCodec(FabricDiskReaderBlock::new);
+public class FabricItemMonitorBlock extends AbstractItemMonitorBlock {
+    public static final MapCodec<FabricItemMonitorBlock> CODEC = simpleCodec(FabricItemMonitorBlock::new);
 
-    public FabricDiskReaderBlock(Properties props) {
+    public FabricItemMonitorBlock(Properties props) {
         super(props);
     }
 
     @Override
-    protected MapCodec<FabricDiskReaderBlock> codec() {
+    protected MapCodec<FabricItemMonitorBlock> codec() {
         return CODEC;
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new FabricDiskReaderBlockEntity(blockPos, blockState);
+        return new FabricItemMonitorBlockEntity(blockPos, blockState);
     }
 
     @Override
     protected void openContainer(Level world, BlockPos pos, Player player) {
         BlockEntity entity = world.getBlockEntity(pos);
-        if (entity instanceof FabricDiskReaderBlockEntity) {
+        if (entity instanceof FabricItemMonitorBlockEntity) {
             player.openMenu(createScreenHandlerFactory(entity));
         }
     }
@@ -57,7 +58,7 @@ public class FabricDiskReaderBlock extends AbstractDiskReaderBlock {
 
             @Override
             public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
-                return new FabricDiskReaderMenu(syncId, playerInventory, (Container) entity);
+                return new FabricItemMonitorMenu(syncId, playerInventory, (Container) entity, ContainerLevelAccess.create(entity.getLevel(), entity.getBlockPos()));
             }
         };
     }

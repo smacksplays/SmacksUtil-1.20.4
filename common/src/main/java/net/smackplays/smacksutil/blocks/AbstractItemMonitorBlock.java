@@ -14,34 +14,31 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.smackplays.smacksutil.blockEntities.AbstractDiskReaderBlockEntity;
+import net.smackplays.smacksutil.blockEntities.AbstractItemMonitorBlockEntity;
 
-public abstract class AbstractDiskReaderBlock extends BaseEntityBlock {
+public abstract class AbstractItemMonitorBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    public static final IntegerProperty DISKS = IntegerProperty.create("disk_amount", 0, 8);
 
-    protected AbstractDiskReaderBlock(BlockBehaviour.Properties props) {
+    protected AbstractItemMonitorBlock(Properties props) {
         super(props);
-        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(DISKS, 0));
+        this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
     @Override
-    protected abstract MapCodec<? extends AbstractDiskReaderBlock> codec();
+    protected abstract MapCodec<? extends AbstractItemMonitorBlock> codec();
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> $$0) {
-        $$0.add(FACING, DISKS);
+        $$0.add(FACING);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(DISKS, 0);
+        return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
@@ -73,8 +70,8 @@ public abstract class AbstractDiskReaderBlock extends BaseEntityBlock {
     public void setPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity entity, ItemStack stack) {
         if (stack.hasCustomHoverName()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof AbstractDiskReaderBlockEntity) {
-                ((AbstractDiskReaderBlockEntity) blockEntity).setCustomName(stack.getHoverName());
+            if (blockEntity instanceof AbstractItemMonitorBlockEntity) {
+                ((AbstractItemMonitorBlockEntity) blockEntity).setCustomName(stack.getHoverName());
             }
         }
     }
@@ -83,9 +80,9 @@ public abstract class AbstractDiskReaderBlock extends BaseEntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean bool) {
         if (!state.is(newState.getBlock())) {
             BlockEntity $$5 = world.getBlockEntity(pos);
-            if ($$5 instanceof AbstractDiskReaderBlockEntity) {
+            if ($$5 instanceof AbstractItemMonitorBlockEntity) {
                 if (world instanceof ServerLevel) {
-                    Containers.dropContents(world, pos, (AbstractDiskReaderBlockEntity) $$5);
+                    Containers.dropContents(world, pos, (AbstractItemMonitorBlockEntity) $$5);
                 }
 
                 super.onRemove(state, world, pos, newState, bool);
@@ -97,4 +94,6 @@ public abstract class AbstractDiskReaderBlock extends BaseEntityBlock {
     }
 
     protected abstract void openContainer(Level var1, BlockPos var2, Player var3);
+
+
 }
