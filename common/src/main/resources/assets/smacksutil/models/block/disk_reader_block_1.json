@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "smacksutil:block/disk_reader_front_1",
-    "side": "smacksutil:block/disk_reader_side_top",
-    "top": "smacksutil:block/disk_reader_side_top"
-  }
-}

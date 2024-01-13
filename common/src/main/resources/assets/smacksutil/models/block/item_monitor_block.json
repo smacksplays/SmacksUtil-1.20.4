@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "smacksutil:block/item_monitor_front",
-    "side": "smacksutil:block/item_monitor_side_top",
-    "top": "smacksutil:block/item_monitor_side_top"
-  }
-}
