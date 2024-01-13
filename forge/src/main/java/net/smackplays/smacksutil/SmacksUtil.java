@@ -37,8 +37,12 @@ import org.slf4j.Logger;
 public class SmacksUtil {
     public static final String MOD_ID = Constants.MOD_ID;
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
+    public static final DeferredRegister<MenuType<?>> SCREENS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
     public static final RegistryObject<Item> BACKPACK_ITEM = ITEMS.register("backpack_item", BackpackItem::new);
     public static final RegistryObject<Item> LARGE_BACKPACK_ITEM = ITEMS.register("large_backpack_item", LargeBackpackItem::new);
+    public static final RegistryObject<MenuType<LargeBackpackContainerMenu>> GENERIC_13X9 =
+            SCREENS.register("large_backpack_screen", () -> IForgeMenuType.create(LargeBackpackContainerMenu::createGeneric13x9));
+
     public static final RegistryObject<Item> LIGHT_WAND = ITEMS.register("light_wand", () ->
             new LightWand(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
     public static final RegistryObject<Item> AUTO_LIGHT_WAND = ITEMS.register("auto_light_wand", () ->
@@ -49,9 +53,8 @@ public class SmacksUtil {
             new AdvancedMagnetItem(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
     public static final RegistryObject<Item> MOB_TOOL_ITEM = ITEMS.register("mob_imprisonment_tool", () ->
             new AdvancedMagnetItem(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
-    public static final DeferredRegister<MenuType<?>> SCREEN = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
-    public static final RegistryObject<MenuType<LargeBackpackContainerMenu>> GENERIC_13X9 =
-            SCREEN.register("large_backpack_screen", () -> IForgeMenuType.create(LargeBackpackContainerMenu::createGeneric13x9));
+    public static final RegistryObject<Item> ADV_MOB_TOOL_ITEM = ITEMS.register("advanced_mob_imp_tool", () ->
+            new AdvancedMagnetItem(new Item.Properties().rarity(Rarity.EPIC).durability(2000)));
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public SmacksUtil() {
@@ -62,7 +65,7 @@ public class SmacksUtil {
 
         modEventBus.addListener(this::commonSetup);
 
-        SCREEN.register(modEventBus);
+        SCREENS.register(modEventBus);
 
         ITEMS.register(modEventBus);
 
@@ -84,6 +87,8 @@ public class SmacksUtil {
             event.accept(AUTO_LIGHT_WAND);
             event.accept(MAGNET_ITEM);
             event.accept(ADVANCED_MAGNET_ITEM);
+            event.accept(MOB_TOOL_ITEM);
+            event.accept(ADV_MOB_TOOL_ITEM);
         }
     }
 
