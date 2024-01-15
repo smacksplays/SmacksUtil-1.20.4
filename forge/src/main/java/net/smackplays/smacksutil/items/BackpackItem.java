@@ -10,7 +10,6 @@ import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.inventories.BackpackInventory;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class BackpackItem extends AbstractBackpackItem {
 

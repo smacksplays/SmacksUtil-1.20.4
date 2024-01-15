@@ -29,9 +29,7 @@ public class MagnetItem extends Item {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level world, @NotNull Player player, @NotNull InteractionHand interactionHand) {
         if (world.isClientSide) return super.use(world, player, interactionHand);
-        if (player.isCrouching()) {
-
-        } else {
+        if (!player.isCrouching()) {
             ItemStack stack = player.getItemInHand(interactionHand);
             CompoundTag tag = stack.getTag();
             if (tag == null) {
@@ -81,7 +79,7 @@ public class MagnetItem extends Item {
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
+    public boolean isEnchantable(@NotNull ItemStack stack) {
         return false;
     }
 
