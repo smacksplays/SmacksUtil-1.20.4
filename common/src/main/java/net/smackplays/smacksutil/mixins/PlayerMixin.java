@@ -24,13 +24,11 @@ public abstract class PlayerMixin {
         if (world.isClientSide) return;
         Player player = (Player) (Object) this;
         ItemStack mainHand = player.getItemInHand(interactionHand);
-        if (mainHand.getItem().getClass().isAssignableFrom(MobImprisonmentTool.class)) {
-            MobImprisonmentTool item = (MobImprisonmentTool) mainHand.getItem();
-            item.interactLivingEntity(mainHand, player, (LivingEntity) entity, interactionHand);
+        if (mainHand.getItem() instanceof MobImprisonmentTool mobTool) {
+            mobTool.interactLivingEntity(mainHand, player, (LivingEntity) entity, interactionHand);
         }
-        if (mainHand.getItem().getClass().isAssignableFrom(AdvancedMobImpTool.class)) {
-            AdvancedMobImpTool item = (AdvancedMobImpTool) mainHand.getItem();
-            item.interactLivingEntity(mainHand, player, (LivingEntity) entity, interactionHand);
+        if (mainHand.getItem() instanceof AdvancedMobImpTool mobTool) {
+            mobTool.interactLivingEntity(mainHand, player, (LivingEntity) entity, interactionHand);
         }
     }
 }

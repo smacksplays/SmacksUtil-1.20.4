@@ -3,10 +3,8 @@ package net.smackplays.smacksutil.screens;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.StringWidget;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -57,12 +55,12 @@ public abstract class AbstractLargeBackpackScreen<T extends AbstractLargeBackpac
         // Center the title
         titleLabelX = (backgroundWidth - font.width(title)) / 2;
         this.buttonWidget = Button.builder(Component.literal("S"), (buttonWidget) -> {
-                onButtonWidgetPressed();
+            onButtonWidgetPressed();
         }).pos(x + 228, y + 4).size(12, 12).build();
         this.addRenderableWidget(buttonWidget);
     }
 
-    public void onButtonWidgetPressed(){
+    public void onButtonWidgetPressed() {
 
     }
 

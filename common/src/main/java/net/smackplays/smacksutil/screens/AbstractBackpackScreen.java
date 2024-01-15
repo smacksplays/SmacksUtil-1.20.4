@@ -55,12 +55,12 @@ public abstract class AbstractBackpackScreen<T extends AbstractBackpackMenu> ext
         // Center the title
         titleLabelX = (backgroundWidth - font.width(title)) / 2;
         this.buttonWidget = Button.builder(Component.literal("S"), (buttonWidget) -> {
-                onButtonWidgetPressed();
+            onButtonWidgetPressed();
         }).pos(x + 156, y + 4).size(12, 12).build();
         this.addRenderableWidget(buttonWidget);
     }
 
-    public void onButtonWidgetPressed(){
+    public void onButtonWidgetPressed() {
 
     }
 

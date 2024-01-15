@@ -11,15 +11,13 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.*;
-import net.smackplays.smacksutil.items.AbstractBackpackItem;
-import net.smackplays.smacksutil.items.LargeBackpackItem;
+import net.smackplays.smacksutil.items.*;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
+import net.smackplays.smacksutil.platform.Services;
+import net.smackplays.smacksutil.screens.BackpackScreen;
 import net.smackplays.smacksutil.screens.EnchantingToolScreen;
 import net.smackplays.smacksutil.screens.LargeBackpackScreen;
-import net.smackplays.smacksutil.screens.BackpackScreen;
-import net.smackplays.smacksutil.items.*;
-import net.smackplays.smacksutil.platform.Services;
 
 public class ModClient implements ClientModInitializer {
 
@@ -71,17 +69,16 @@ public class ModClient implements ClientModInitializer {
             server.execute(() -> {
                 AbstractContainerMenu screenHandler = player.containerMenu;
                 ItemStack stack = buf.readItem();
-                if (stack.getItem() instanceof LargeBackpackItem && screenHandler instanceof LargeBackpackMenu lBackpackMenu){
+                if (stack.getItem() instanceof LargeBackpackItem && screenHandler instanceof LargeBackpackMenu lBackpackMenu) {
                     lBackpackMenu.sort();
-                }
-                else if (stack.getItem() instanceof AbstractBackpackItem && screenHandler instanceof BackpackMenu backpackMenu){
+                } else if (stack.getItem() instanceof AbstractBackpackItem && screenHandler instanceof BackpackMenu backpackMenu) {
                     backpackMenu.sort();
                 }
             });
         });
     }
 
-    private void registerItem(String name, Item item){
+    private void registerItem(String name, Item item) {
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Constants.MOD_ID, name), item);
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.TOOLS_AND_UTILITIES).register(itemGroup -> itemGroup.accept(item));
     }

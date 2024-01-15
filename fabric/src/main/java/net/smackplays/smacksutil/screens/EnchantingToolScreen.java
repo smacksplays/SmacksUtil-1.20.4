@@ -23,6 +23,7 @@ public class EnchantingToolScreen extends AbstractEnchantingToolScreen<Enchantin
     public EnchantingToolScreen(EnchantingToolMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
     }
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int $$2) {
         int x = (width - this.backgroundWidth) / 2;
@@ -31,18 +32,18 @@ public class EnchantingToolScreen extends AbstractEnchantingToolScreen<Enchantin
         Slot enchantSlot = this.menu.slots.get(0);
 
         ItemStack stack = enchantSlot.getItem().copy();
-        if (!stack.isEmpty()){
+        if (!stack.isEmpty()) {
             ArrayList<Enchantment> list = new ArrayList<>();
-            if (enchantSlot.hasItem()){
+            if (enchantSlot.hasItem()) {
                 Iterator iterator = BuiltInRegistries.ENCHANTMENT.iterator();
-                while (iterator.hasNext()){
+                while (iterator.hasNext()) {
                     Enchantment enchantment = (Enchantment) iterator.next();
                     int lvl = EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
-                    if ( enchantment.category.canEnchant(stack.getItem()) && lvl == 0) list.add(enchantment);
+                    if (enchantment.category.canEnchant(stack.getItem()) && lvl == 0) list.add(enchantment);
                 }
             }
 
-            for(int i = 0; i < 6; ++i) {
+            for (int i = 0; i < 6; ++i) {
                 boolean b1 = x + 6 < mouseX;
                 boolean b2 = x + 124 >= mouseX;
                 boolean b3 = y + 13 + 19 * i < mouseY;
@@ -62,7 +63,7 @@ public class EnchantingToolScreen extends AbstractEnchantingToolScreen<Enchantin
                     return true;
                 }
             }
-            if (list.size() > 6 && insideScrollbar(x, y, mouseX, mouseY)){
+            if (list.size() > 6 && insideScrollbar(x, y, mouseX, mouseY)) {
                 this.scrolling = true;
             }
         }

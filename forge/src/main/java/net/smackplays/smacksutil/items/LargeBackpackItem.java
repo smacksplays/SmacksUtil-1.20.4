@@ -6,8 +6,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.smackplays.smacksutil.menus.LargeBackpackMenu;
+import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.inventories.LargeBackpackInventory;
+import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import org.jetbrains.annotations.Nullable;
 
 public class LargeBackpackItem extends AbstractBackpackItem {
@@ -22,7 +23,7 @@ public class LargeBackpackItem extends AbstractBackpackItem {
             @Nullable
             @Override
             public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
-                return new LargeBackpackMenu(syncId, playerInventory, new LargeBackpackInventory(stack));
+                return new LargeBackpackMenu(SmacksUtil.GENERIC_13X9.get(), syncId, playerInventory, new LargeBackpackInventory(stack));
             }
 
             @Override

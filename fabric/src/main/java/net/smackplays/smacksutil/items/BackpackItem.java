@@ -11,9 +11,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.inventories.BackpackInventory;
-import net.smackplays.smacksutil.inventories.LargeBackpackInventory;
 import net.smackplays.smacksutil.menus.BackpackMenu;
-import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 
 public class BackpackItem extends AbstractBackpackItem {
 

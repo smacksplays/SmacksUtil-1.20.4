@@ -1,7 +1,10 @@
 package net.smackplays.smacksutil.platform;
 
 import net.smackplays.smacksutil.Constants;
-import net.smackplays.smacksutil.platform.services.*;
+import net.smackplays.smacksutil.platform.services.IKeyHandler;
+import net.smackplays.smacksutil.platform.services.IModConfig;
+import net.smackplays.smacksutil.platform.services.IPlatformHelper;
+import net.smackplays.smacksutil.platform.services.IVeinMiner;
 
 import java.util.ServiceLoader;
 

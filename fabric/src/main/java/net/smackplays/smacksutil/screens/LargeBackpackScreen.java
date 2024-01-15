@@ -14,8 +14,9 @@ public class LargeBackpackScreen extends AbstractLargeBackpackScreen<LargeBackpa
     public LargeBackpackScreen(LargeBackpackMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
     }
+
     @Override
-    public void onButtonWidgetPressed(){
+    public void onButtonWidgetPressed() {
         FriendlyByteBuf packet = PacketByteBufs.create();
         ItemStack stack = this.menu.playerInventory.getSelected();
         packet.writeItem(stack);

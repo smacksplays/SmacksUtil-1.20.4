@@ -7,15 +7,13 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
+import net.smackplays.smacksutil.events.veinminer.PlayerBlockBreak;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
-import net.smackplays.smacksutil.events.veinminer.PlayerBlockBreak;
 
 public class SmacksUtil implements ModInitializer {
 
-    public static final MenuType<LargeBackpackMenu> GENERIC_13X9 = new ExtendedScreenHandlerType<>(LargeBackpackMenu::createGeneric13x9);
-    public static final MenuType<BackpackMenu> GENERIC_9X6 = new ExtendedScreenHandlerType<>(BackpackMenu::createGeneric9x6);
     public static final MenuType<EnchantingToolMenu> ENCHANTING_TOOL = new ExtendedScreenHandlerType<>(EnchantingToolMenu::create);
 
     @Override
@@ -28,5 +26,11 @@ public class SmacksUtil implements ModInitializer {
 
         Constants.LOG.info("Hello Fabric world!");
         CommonClass.init();
-    }
+    }    public static final MenuType<LargeBackpackMenu> GENERIC_13X9 = new ExtendedScreenHandlerType<>(LargeBackpackMenu::createGeneric13x9);
+
+
+
+    public static final MenuType<BackpackMenu> GENERIC_9X6 = new ExtendedScreenHandlerType<>(BackpackMenu::createGeneric9x6);
+
+
 }

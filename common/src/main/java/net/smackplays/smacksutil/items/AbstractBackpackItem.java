@@ -48,12 +48,12 @@ public abstract class AbstractBackpackItem extends Item implements DyeableLeathe
                 new AbstractBackpackMenu(MenuType.GENERIC_9x6, i, playerInventory, new BackpackInventory(stack)), stack.getHoverName());
     }
 
-    public void sortItems(ItemStack stack, String key){
+    public void sortItems(ItemStack stack, String key) {
         CompoundTag tag = stack.getTagElement(key);
         ListTag listTag = tag.getList("Items", 10);
         NonNullList<ItemStack> items = NonNullList.withSize(listTag.size(), ItemStack.EMPTY);
         if (tag != null) {
-            for(int i = 0; i < listTag.size(); ++i) {
+            for (int i = 0; i < listTag.size(); ++i) {
                 CompoundTag compoundTag = listTag.getCompound(i);
                 int slot = compoundTag.getByte("Slot") & 255;
                 if (slot >= 0 && slot < items.size()) {
@@ -65,14 +65,13 @@ public abstract class AbstractBackpackItem extends Item implements DyeableLeathe
         ContainerHelper.saveAllItems(tag, items);
     }
 
-    private String getStringForSort(ItemStack stack){
+    private String getStringForSort(ItemStack stack) {
         String s = "";
-        if (stack.isEmpty()){
+        if (stack.isEmpty()) {
             return "zzz";
-        }
-        else if (stack.hasCustomHoverName()){
+        } else if (stack.hasCustomHoverName()) {
             s = stack.getHoverName().getString();
-        }else{
+        } else {
             s = stack.getDisplayName().getString();
         }
         return s;

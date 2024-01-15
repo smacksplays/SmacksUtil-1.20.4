@@ -8,8 +8,6 @@ import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Comparator;
-
 public interface ImplementedInventory extends WorldlyContainer {
     static ImplementedInventory of(NonNullList<ItemStack> items) {
         return () -> items;

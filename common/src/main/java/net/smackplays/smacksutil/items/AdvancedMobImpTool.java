@@ -16,7 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -38,7 +37,8 @@ public class AdvancedMobImpTool extends Item {
         if (listTag != null && !listTag.isEmpty()) {
             CompoundTag tag = (CompoundTag) listTag.get(0);
             BlockPos clicked = context.getClickedPos();
-            if (!world.isClientSide && isHolding(stack) && world.getBlockState(clicked.above()).is(Blocks.AIR)) {
+            if (!world.isClientSide && isHolding(stack)
+                    && world.getBlockState(clicked.above()).getCollisionShape(world, clicked.above()).isEmpty()) {
                 Entity toCreate = EntityType.loadEntityRecursive(tag, world, entity -> {
                     entity.moveTo(
                             clicked.above(),
@@ -116,6 +116,7 @@ public class AdvancedMobImpTool extends Item {
         CompoundTag tag = itemStack.getOrCreateTag();
         if (!tag.isEmpty()) {
             ListTag listTag = (ListTag) tag.get("Entities");
+            if (listTag == null) return;
             for (Tag ltag : listTag) {
                 CompoundTag compoundTag = (CompoundTag) ltag;
                 Component storedEntity = Component.literal("Entity: " + compoundTag.getString("id"));

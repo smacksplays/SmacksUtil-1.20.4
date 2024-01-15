@@ -1,9 +1,7 @@
 package net.smackplays.smacksutil.menus;
 
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -78,23 +76,22 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
         return itemStack;
     }
 
-    public void sort(){
-        ImplementedInventory impInv = (ImplementedInventory)inventory;
+    public void sort() {
+        ImplementedInventory impInv = (ImplementedInventory) inventory;
         NonNullList<ItemStack> items = impInv.getItems();
         items.sort(Comparator.comparing(this::getStringForSort));
-        for (int i = 0; i < items.size(); i++){
+        for (int i = 0; i < items.size(); i++) {
             this.slots.get(i).set(impInv.getItem(i));
         }
     }
 
-    private String getStringForSort(ItemStack stack){
+    private String getStringForSort(ItemStack stack) {
         String s = "";
-        if (stack.isEmpty()){
+        if (stack.isEmpty()) {
             return "zzz";
-        }
-        else if (stack.hasCustomHoverName()){
+        } else if (stack.hasCustomHoverName()) {
             s = stack.getHoverName().getString();
-        }else{
+        } else {
             s = stack.getDisplayName().getString();
         }
         return s;
