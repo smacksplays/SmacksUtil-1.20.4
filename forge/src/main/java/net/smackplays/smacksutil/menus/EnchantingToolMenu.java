@@ -12,6 +12,7 @@ public class EnchantingToolMenu extends AbstractEnchantingToolMenu {
         super(SmacksUtil.ENCHANTING_TOOL.get(), syncId, playerInv, inv);
     }
 
+    @SuppressWarnings("unused")
     public static EnchantingToolMenu create(int syncId, Inventory playerInventory, FriendlyByteBuf buf) {
         return new EnchantingToolMenu(syncId, playerInventory, ImplementedInventory.ofSize(1));
     }

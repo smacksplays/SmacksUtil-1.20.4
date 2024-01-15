@@ -12,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class MagnetItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand interactionHand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level world, @NotNull Player player, @NotNull InteractionHand interactionHand) {
         if (world.isClientSide) return super.use(world, player, interactionHand);
         if (player.isCrouching()) {
 
@@ -49,7 +50,7 @@ public class MagnetItem extends Item {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level world, Entity entity, int $$3, boolean $$4) {
+    public void inventoryTick(@NotNull ItemStack stack, Level world, @NotNull Entity entity, int $$3, boolean $$4) {
         if (world.isClientSide) return;
         if (!isEnable_magnet(stack)) return;
         AABB area = new AABB(entity.position().add(-5, -5, -5), entity.position().add(5, 5, 5));
@@ -85,7 +86,7 @@ public class MagnetItem extends Item {
     }
 
     @Override
-    public boolean isFoil(ItemStack stack) {
+    public boolean isFoil(@NotNull ItemStack stack) {
         return isEnable_magnet(stack);
     }
 }

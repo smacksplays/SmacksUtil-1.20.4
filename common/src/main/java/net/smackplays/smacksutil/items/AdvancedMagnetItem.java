@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class AdvancedMagnetItem extends MagnetItem {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level world, Entity entity, int $$3, boolean $$4) {
+    public void inventoryTick(@NotNull ItemStack stack, Level world, @NotNull Entity entity, int $$3, boolean $$4) {
         if (world.isClientSide) return;
         if (!isEnable_magnet(stack)) return;
         AABB area = new AABB(entity.position().add(-10, -10, -10), entity.position().add(10, 10, 10));

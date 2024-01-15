@@ -57,25 +57,21 @@ public class ModClient implements ClientModInitializer {
         registerItem("mob_imprisonment_tool", MOB_TOOL_ITEM);
         registerItem("advanced_mob_imp_tool", ADV_MOB_TOOL_ITEM);
 
-        ServerPlayNetworking.registerGlobalReceiver(ENCHANT_REQUEST_ID, (server, player, handler, buf, responseSender) -> {
-            server.execute(() -> {
-                AbstractContainerMenu screenHandler = player.containerMenu;
-                ItemStack item = buf.readItem();
-                screenHandler.slots.get(0).set(item);
-            });
-        });
+        ServerPlayNetworking.registerGlobalReceiver(ENCHANT_REQUEST_ID, (server, player, handler, buf, responseSender) -> server.execute(() -> {
+            AbstractContainerMenu screenHandler = player.containerMenu;
+            ItemStack item = buf.readItem();
+            screenHandler.slots.get(0).set(item);
+        }));
 
-        ServerPlayNetworking.registerGlobalReceiver(SORT_REQUEST_ID, (server, player, handler, buf, responseSender) -> {
-            server.execute(() -> {
-                AbstractContainerMenu screenHandler = player.containerMenu;
-                ItemStack stack = buf.readItem();
-                if (stack.getItem() instanceof LargeBackpackItem && screenHandler instanceof LargeBackpackMenu lBackpackMenu) {
-                    lBackpackMenu.sort();
-                } else if (stack.getItem() instanceof AbstractBackpackItem && screenHandler instanceof BackpackMenu backpackMenu) {
-                    backpackMenu.sort();
-                }
-            });
-        });
+        ServerPlayNetworking.registerGlobalReceiver(SORT_REQUEST_ID, (server, player, handler, buf, responseSender) -> server.execute(() -> {
+            AbstractContainerMenu screenHandler = player.containerMenu;
+            ItemStack stack = buf.readItem();
+            if (stack.getItem() instanceof LargeBackpackItem && screenHandler instanceof LargeBackpackMenu lBackpackMenu) {
+                lBackpackMenu.sort();
+            } else if (stack.getItem() instanceof AbstractBackpackItem && screenHandler instanceof BackpackMenu backpackMenu) {
+                backpackMenu.sort();
+            }
+        }));
     }
 
     private void registerItem(String name, Item item) {

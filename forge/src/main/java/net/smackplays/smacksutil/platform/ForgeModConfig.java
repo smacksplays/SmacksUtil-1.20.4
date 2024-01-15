@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.platform.services.IModConfig;
 
+@SuppressWarnings({"unused", "rawtypes", "UnstableApiUsage"})
 @Config(name = Constants.MOD_ID)
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ForgeModConfig implements IModConfig, ConfigData {

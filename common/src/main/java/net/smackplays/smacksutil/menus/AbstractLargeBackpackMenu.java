@@ -10,6 +10,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.inventories.ImplementedInventory;
 import net.smackplays.smacksutil.slots.BackpackSlot;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
@@ -47,12 +48,12 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
         }
     }
 
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return this.inventory.stillValid(player);
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
 
@@ -86,7 +87,7 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
     }
 
     private String getStringForSort(ItemStack stack) {
-        String s = "";
+        String s;
         if (stack.isEmpty()) {
             return "zzz";
         } else if (stack.hasCustomHoverName()) {

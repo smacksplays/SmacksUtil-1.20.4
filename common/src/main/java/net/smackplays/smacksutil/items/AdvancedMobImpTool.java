@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class AdvancedMobImpTool extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         Level world = context.getLevel();
         ItemStack stack = context.getItemInHand();
         CompoundTag mainTag = stack.getOrCreateTag();
@@ -60,7 +61,7 @@ public class AdvancedMobImpTool extends Item {
     }
 
     @Override
-    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity livingEntity, InteractionHand interactionHand) {
+    public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity livingEntity, @NotNull InteractionHand interactionHand) {
         Level world = player.level();
         ItemStack mainHandStack = player.getItemInHand(interactionHand);
         CompoundTag tag = mainHandStack.getOrCreateTag();
@@ -104,15 +105,14 @@ public class AdvancedMobImpTool extends Item {
         CompoundTag tag = stack.getOrCreateTag();
         if (tag.contains("is_Holding")) {
             ListTag listTag = (ListTag) tag.get("Entities");
-            if (listTag.size() < 10) return true;
+            return listTag != null && listTag.size() < 10;
         } else {
             return true;
         }
-        return false;
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level world, List<Component> componentList, TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemStack, @Nullable Level world, @NotNull List<Component> componentList, @NotNull TooltipFlag flag) {
         CompoundTag tag = itemStack.getOrCreateTag();
         if (!tag.isEmpty()) {
             ListTag listTag = (ListTag) tag.get("Entities");
@@ -132,7 +132,7 @@ public class AdvancedMobImpTool extends Item {
     }
 
     @Override
-    public boolean isFoil(ItemStack stack) {
+    public boolean isFoil(@NotNull ItemStack stack) {
         return isHolding(stack);
     }
 }

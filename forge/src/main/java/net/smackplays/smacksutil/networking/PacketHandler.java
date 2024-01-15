@@ -8,6 +8,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.SimpleChannel;
 import net.smackplays.smacksutil.Constants;
 
+@SuppressWarnings("unused")
 public class PacketHandler {
     private static final SimpleChannel INSTANCE = ChannelBuilder.named(
                     new ResourceLocation(Constants.MOD_ID, "main"))

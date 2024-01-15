@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.inventories.BackpackInventory;
 import net.smackplays.smacksutil.menus.BackpackMenu;
+import org.jetbrains.annotations.NotNull;
 
 public class BackpackItem extends AbstractBackpackItem {
 
@@ -27,12 +28,12 @@ public class BackpackItem extends AbstractBackpackItem {
             }
 
             @Override
-            public Component getDisplayName() {
+            public @NotNull Component getDisplayName() {
                 return stack.getHoverName();
             }
 
             @Override
-            public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
+            public AbstractContainerMenu createMenu(int syncId, @NotNull Inventory playerInventory, @NotNull Player player) {
                 return new BackpackMenu(SmacksUtil.GENERIC_9X6, syncId, playerInventory, new BackpackInventory(stack));
             }
         };

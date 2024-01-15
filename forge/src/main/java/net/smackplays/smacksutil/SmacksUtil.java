@@ -1,6 +1,5 @@
 package net.smackplays.smacksutil;
 
-import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.inventory.MenuType;
@@ -30,9 +29,9 @@ import net.smackplays.smacksutil.networking.PacketHandler;
 import net.smackplays.smacksutil.screens.BackpackScreen;
 import net.smackplays.smacksutil.screens.EnchantingToolScreen;
 import net.smackplays.smacksutil.screens.LargeBackpackScreen;
-import org.slf4j.Logger;
 
 
+@SuppressWarnings("unused")
 @Mod(Constants.MOD_ID)
 public class SmacksUtil {
     public static final String MOD_ID = Constants.MOD_ID;
@@ -60,7 +59,6 @@ public class SmacksUtil {
             new AdvancedMobImpTool(new Item.Properties().rarity(Rarity.EPIC).durability(2000)));
     public static final RegistryObject<Item> ENCH_TOOL = ITEMS.register("enchanting_tool", () ->
             new ForgeEnchantingTool(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1)));
-    private static final Logger LOGGER = LogUtils.getLogger();
     public SmacksUtil() {
         Constants.LOG.info("Hello Forge world!");
         CommonClass.init();
@@ -81,9 +79,7 @@ public class SmacksUtil {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            PacketHandler.register();
-        });
+        event.enqueueWork(PacketHandler::register);
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {

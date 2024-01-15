@@ -17,11 +17,5 @@ public class BackpackScreen extends AbstractBackpackScreen<BackpackMenu> {
     public void onButtonWidgetPressed() {
         ItemStack stack = this.menu.playerInventory.getSelected();
         PacketHandler.sendToServer(new SSortPacket(stack));
-        /*
-        FriendlyByteBuf packet = PacketByteBufs.create();
-        ItemStack stack = this.menu.playerInventory.getSelected();
-        packet.writeItem(stack);
-        ClientPlayNetworking.send(ModClient.SORT_REQUEST_ID, packet);
-        */
     }
 }

@@ -15,9 +15,9 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.menus.AbstractEnchantingToolMenu;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> extends AbstractContainerScreen<T> {
@@ -56,9 +56,7 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
         ItemStack stack = enchantSlot.getItem();
         ArrayList<Enchantment> list = new ArrayList<>();
         if (enchantSlot.hasItem()) {
-            Iterator iterator = BuiltInRegistries.ENCHANTMENT.iterator();
-            while (iterator.hasNext()) {
-                Enchantment enchantment = (Enchantment) iterator.next();
+            for (Enchantment enchantment : BuiltInRegistries.ENCHANTMENT) {
                 int lvl = EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
                 if (enchantment.category.canEnchant(stack.getItem()) && lvl == 0) list.add(enchantment);
             }
@@ -99,7 +97,7 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta) {
         renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         renderTooltip(context, mouseX, mouseY);
@@ -137,9 +135,6 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int $$2, double scrollX, double scrollY) {
         if (this.scrolling) {
-            int y = (height - backgroundHeight) / 2;
-            int $$5 = y + 24;
-            int $$6 = $$5 + 137;
             this.scrollOffs = (float) mouseY - 30;
             this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 99F);
             return true;

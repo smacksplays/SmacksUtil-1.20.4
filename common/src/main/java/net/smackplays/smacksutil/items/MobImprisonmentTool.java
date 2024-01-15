@@ -15,6 +15,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class MobImprisonmentTool extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         Level world = context.getLevel();
         ItemStack stack = context.getItemInHand();
         CompoundTag tag = stack.getOrCreateTag();
@@ -42,6 +43,7 @@ public class MobImprisonmentTool extends Item {
                         entity.getXRot());
                 return entity;
             });
+            if (toCreate == null) return InteractionResult.FAIL;
             toCreate.setUUID(UUID.randomUUID());
             toCreate.setPos(context.getClickedPos().above().getCenter().add(0, -0.5, 0));
             world.addFreshEntity(toCreate);
@@ -51,7 +53,7 @@ public class MobImprisonmentTool extends Item {
     }
 
     @Override
-    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity livingEntity, InteractionHand interactionHand) {
+    public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity livingEntity, @NotNull InteractionHand interactionHand) {
         Level world = player.level();
         ItemStack mainHandStack = player.getItemInHand(interactionHand);
         if (!isHolding(mainHandStack) && !world.isClientSide && interactionHand.equals(InteractionHand.MAIN_HAND)) {
@@ -77,7 +79,7 @@ public class MobImprisonmentTool extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level world, List<Component> componentList, TooltipFlag flag) {
+    public void appendHoverText(ItemStack itemStack, @Nullable Level world, @NotNull List<Component> componentList, @NotNull TooltipFlag flag) {
         CompoundTag tag = itemStack.getOrCreateTag();
         if (!tag.isEmpty()) {
             Component storedEntity = Component.literal("Entity: " + tag.getString("id"));
@@ -92,7 +94,7 @@ public class MobImprisonmentTool extends Item {
     }
 
     @Override
-    public boolean isFoil(ItemStack stack) {
+    public boolean isFoil(@NotNull ItemStack stack) {
         return isHolding(stack);
     }
 }

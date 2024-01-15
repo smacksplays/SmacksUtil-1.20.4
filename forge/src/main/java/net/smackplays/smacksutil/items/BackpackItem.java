@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.inventories.BackpackInventory;
 import net.smackplays.smacksutil.menus.BackpackMenu;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BackpackItem extends AbstractBackpackItem {
@@ -20,14 +21,13 @@ public class BackpackItem extends AbstractBackpackItem {
     @Override
     public MenuProvider createScreenHandlerFactory(ItemStack stack) {
         return new MenuProvider() {
-            @Nullable
             @Override
-            public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
+            public @NotNull AbstractContainerMenu createMenu(int syncId, @NotNull Inventory playerInventory, @NotNull Player player) {
                 return new BackpackMenu(SmacksUtil.GENERIC_9X6.get(), syncId, playerInventory, new BackpackInventory(stack));
             }
 
             @Override
-            public Component getDisplayName() {
+            public @NotNull Component getDisplayName() {
                 return stack.getHoverName();
             }
         };

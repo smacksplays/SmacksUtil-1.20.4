@@ -1,8 +1,6 @@
 package net.smackplays.smacksutil.networking;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
@@ -31,8 +29,6 @@ public class SSortPacket {
         ServerPlayer player = context.getSender();
         if (player == null)
             return;
-        ServerLevel level = player.serverLevel();
-        BlockPos position = player.blockPosition();
         AbstractContainerMenu screenHandler = player.containerMenu;
 
         if (stack.getItem() instanceof LargeBackpackItem && screenHandler instanceof LargeBackpackMenu lBackpackMenu) {

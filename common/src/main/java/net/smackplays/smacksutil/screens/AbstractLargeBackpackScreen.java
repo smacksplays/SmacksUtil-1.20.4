@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.menus.AbstractLargeBackpackMenu;
+import org.jetbrains.annotations.NotNull;
 
 
 public abstract class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> extends AbstractContainerScreen<T> {
@@ -17,7 +18,6 @@ public abstract class AbstractLargeBackpackScreen<T extends AbstractLargeBackpac
     //A path to the gui texture. In this example we use the texture from the dispenser
     protected int backgroundWidth = 248;
     protected int backgroundHeight = 281;
-    private Button buttonWidget;
 
     public AbstractLargeBackpackScreen(T handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
@@ -35,7 +35,7 @@ public abstract class AbstractLargeBackpackScreen<T extends AbstractLargeBackpac
     }
 
     @Override
-    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta) {
         renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         renderTooltip(context, mouseX, mouseY);
@@ -54,10 +54,8 @@ public abstract class AbstractLargeBackpackScreen<T extends AbstractLargeBackpac
         int y = (height - backgroundHeight) / 2;
         // Center the title
         titleLabelX = (backgroundWidth - font.width(title)) / 2;
-        this.buttonWidget = Button.builder(Component.literal("S"), (buttonWidget) -> {
-            onButtonWidgetPressed();
-        }).pos(x + 228, y + 4).size(12, 12).build();
-        this.addRenderableWidget(buttonWidget);
+        Button buttonWidget1 = Button.builder(Component.literal("S"), (buttonWidget) -> onButtonWidgetPressed()).pos(x + 228, y + 4).size(12, 12).build();
+        this.addRenderableWidget(buttonWidget1);
     }
 
     public void onButtonWidgetPressed() {

@@ -9,6 +9,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractEnchantingTool extends Item {
     public AbstractEnchantingTool(Properties $$0) {
@@ -16,7 +17,7 @@ public abstract class AbstractEnchantingTool extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level world, Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if (world.isClientSide) return InteractionResultHolder.pass(stack);
         if (player.isCrouching()) return InteractionResultHolder.pass(stack);
@@ -27,7 +28,7 @@ public abstract class AbstractEnchantingTool extends Item {
     }
 
     @Override
-    public InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(UseOnContext context) {
         if (context.getPlayer() == null) return InteractionResult.FAIL;
         if (context.getPlayer().isCrouching()) return InteractionResult.PASS;
         use(context.getLevel(), context.getPlayer(), context.getHand());

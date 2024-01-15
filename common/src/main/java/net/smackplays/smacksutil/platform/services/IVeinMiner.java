@@ -79,6 +79,7 @@ public abstract class IVeinMiner {
     abstract public void drawOutline(PoseStack pose, double cameraX, double cameraY, double cameraZ, BlockPos pos,
                                      Level world, Player player);
 
+    @SuppressWarnings("unchecked")
     public ArrayList<BlockPos> getBlocks(Level worldIn, Player playerIn, BlockPos sourcePosIn) {
         BlockState sourceBlockState = worldIn.getBlockState(sourcePosIn);
         ArrayList<BlockPos> matching;
@@ -107,6 +108,7 @@ public abstract class IVeinMiner {
         return matching;
     }
 
+    @SuppressWarnings("unchecked")
     public void veinMiner(Level world, Player player, BlockPos sourcePos) {
         if (isMining) return;
         isMining = true;
@@ -199,9 +201,8 @@ public abstract class IVeinMiner {
         return isExactMatch;
     }
 
-    public VeinMode getMode(Level world, Player player, BlockPos pos) {
+    public VeinMode getMode(Level world, BlockPos pos) {
         BlockState sourceBlockState = world.getBlockState(pos);
-        ArrayList<BlockPos> matching;
         if (sourceBlockState.is(ModTags.Blocks.CROP_BLOCKS)) {
             return CropsMode;
         } else if (sourceBlockState.is(ModTags.Blocks.ORE_BLOCKS)) {
@@ -244,7 +245,7 @@ public abstract class IVeinMiner {
             modeList.remove(MineshaftMode);
         }
 
-        if (player != null && scr == null && Services.KEY_HANDLER.veinKey.isDown()) {
+        if (player != null && scr == null && IKeyHandler.veinKey.isDown()) {
             if (player.isCrouching()) {
                 currMode += (int) vertical;
                 player.getInventory().selected = player.getInventory().selected + (int) vertical;

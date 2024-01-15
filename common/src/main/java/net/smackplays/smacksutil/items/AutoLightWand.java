@@ -14,6 +14,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.smackplays.smacksutil.util.PlayerComparator;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,7 @@ public class AutoLightWand extends LightWand {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand interactionHand) {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level world, @NotNull Player player, @NotNull InteractionHand interactionHand) {
         if (world.isClientSide) return super.use(world, player, interactionHand);
         if (player.isCrouching()) {
             ItemStack stack = player.getItemInHand(interactionHand);
@@ -44,7 +45,7 @@ public class AutoLightWand extends LightWand {
     }
 
     @Override
-    public void inventoryTick(ItemStack stack, Level world, Entity entity, int $$3, boolean $$4) {
+    public void inventoryTick(@NotNull ItemStack stack, Level world, @NotNull Entity entity, int $$3, boolean $$4) {
         if (!world.isClientSide && isEnable_wand(stack)) {
             Player player = (Player) entity;
 
@@ -87,7 +88,7 @@ public class AutoLightWand extends LightWand {
 
     @Override
 
-    public boolean isFoil(ItemStack stack) {
+    public boolean isFoil(@NotNull ItemStack stack) {
         return isEnable_wand(stack);
     }
 }

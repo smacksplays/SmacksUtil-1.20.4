@@ -15,7 +15,6 @@ import net.smackplays.smacksutil.ModClient;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 
@@ -35,9 +34,7 @@ public class EnchantingToolScreen extends AbstractEnchantingToolScreen<Enchantin
         if (!stack.isEmpty()) {
             ArrayList<Enchantment> list = new ArrayList<>();
             if (enchantSlot.hasItem()) {
-                Iterator iterator = BuiltInRegistries.ENCHANTMENT.iterator();
-                while (iterator.hasNext()) {
-                    Enchantment enchantment = (Enchantment) iterator.next();
+                for (Enchantment enchantment : BuiltInRegistries.ENCHANTMENT) {
                     int lvl = EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
                     if (enchantment.category.canEnchant(stack.getItem()) && lvl == 0) list.add(enchantment);
                 }
@@ -55,6 +52,7 @@ public class EnchantingToolScreen extends AbstractEnchantingToolScreen<Enchantin
                     EnchantmentHelper.setEnchantments(map, stack);
                     enchantSlot.setChanged();
                     this.menu.setItem(0, 0, stack);
+                    assert Minecraft.getInstance().gameMode != null;
                     Minecraft.getInstance().gameMode.handleSlotStateChanged(0, menu.containerId, false);
 
                     FriendlyByteBuf packet = PacketByteBufs.create();

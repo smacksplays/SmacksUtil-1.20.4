@@ -19,7 +19,6 @@ public abstract class PlayerMixin {
 
     @Inject(at = @At("HEAD"), method = "interactOn")
     private void onScroll(Entity entity, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
-        int i = 0;
         Level world = entity.level();
         if (world.isClientSide) return;
         Player player = (Player) (Object) this;

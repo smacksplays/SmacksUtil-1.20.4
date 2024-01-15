@@ -11,6 +11,7 @@ import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.platform.services.IKeyHandler;
 import org.lwjgl.glfw.GLFW;
 
+@SuppressWarnings("unused")
 public class ForgeKeyHandler extends IKeyHandler {
 
     @Mod.EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)

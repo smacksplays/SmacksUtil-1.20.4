@@ -11,6 +11,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.inventories.EnchantmentToolInventory;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
+import org.jetbrains.annotations.NotNull;
 
 public class FabricEnchantingTool extends AbstractEnchantingTool {
     public FabricEnchantingTool(Properties $$0) {
@@ -25,12 +26,12 @@ public class FabricEnchantingTool extends AbstractEnchantingTool {
             }
 
             @Override
-            public Component getDisplayName() {
+            public @NotNull Component getDisplayName() {
                 return stack.getHoverName();
             }
 
             @Override
-            public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
+            public AbstractContainerMenu createMenu(int syncId, @NotNull Inventory playerInventory, @NotNull Player player) {
                 return new EnchantingToolMenu(syncId, playerInventory, new EnchantmentToolInventory(stack));
             }
         };

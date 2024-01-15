@@ -14,6 +14,7 @@ public class LargeBackpackMenu extends AbstractLargeBackpackMenu {
         super(menuType, syncId, playerInv, inv);
     }
 
+    @SuppressWarnings("unused")
     public static LargeBackpackMenu createGeneric13x9(int syncId, Inventory playerInventory, FriendlyByteBuf buf) {
         return new LargeBackpackMenu(SmacksUtil.GENERIC_13X9.get(), syncId, playerInventory, ImplementedInventory.ofSize(13 * 9));
     }

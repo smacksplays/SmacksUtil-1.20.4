@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.slots.EnchantingToolSlot;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractEnchantingToolMenu extends AbstractContainerMenu {
@@ -37,12 +38,12 @@ public abstract class AbstractEnchantingToolMenu extends AbstractContainerMenu {
         }
     }
 
-    public boolean stillValid(Player player) {
+    public boolean stillValid(@NotNull Player player) {
         return this.inventory.stillValid(player);
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot.hasItem() && (slot.getItem().isEnchantable() || slot.getItem().getOrCreateTag().contains("Enchantments"))) {
