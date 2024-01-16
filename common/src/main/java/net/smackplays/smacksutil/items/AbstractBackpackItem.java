@@ -36,7 +36,7 @@ public abstract class AbstractBackpackItem extends Item implements DyeableLeathe
         if (context.getPlayer() == null) return InteractionResult.FAIL;
         if (context.getPlayer().isCrouching()) return InteractionResult.PASS;
         use(context.getLevel(), context.getPlayer(), context.getHand());
-        return InteractionResult.CONSUME;
+        return InteractionResult.SUCCESS;
     }
 
     public MenuProvider createScreenHandlerFactory(ItemStack stack) {

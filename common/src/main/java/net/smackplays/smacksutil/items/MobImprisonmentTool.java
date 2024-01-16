@@ -43,13 +43,13 @@ public class MobImprisonmentTool extends Item {
                         entity.getXRot());
                 return entity;
             });
-            if (toCreate == null) return InteractionResult.FAIL;
+            if (toCreate == null) return InteractionResult.SUCCESS;
             toCreate.setUUID(UUID.randomUUID());
             toCreate.setPos(context.getClickedPos().above().getCenter().add(0, -0.5, 0));
             world.addFreshEntity(toCreate);
             stack.setTag(new CompoundTag());
         }
-        return super.useOn(context);
+        return InteractionResult.SUCCESS;
     }
 
     @Override

@@ -5,6 +5,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.Constants;
+import org.jetbrains.annotations.NotNull;
 
 public record SortData(ItemStack item) implements CustomPacketPayload {
 
@@ -20,7 +21,7 @@ public record SortData(ItemStack item) implements CustomPacketPayload {
     }
 
     @Override
-    public ResourceLocation id() {
+    public @NotNull ResourceLocation id() {
         return ID;
     }
 }

@@ -32,7 +32,7 @@ public abstract class AbstractEnchantingTool extends Item {
         if (context.getPlayer() == null) return InteractionResult.FAIL;
         if (context.getPlayer().isCrouching()) return InteractionResult.PASS;
         use(context.getLevel(), context.getPlayer(), context.getHand());
-        return InteractionResult.CONSUME;
+        return InteractionResult.SUCCESS;
     }
 
     abstract MenuProvider createScreenHandlerFactory(ItemStack stack);

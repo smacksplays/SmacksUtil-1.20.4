@@ -40,7 +40,7 @@ public class LightBlockMixin {
             if (level.getBlockState(blockPos).is(Blocks.LIGHT)) {
                 level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
             }
-            cir.setReturnValue(InteractionResult.CONSUME);
+            cir.setReturnValue(InteractionResult.SUCCESS);
         }
     }
 }

@@ -3,6 +3,7 @@ package net.smackplays.smacksutil.items;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
@@ -28,9 +29,9 @@ public class MagnetItem extends Item {
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level world, @NotNull Player player, @NotNull InteractionHand interactionHand) {
-        if (world.isClientSide) return super.use(world, player, interactionHand);
+        ItemStack stack = player.getItemInHand(interactionHand);
+        if (world.isClientSide) return InteractionResultHolder.success(stack);
         if (!player.isCrouching()) {
-            ItemStack stack = player.getItemInHand(interactionHand);
             CompoundTag tag = stack.getTag();
             if (tag == null) {
                 stack.getOrCreateTag();
@@ -43,6 +44,7 @@ public class MagnetItem extends Item {
             int color = auto_wand ? GREEN : RED;
             player.displayClientMessage(Component
                     .literal("Magnet: " + str).withColor(color), true);
+            return InteractionResultHolder.success(stack);
         }
         return super.use(world, player, interactionHand);
     }

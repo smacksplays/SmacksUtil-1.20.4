@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.0.12] - 2024.01.16
+
+### Added
+NeoForge implementation of all features.
+
+Enchanting Tool: Lets you enchant items for free. Will change in the future.
+
+Mob Imprisonment Tool / Advanced Mob Imprisonment Tool: Capture Mobs with a right click. Normal 1 Mob. Advanced 10 Mobs.
+
 ## [0.0.11] - 2024.01.09
 
 ### Fixed

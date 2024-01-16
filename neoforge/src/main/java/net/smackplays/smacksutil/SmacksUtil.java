@@ -13,6 +13,7 @@ import net.neoforged.fml.DistExecutor;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
@@ -36,8 +37,11 @@ import net.smackplays.smacksutil.screens.BackpackScreen;
 import net.smackplays.smacksutil.screens.EnchantingToolScreen;
 import net.smackplays.smacksutil.screens.LargeBackpackScreen;
 
+import java.util.function.Supplier;
+
 import static net.smackplays.smacksutil.Constants.MOD_ID;
 
+@SuppressWarnings("unused")
 @Mod(MOD_ID)
 public class SmacksUtil {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MOD_ID);
@@ -77,7 +81,11 @@ public class SmacksUtil {
         NeoForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClothConfigNeoForge::registerModsPage);
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            Supplier<Runnable> toRun = () -> ClothConfigNeoForge::registerModsPage;
+            toRun.get().run();
+        }
+        //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClothConfigNeoForge::registerModsPage);
     }
 
 

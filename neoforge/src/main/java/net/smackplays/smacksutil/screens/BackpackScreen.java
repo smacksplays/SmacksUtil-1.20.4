@@ -6,6 +6,8 @@ import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.networking.SortData;
 
+import java.util.Objects;
+
 public class BackpackScreen extends AbstractBackpackScreen<BackpackMenu> {
     public BackpackScreen(BackpackMenu handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
@@ -15,6 +17,8 @@ public class BackpackScreen extends AbstractBackpackScreen<BackpackMenu> {
     public void onButtonWidgetPressed() {
         ItemStack stack = this.menu.playerInventory.getSelected();
         SortData sortData = new SortData(stack);
-        this.minecraft.getConnection().send(sortData);
+        if (this.minecraft != null){
+            Objects.requireNonNull(this.minecraft.getConnection()).send(sortData);
+        }
     }
 }

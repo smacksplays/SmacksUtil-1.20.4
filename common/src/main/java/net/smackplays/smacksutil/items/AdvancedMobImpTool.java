@@ -47,7 +47,7 @@ public class AdvancedMobImpTool extends Item {
                             entity.getXRot());
                     return entity;
                 });
-                if (toCreate == null) return super.useOn(context);
+                if (toCreate == null) return InteractionResult.SUCCESS;
                 toCreate.setUUID(UUID.randomUUID());
                 toCreate.setPos(context.getClickedPos().above().getCenter().add(0, -0.5, 0));
                 world.addFreshEntity(toCreate);
@@ -57,7 +57,7 @@ public class AdvancedMobImpTool extends Item {
                 }
             }
         }
-        return InteractionResult.PASS;
+        return InteractionResult.SUCCESS;
     }
 
     @Override

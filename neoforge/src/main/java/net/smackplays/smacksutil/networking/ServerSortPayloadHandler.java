@@ -20,8 +20,8 @@ public class ServerSortPayloadHandler {
         // Do something with the data, on the main thread
         context.workHandler().submitAsync(() -> {
                     ItemStack stack = data.item();
-                    Player player = context.player().get();
-                    if (player != null){
+                    if (context.player().isPresent()){
+                        Player player = context.player().get();
                         AbstractContainerMenu containerMenu = player.containerMenu;
                         if (containerMenu instanceof BackpackMenu backpackMenu){
                             backpackMenu.sort();

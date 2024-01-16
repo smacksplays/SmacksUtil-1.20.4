@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -29,9 +30,9 @@ public class AutoLightWand extends LightWand {
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level world, @NotNull Player player, @NotNull InteractionHand interactionHand) {
-        if (world.isClientSide) return super.use(world, player, interactionHand);
+        ItemStack stack = player.getItemInHand(interactionHand);
+        if (world.isClientSide) return InteractionResultHolder.success(stack);
         if (player.isCrouching()) {
-            ItemStack stack = player.getItemInHand(interactionHand);
             CompoundTag tag = stack.getOrCreateTag();
             setEnable_wand(tag.getBoolean("enabled"));
             stack.getOrCreateTag().putBoolean("enabled", !isEnable_wand(stack));
@@ -40,6 +41,7 @@ public class AutoLightWand extends LightWand {
             int color = auto_wand ? GREEN : RED;
             player.displayClientMessage(Component
                     .literal("Auto Wand: " + str).withColor(color), true);
+            return InteractionResultHolder.success(stack);
         }
         return super.use(world, player, interactionHand);
     }
