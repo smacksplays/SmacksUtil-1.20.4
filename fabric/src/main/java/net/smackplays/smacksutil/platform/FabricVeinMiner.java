@@ -18,6 +18,7 @@ public class FabricVeinMiner extends IVeinMiner {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void drawOutline(PoseStack pose, double cameraX, double cameraY, double cameraZ, BlockPos pos,
                             Level world, Player player) {

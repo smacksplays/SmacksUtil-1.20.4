@@ -11,6 +11,8 @@
   "item.smacksutil.magnet_item": "Magnet",
   "item.smacksutil.advanced_magnet_item": "Advanced Magnet",
   "item.smacksutil.mob_imprisonment_tool": "Mob imprisonment tool",
+  "item.smacksutil.advanced_mob_imp_tool": "Advanced Mob imprisonment tool",
+  "item.smacksutil.enchanting_tool": "Enchanting Tool",
   "smacksutil.screen.backpack.item": "Backpack",
   "smacksutil.configsceren.title": "SmacksUtil",
   "smacksutil.category.config": "Config",

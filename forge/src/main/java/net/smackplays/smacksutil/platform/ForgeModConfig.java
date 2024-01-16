@@ -15,6 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.platform.services.IModConfig;
 
+@SuppressWarnings({"unused", "rawtypes", "UnstableApiUsage"})
 @Config(name = Constants.MOD_ID)
 @Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ForgeModConfig implements IModConfig, ConfigData {
@@ -157,7 +158,7 @@ public class ForgeModConfig implements IModConfig, ConfigData {
                         Component.translatable("text.autoconfig.smacksutil.option.enabledFastEat")
                         , INSTANCE.isEnabledFastPlace())
                 .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastEat.@Tooltip"))
-                .setDefaultValue(true)
+                .setDefaultValue(false)
                 .setSaveConsumer(Services.CONFIG::setEnabledFastEat)
                 .build());
 
@@ -166,7 +167,7 @@ public class ForgeModConfig implements IModConfig, ConfigData {
                         Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace")
                         , Services.CONFIG.isEnabledFastPlace())
                 .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace.@Tooltip"))
-                .setDefaultValue(true)
+                .setDefaultValue(false)
                 .setSaveConsumer(Services.CONFIG::setEnabledFastPlace)
                 .build());
 

@@ -24,8 +24,10 @@ public abstract class IKeyHandler {
             Services.VEIN_MINER.togglePreview();
             String str = Services.VEIN_MINER.renderPreview ? "Active" : "Inactive";
             int color = Services.VEIN_MINER.renderPreview ? GREEN : RED;
-            Minecraft.getInstance().player.displayClientMessage(Component
-                    .literal("Veinminer Preview: " + str).withColor(color), true);
+            if (Minecraft.getInstance().player != null) {
+                Minecraft.getInstance().player.displayClientMessage(Component
+                        .literal("Veinminer Preview: " + str).withColor(color), true);
+            }
         }
     }
 
@@ -34,8 +36,10 @@ public abstract class IKeyHandler {
             Services.CONFIG.setEnabledFastPlace(!Services.CONFIG.isEnabledFastPlace());
             String str = Services.CONFIG.isEnabledFastPlace() ? "Active" : "Inactive";
             int color = Services.CONFIG.isEnabledFastPlace() ? GREEN : RED;
-            Minecraft.getInstance().player.displayClientMessage(Component
-                    .literal("Fastplace: " + str).withColor(color), true);
+            if (Minecraft.getInstance().player != null) {
+                Minecraft.getInstance().player.displayClientMessage(Component
+                        .literal("Fastplace: " + str).withColor(color), true);
+            }
         }
     }
 
@@ -44,8 +48,10 @@ public abstract class IKeyHandler {
             Services.VEIN_MINER.toggleExactMatch();
             String str = Services.VEIN_MINER.isExactMatch() ? "Active" : "Inactive";
             int color = Services.VEIN_MINER.isExactMatch() ? GREEN : RED;
-            Minecraft.getInstance().player.displayClientMessage(Component
-                    .literal("Exact Match: " + str).withColor(color), true);
+            if (Minecraft.getInstance().player != null) {
+                Minecraft.getInstance().player.displayClientMessage(Component
+                        .literal("Exact Match: " + str).withColor(color), true);
+            }
         }
     }
 
