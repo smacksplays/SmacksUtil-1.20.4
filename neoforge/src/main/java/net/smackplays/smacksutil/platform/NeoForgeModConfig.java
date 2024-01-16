@@ -10,19 +10,17 @@ import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.network.chat.Component;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.platform.services.IModConfig;
 
 @SuppressWarnings({"unused", "rawtypes", "UnstableApiUsage"})
 @Config(name = Constants.MOD_ID)
-@Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ForgeModConfig implements IModConfig, ConfigData {
+public class NeoForgeModConfig implements IModConfig, ConfigData {
     @ConfigEntry.Gui.Excluded
-    private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+    private static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
     @ConfigEntry.Gui.Excluded
-    public static ForgeModConfig INSTANCE;
+    public static NeoForgeModConfig INSTANCE;
     private static ConfigManager MANAGER;
     public int maxRenderBlocks = IModConfig.maxRenderBlocks;
     public int maxShapelessRadius = IModConfig.maxShapelessRadius;
@@ -45,7 +43,6 @@ public class ForgeModConfig implements IModConfig, ConfigData {
         builder.setGlobalizedExpanded(false);
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
         ConfigCategory config = builder.getOrCreateCategory(Component.translatable("smacksutil.category.config"));
-
         config.addEntry(entryBuilder
                 .startIntField(Component.translatable("text.autoconfig.smacksutil.option.maxRenderBlocks")
                         , Services.CONFIG.getMaxRenderBlocks())
@@ -170,7 +167,6 @@ public class ForgeModConfig implements IModConfig, ConfigData {
                 .setDefaultValue(false)
                 .setSaveConsumer(Services.CONFIG::setEnabledFastPlace)
                 .build());
-
         return builder;
     }
 
@@ -329,8 +325,8 @@ public class ForgeModConfig implements IModConfig, ConfigData {
     }
 
     public void init() {
-        AutoConfig.register(ForgeModConfig.class, GsonConfigSerializer::new);
-        INSTANCE = AutoConfig.getConfigHolder(ForgeModConfig.class).getConfig();
-        MANAGER = (ConfigManager) AutoConfig.getConfigHolder(ForgeModConfig.class);
+        AutoConfig.register(NeoForgeModConfig.class, GsonConfigSerializer::new);
+        INSTANCE = AutoConfig.getConfigHolder(NeoForgeModConfig.class).getConfig();
+        MANAGER = (ConfigManager) AutoConfig.getConfigHolder(NeoForgeModConfig.class);
     }
 }

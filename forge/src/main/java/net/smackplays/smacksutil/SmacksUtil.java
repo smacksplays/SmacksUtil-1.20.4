@@ -78,6 +78,8 @@ public class SmacksUtil {
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClothConfigForge::registerModsPage);
     }
 
+
+
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(PacketHandler::register);
     }
@@ -119,10 +121,4 @@ public class SmacksUtil {
                     ((DyeableLeatherItem) LARGE_BACKPACK_ITEM.get()).getColor(stack) : 0xFFFFFF, LARGE_BACKPACK_ITEM.get());
         }
     }
-
-
-
-
-
-
 }
