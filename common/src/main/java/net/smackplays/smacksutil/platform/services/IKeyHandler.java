@@ -24,7 +24,7 @@ public abstract class IKeyHandler {
             Services.VEIN_MINER.togglePreview();
             String str = Services.VEIN_MINER.renderPreview ? "Active" : "Inactive";
             int color = Services.VEIN_MINER.renderPreview ? GREEN : RED;
-            if (Minecraft.getInstance().player != null){
+            if (Minecraft.getInstance().player != null) {
                 Minecraft.getInstance().player.displayClientMessage(Component
                         .literal("Veinminer Preview: " + str).withColor(color), true);
             }

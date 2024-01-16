@@ -73,8 +73,7 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
                 list.remove(0);
                 offset += steps;
             }
-        }
-        else {
+        } else {
             this.scrollOffs = 0;
         }
         for (int i = 0; i < 6; i++) {
@@ -199,11 +198,12 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
     public void sendPacket(ItemStack stack) {
 
     }
-// 283 126 0 -1
+
+    // 283 126 0 -1
     //284 127 0 1
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double $$2, double scroll_delta) {
-        if(!this.scrolling){
+        if (!this.scrolling) {
             Slot enchantSlot = this.menu.slots.get(0);
             ItemStack stack = enchantSlot.getItem().copy();
             ArrayList<Enchantment> list = new ArrayList<>();
@@ -213,12 +213,12 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
                     if (enchantment.category.canEnchant(stack.getItem()) && lvl == 0) list.add(enchantment);
                 }
             }
-            if(list.size() > 6){
+            if (list.size() > 6) {
                 int slice = list.size() - 6;
                 float steps = (float) 99 / slice;
 
                 this.scrollOffs -= (float) scroll_delta * steps;
-                if(this.scrollOffs > 99) this.scrollOffs = 99;
+                if (this.scrollOffs > 99) this.scrollOffs = 99;
             }
         }
         return super.mouseScrolled(mouseX, mouseY, $$2, scroll_delta);

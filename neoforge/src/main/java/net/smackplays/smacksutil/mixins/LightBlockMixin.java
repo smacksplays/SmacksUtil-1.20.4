@@ -25,7 +25,7 @@ public class LightBlockMixin {
 
     @Inject(at = @At("HEAD"), method = "getShape", cancellable = true)
     private void getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (pos.equals(new BlockPos(0,0,0))) return;
+        if (pos.equals(new BlockPos(0, 0, 0))) return;
         cir.setReturnValue(context.isHoldingItem(Items.LIGHT)
                 || context.isHoldingItem(SmacksUtil.LIGHT_WAND.get())
                 || context.isHoldingItem(SmacksUtil.AUTO_LIGHT_WAND.get()) ? Shapes.block() : Shapes.empty());

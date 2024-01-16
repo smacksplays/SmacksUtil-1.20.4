@@ -2,7 +2,6 @@ package net.smackplays.smacksutil.networking;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
@@ -19,16 +18,15 @@ public class ServerSortPayloadHandler {
 
         // Do something with the data, on the main thread
         context.workHandler().submitAsync(() -> {
-                    ItemStack stack = data.item();
-                    if (context.player().isPresent()){
-                        Player player = context.player().get();
-                        AbstractContainerMenu containerMenu = player.containerMenu;
-                        if (containerMenu instanceof BackpackMenu backpackMenu){
-                            backpackMenu.sort();
-                        } else if (containerMenu instanceof LargeBackpackMenu largeBackpackMenu) {
-                            largeBackpackMenu.sort();
-                        }
-                    }
-                });
+            if (context.player().isPresent()) {
+                Player player = context.player().get();
+                AbstractContainerMenu containerMenu = player.containerMenu;
+                if (containerMenu instanceof BackpackMenu backpackMenu) {
+                    backpackMenu.sort();
+                } else if (containerMenu instanceof LargeBackpackMenu largeBackpackMenu) {
+                    largeBackpackMenu.sort();
+                }
+            }
+        });
     }
 }

@@ -17,12 +17,12 @@ public class ServerEnchantPayloadHandler {
 
         // Do something with the data, on the main thread
         context.workHandler().submitAsync(() -> {
-                    ItemStack stack = data.item();
-                    if (context.player().isPresent()){
-                        Player player = context.player().get();
-                        AbstractContainerMenu containerMenu = player.containerMenu;
-                        containerMenu.slots.get(0).set(stack);
-                    }
+            ItemStack stack = data.item();
+            if (context.player().isPresent()) {
+                Player player = context.player().get();
+                AbstractContainerMenu containerMenu = player.containerMenu;
+                containerMenu.slots.get(0).set(stack);
+            }
         });
     }
 }

@@ -2,7 +2,6 @@ package net.smackplays.smacksutil.screens;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import net.smackplays.smacksutil.networking.SortData;
 
@@ -15,9 +14,8 @@ public class LargeBackpackScreen extends AbstractLargeBackpackScreen<LargeBackpa
 
     @Override
     public void onButtonWidgetPressed() {
-        ItemStack stack = this.menu.playerInventory.getSelected();
-        SortData sortData = new SortData(stack);
-        if (this.minecraft != null){
+        SortData sortData = new SortData();
+        if (this.minecraft != null) {
             Objects.requireNonNull(this.minecraft.getConnection()).send(sortData);
         }
     }

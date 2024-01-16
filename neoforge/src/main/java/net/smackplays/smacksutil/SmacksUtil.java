@@ -9,7 +9,6 @@ import net.minecraft.world.item.*;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.DistExecutor;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -48,13 +47,13 @@ public class SmacksUtil {
     public static final DeferredRegister<MenuType<?>> SCREENS = DeferredRegister.create(Registries.MENU, MOD_ID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
     public static final DeferredHolder<MenuType<?>, MenuType<EnchantingToolMenu>> ENCHANTING_TOOL =
-            SCREENS.register("enchanting_tool", () -> new MenuType<>(EnchantingToolMenu::create, FeatureFlags.DEFAULT_FLAGS));    public static final DeferredHolder<MenuType<?>, MenuType<BackpackMenu>> GENERIC_9X6 =
+            SCREENS.register("enchanting_tool", () -> new MenuType<>(EnchantingToolMenu::create, FeatureFlags.DEFAULT_FLAGS));
+    public static final DeferredItem<Item> BACKPACK_ITEM = ITEMS.register("backpack_item", BackpackItem::new);    public static final DeferredHolder<MenuType<?>, MenuType<BackpackMenu>> GENERIC_9X6 =
             SCREENS.register("backpack_screen", () -> new MenuType<>(BackpackMenu::createGeneric9x6, FeatureFlags.DEFAULT_FLAGS));
-    public static final DeferredItem<Item> BACKPACK_ITEM = ITEMS.register("backpack_item", BackpackItem::new);    public static final DeferredHolder<MenuType<?>, MenuType<LargeBackpackMenu>> GENERIC_13X9 =
-            SCREENS.register("large_backpack_screen", () -> new MenuType<>(LargeBackpackMenu::createGeneric13x9, FeatureFlags.DEFAULT_FLAGS));
     public static final DeferredItem<Item> LARGE_BACKPACK_ITEM = ITEMS.register("large_backpack_item", LargeBackpackItem::new);
     public static final DeferredItem<Item> LIGHT_WAND = ITEMS.register("light_wand", () ->
-            new LightWand(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
+            new LightWand(new Item.Properties().rarity(Rarity.EPIC).durability(200)));    public static final DeferredHolder<MenuType<?>, MenuType<LargeBackpackMenu>> GENERIC_13X9 =
+            SCREENS.register("large_backpack_screen", () -> new MenuType<>(LargeBackpackMenu::createGeneric13x9, FeatureFlags.DEFAULT_FLAGS));
     public static final DeferredItem<Item> AUTO_LIGHT_WAND = ITEMS.register("auto_light_wand", () ->
             new AutoLightWand(new Item.Properties().rarity(Rarity.EPIC).durability(2000)));
     public static final DeferredItem<Item> MAGNET_ITEM = ITEMS.register("magnet_item", () ->
@@ -87,7 +86,6 @@ public class SmacksUtil {
         }
         //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClothConfigNeoForge::registerModsPage);
     }
-
 
     private void commonSetup(final FMLCommonSetupEvent event) {
         //event.enqueueWork(PacketHandler::register);
@@ -146,5 +144,9 @@ public class SmacksUtil {
 
         }
     }
+
+
+
+
 
 }

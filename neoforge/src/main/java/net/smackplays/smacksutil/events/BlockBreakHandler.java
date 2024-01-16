@@ -7,6 +7,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.platform.Services;
 import net.smackplays.smacksutil.platform.services.IKeyHandler;
+
 @SuppressWarnings("unused")
 public class BlockBreakHandler {
 
