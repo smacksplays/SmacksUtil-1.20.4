@@ -36,6 +36,7 @@ import net.smackplays.smacksutil.screens.LargeBackpackScreen;
 public class SmacksUtil {
     public static final String MOD_ID = Constants.MOD_ID;
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
+    public static final DeferredRegister<MenuType<?>> SCREENS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
     public static final RegistryObject<Item> BACKPACK_ITEM = ITEMS.register("backpack_item", BackpackItem::new);
     public static final RegistryObject<Item> LARGE_BACKPACK_ITEM = ITEMS.register("large_backpack_item", LargeBackpackItem::new);    public static final RegistryObject<MenuType<BackpackMenu>> GENERIC_9X6 =
             SCREENS.register("backpack_screen", () -> IForgeMenuType.create(BackpackMenu::createGeneric9x6));
@@ -54,7 +55,6 @@ public class SmacksUtil {
             new AdvancedMobImpTool(new Item.Properties().rarity(Rarity.EPIC).durability(2000)));
     public static final RegistryObject<Item> ENCH_TOOL = ITEMS.register("enchanting_tool", () ->
             new ForgeEnchantingTool(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1)));
-    public static final DeferredRegister<MenuType<?>> SCREENS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
     public static final RegistryObject<MenuType<EnchantingToolMenu>> ENCHANTING_TOOL =
             SCREENS.register("enchanting_tool", () -> IForgeMenuType.create(EnchantingToolMenu::create));
     public SmacksUtil() {

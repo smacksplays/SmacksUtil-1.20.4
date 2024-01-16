@@ -13,6 +13,7 @@ public class ServerSortPayloadHandler {
         return INSTANCE;
     }
 
+    @SuppressWarnings("unused")
     public void handleData(final SortData data, final PlayPayloadContext context) {
         // Do something with the data, on the network thread
 
