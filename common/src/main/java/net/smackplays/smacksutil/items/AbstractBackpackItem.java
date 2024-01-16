@@ -28,7 +28,7 @@ public abstract class AbstractBackpackItem extends Item implements DyeableLeathe
         if (hand.equals(InteractionHand.OFF_HAND)) return InteractionResultHolder.pass(stack);
         player.openMenu(createScreenHandlerFactory(player.getMainHandItem()));
 
-        return InteractionResultHolder.pass(stack);
+        return InteractionResultHolder.success(stack);
     }
 
     @Override

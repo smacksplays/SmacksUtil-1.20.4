@@ -65,7 +65,7 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
         }
         ResourceLocation scroller = list.size() > 6 ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
         context.blitSprite(scroller, x + 137, (y + 15) + (int) this.scrollOffs, 12, 15);
-        if (this.scrollOffs > 0 && enchantSlot.hasItem()) {
+        if (this.scrollOffs > 0 && enchantSlot.hasItem() && list.size() > 6) {
             int slice = list.size() - 6;
             float steps = (float) 99 / slice;
             float offset = steps - 1;

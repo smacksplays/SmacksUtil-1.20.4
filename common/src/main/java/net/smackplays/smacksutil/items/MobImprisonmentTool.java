@@ -97,4 +97,9 @@ public class MobImprisonmentTool extends Item {
     public boolean isFoil(@NotNull ItemStack stack) {
         return isHolding(stack);
     }
+
+    @Override
+    public boolean isEnchantable(@NotNull ItemStack stack) {
+        return false;
+    }
 }
