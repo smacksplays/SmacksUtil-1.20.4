@@ -54,7 +54,7 @@ jobs:
           path: forge/build/libs/
       - name: publish (CurseForge Fabric)
         if: ${{ runner.os == 'Linux' && matrix.java == '21' && github.event_name == 'workflow_dispatch'}} # Only upload artifacts built from latest java on one OS
-        uses: Kir-Antipov/mc-publish@v3.3
+        uses: Kir-Antipov/mc-publish@v3.3.0
         with:
           curseforge-id: 952860                                             #The id of your CurseForge project
           curseforge-token: ${{ secrets.PUBLISH_CURSEFORGE_TOKEN }}
