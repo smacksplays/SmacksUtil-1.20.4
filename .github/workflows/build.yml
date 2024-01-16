@@ -11,9 +11,6 @@ env: #Environment variables that can later be referenced using ${{ env.MINECRAFT
   VERSION: 0.0.12
   RELEASE_NAME: SmackUtil-1.20.4-0.0.12
 
-permissions:
-  contents: write
-
 jobs:
   build:
     strategy:
@@ -26,6 +23,8 @@ jobs:
         # and run on both Linux and Windows
         os: [ ubuntu-22.04, windows-2022 ]
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
