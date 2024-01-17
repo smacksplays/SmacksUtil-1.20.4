@@ -21,6 +21,7 @@ public class BlockBreakHandler {
                 return;
             }
             Services.VEIN_MINER.veinMiner(event.getPlayer().level(), event.getPlayer(), event.getPos());
+            event.setCanceled(true);
         }
     }
 }

@@ -34,7 +34,7 @@ public class BackpackItem extends AbstractBackpackItem {
 
             @Override
             public AbstractContainerMenu createMenu(int syncId, @NotNull Inventory playerInventory, @NotNull Player player) {
-                return new BackpackMenu(SmacksUtil.GENERIC_9X6, syncId, playerInventory, new BackpackInventory(stack));
+                return new BackpackMenu(SmacksUtil.BACKPACK_SCREEN, syncId, playerInventory, new BackpackInventory(stack));
             }
         };
     }

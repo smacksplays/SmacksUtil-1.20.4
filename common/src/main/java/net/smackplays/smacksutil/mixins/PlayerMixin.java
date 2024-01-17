@@ -7,8 +7,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.smackplays.smacksutil.items.AdvancedMobImpTool;
-import net.smackplays.smacksutil.items.MobImprisonmentTool;
+import net.smackplays.smacksutil.items.AdvancedMobCatcherItem;
+import net.smackplays.smacksutil.items.MobCatcherItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,10 +23,10 @@ public abstract class PlayerMixin {
         if (world.isClientSide) return;
         Player player = (Player) (Object) this;
         ItemStack mainHand = player.getItemInHand(interactionHand);
-        if (mainHand.getItem() instanceof MobImprisonmentTool mobTool) {
+        if (mainHand.getItem() instanceof MobCatcherItem mobTool) {
             mobTool.interactLivingEntity(mainHand, player, (LivingEntity) entity, interactionHand);
         }
-        if (mainHand.getItem() instanceof AdvancedMobImpTool mobTool) {
+        if (mainHand.getItem() instanceof AdvancedMobCatcherItem mobTool) {
             mobTool.interactLivingEntity(mainHand, player, (LivingEntity) entity, interactionHand);
         }
     }

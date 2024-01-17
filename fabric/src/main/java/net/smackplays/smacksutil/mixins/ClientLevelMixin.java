@@ -20,7 +20,7 @@ public abstract class ClientLevelMixin {
         Player player = Minecraft.getInstance().player;
         if (player == null) return;
         ItemStack stack = player.getMainHandItem();
-        if (stack.is(ModClient.LIGHT_WAND) || stack.is(ModClient.AUTO_LIGHT_WAND)) {
+        if (stack.is(ModClient.LIGHT_WAND_ITEM) || stack.is(ModClient.AUTO_LIGHT_WAND_ITEM)) {
             BlockItem blockItem = (BlockItem) Items.LIGHT;
             cir.setReturnValue(blockItem.getBlock());
         }

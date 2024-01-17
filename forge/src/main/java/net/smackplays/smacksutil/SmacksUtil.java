@@ -3,7 +3,10 @@ package net.smackplays.smacksutil;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,33 +33,30 @@ import net.smackplays.smacksutil.screens.BackpackScreen;
 import net.smackplays.smacksutil.screens.EnchantingToolScreen;
 import net.smackplays.smacksutil.screens.LargeBackpackScreen;
 
+import static net.smackplays.smacksutil.Constants.*;
+
 
 @SuppressWarnings("unused")
-@Mod(Constants.MOD_ID)
+@Mod(MOD_ID)
 public class SmacksUtil {
-    public static final String MOD_ID = Constants.MOD_ID;
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
     public static final DeferredRegister<MenuType<?>> SCREENS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
-    public static final RegistryObject<Item> BACKPACK_ITEM = ITEMS.register("backpack_item", BackpackItem::new);
-    public static final RegistryObject<Item> LARGE_BACKPACK_ITEM = ITEMS.register("large_backpack_item", LargeBackpackItem::new);    public static final RegistryObject<MenuType<BackpackMenu>> GENERIC_9X6 =
-            SCREENS.register("backpack_screen", () -> IForgeMenuType.create(BackpackMenu::createGeneric9x6));
-    public static final RegistryObject<Item> LIGHT_WAND = ITEMS.register("light_wand", () ->
-            new LightWand(new Item.Properties().rarity(Rarity.EPIC).durability(200)));    public static final RegistryObject<MenuType<LargeBackpackMenu>> GENERIC_13X9 =
-            SCREENS.register("large_backpack_screen", () -> IForgeMenuType.create(LargeBackpackMenu::createGeneric13x9));
-    public static final RegistryObject<Item> AUTO_LIGHT_WAND = ITEMS.register("auto_light_wand", () ->
-            new AutoLightWand(new Item.Properties().rarity(Rarity.EPIC).durability(2000)));
-    public static final RegistryObject<Item> MAGNET_ITEM = ITEMS.register("magnet_item", () ->
-            new MagnetItem(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
-    public static final RegistryObject<Item> ADVANCED_MAGNET_ITEM = ITEMS.register("advanced_magnet_item", () ->
-            new AdvancedMagnetItem(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
-    public static final RegistryObject<Item> MOB_TOOL_ITEM = ITEMS.register("mob_imprisonment_tool", () ->
-            new MobImprisonmentTool(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
-    public static final RegistryObject<Item> ADV_MOB_TOOL_ITEM = ITEMS.register("advanced_mob_imp_tool", () ->
-            new AdvancedMobImpTool(new Item.Properties().rarity(Rarity.EPIC).durability(2000)));
-    public static final RegistryObject<Item> ENCH_TOOL = ITEMS.register("enchanting_tool", () ->
-            new ForgeEnchantingTool(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1)));
-    public static final RegistryObject<MenuType<EnchantingToolMenu>> ENCHANTING_TOOL =
-            SCREENS.register("enchanting_tool", () -> IForgeMenuType.create(EnchantingToolMenu::create));
+    public static final RegistryObject<Item> BACKPACK_ITEM = ITEMS.register(C_BACKPACK_ITEM, BackpackItem::new);
+    public static final RegistryObject<Item> LARGE_BACKPACK_ITEM = ITEMS.register(C_LARGE_BACKPACK_ITEM, LargeBackpackItem::new);
+    public static final RegistryObject<Item> LIGHT_WAND_ITEM = ITEMS.register(C_LIGHT_WAND_ITEM, LightWandItem::new);
+    public static final RegistryObject<Item> AUTO_LIGHT_WAND_ITEM = ITEMS.register(C_AUTO_LIGHT_WAND_ITEM, AutoLightWandItem::new);
+    public static final RegistryObject<Item> MAGNET_ITEM = ITEMS.register(C_MAGNET_ITEM, MagnetItem::new);
+    public static final RegistryObject<Item> ADVANCED_MAGNET_ITEM = ITEMS.register(C_ADVANCED_MAGNET_ITEM, AdvancedMagnetItem::new);
+    public static final RegistryObject<Item> MOB_CATCHER_ITEM = ITEMS.register(C_MOB_CATCHER_ITEM, MobCatcherItem::new);
+    public static final RegistryObject<Item> ADVANCED_MOB_CATCHER_ITEM = ITEMS.register(C_ADVANCED_MOB_CATCHER_ITEM, AdvancedMobCatcherItem::new);
+    public static final RegistryObject<Item> ENCHANTING_TOOL_ITEM = ITEMS.register(C_ENCHANTING_TOOL_ITEM, ForgeEnchantingToolItem::new);
+    public static final RegistryObject<MenuType<EnchantingToolMenu>> ENCHANTING_TOOL_SCREEN =
+            SCREENS.register(C_ENCHANTING_TOOL_SCREEN, () -> IForgeMenuType.create(EnchantingToolMenu::create));
+    public static final RegistryObject<MenuType<BackpackMenu>> BACKPACK_SCREEN =
+            SCREENS.register(C_BACKPACK_SCREEN, () -> IForgeMenuType.create(BackpackMenu::createGeneric9x6));
+    public static final RegistryObject<MenuType<LargeBackpackMenu>> LARGE_BACKPACK_SCREEN =
+            SCREENS.register(C_LARGE_BACKPACK_SCREEN, () -> IForgeMenuType.create(LargeBackpackMenu::createGeneric13x9));
+
     public SmacksUtil() {
         Constants.LOG.info("Hello Forge world!");
         CommonClass.init();
@@ -84,13 +84,13 @@ public class SmacksUtil {
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(BACKPACK_ITEM);
             event.accept(LARGE_BACKPACK_ITEM);
-            event.accept(LIGHT_WAND);
-            event.accept(AUTO_LIGHT_WAND);
+            event.accept(LIGHT_WAND_ITEM);
+            event.accept(AUTO_LIGHT_WAND_ITEM);
             event.accept(MAGNET_ITEM);
             event.accept(ADVANCED_MAGNET_ITEM);
-            event.accept(MOB_TOOL_ITEM);
-            event.accept(ADV_MOB_TOOL_ITEM);
-            event.accept(ENCH_TOOL);
+            event.accept(MOB_CATCHER_ITEM);
+            event.accept(ADVANCED_MOB_CATCHER_ITEM);
+            event.accept(ENCHANTING_TOOL_ITEM);
         }
     }
 
@@ -102,9 +102,9 @@ public class SmacksUtil {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            MenuScreens.register(SmacksUtil.GENERIC_13X9.get(), LargeBackpackScreen::new);
-            MenuScreens.register(SmacksUtil.GENERIC_9X6.get(), BackpackScreen::new);
-            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL.get(), EnchantingToolScreen::new);
+            MenuScreens.register(SmacksUtil.LARGE_BACKPACK_SCREEN.get(), LargeBackpackScreen::new);
+            MenuScreens.register(SmacksUtil.BACKPACK_SCREEN.get(), BackpackScreen::new);
+            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_SCREEN.get(), EnchantingToolScreen::new);
             CauldronInteraction.WATER.map().putIfAbsent(BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
             CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
         }
@@ -117,8 +117,6 @@ public class SmacksUtil {
                     ((DyeableLeatherItem) LARGE_BACKPACK_ITEM.get()).getColor(stack) : 0xFFFFFF, LARGE_BACKPACK_ITEM.get());
         }
     }
-
-
 
 
 }

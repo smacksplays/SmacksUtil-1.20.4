@@ -4,6 +4,7 @@
   "package": "net.smackplays.smacksutil.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "LeavesBlockMixin",
     "LightBlockMixin"
   ],
   "client": [

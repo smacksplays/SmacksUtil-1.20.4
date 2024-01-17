@@ -10,6 +10,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +23,12 @@ public class MagnetItem extends Item {
     private static final int RED = 16711680;
     public boolean enable_magnet;
 
-    public MagnetItem(Properties $$0) {
-        super($$0);
+    public MagnetItem(Properties props) {
+        super(props);
+    }
+
+    public MagnetItem() {
+        super(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1));
     }
 
     @Override

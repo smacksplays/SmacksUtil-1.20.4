@@ -27,16 +27,16 @@ public class LightBlockMixin {
     private void getShape(BlockState state, BlockGetter getter, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (pos.equals(new BlockPos(0, 0, 0))) return;
         cir.setReturnValue(context.isHoldingItem(Items.LIGHT)
-                || context.isHoldingItem(SmacksUtil.LIGHT_WAND.get())
-                || context.isHoldingItem(SmacksUtil.AUTO_LIGHT_WAND.get()) ? Shapes.block() : Shapes.empty());
+                || context.isHoldingItem(SmacksUtil.LIGHT_WAND_ITEM.get())
+                || context.isHoldingItem(SmacksUtil.AUTO_LIGHT_WAND_ITEM.get()) ? Shapes.block() : Shapes.empty());
     }
 
     @Inject(at = @At("HEAD"), method = "use", cancellable = true)
     private void use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult, CallbackInfoReturnable<InteractionResult> cir) {
         if (level.isClientSide) return;
         if (player == null) return;
-        if (player.getItemInHand(interactionHand).is(SmacksUtil.LIGHT_WAND.get())
-                || player.getItemInHand(interactionHand).is(SmacksUtil.AUTO_LIGHT_WAND.get())) {
+        if (player.getItemInHand(interactionHand).is(SmacksUtil.LIGHT_WAND_ITEM.get())
+                || player.getItemInHand(interactionHand).is(SmacksUtil.AUTO_LIGHT_WAND_ITEM.get())) {
             if (level.getBlockState(blockPos).is(Blocks.LIGHT)) {
                 level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
             }

@@ -1,8 +1,8 @@
 package net.smackplays.smacksutil.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -21,25 +21,29 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static net.smackplays.smacksutil.Constants.*;
+
 
 public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> extends AbstractContainerScreen<T> {
-    private static final ResourceLocation ENCHANTMENT_SLOT_HIGHLIGHTED_SPRITE =
-            new ResourceLocation(Constants.MOD_ID, "textures/gui/container/enchantment_slot_highlighted.png");
-    private static final ResourceLocation ENCHANTMENT_SLOT_SPRITE =
-            new ResourceLocation(Constants.MOD_ID, "textures/gui/container/enchantment_slot.png");
-    private static final ResourceLocation ENCHANTMENT_SLOT_DISABLED_SPRITE =
-            new ResourceLocation(Constants.MOD_ID, "textures/gui/container/enchantment_slot_disabled.png");
+    private static final ResourceLocation ENCHANTING_SLOT_HIGHLIGHTED_SPRITE =
+            new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_HIGHLIGHTED_SPRITE_LOCATION);
+    private static final ResourceLocation ENCHANTING_SLOT_SPRITE =
+            new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_SPRITE_LOCATION);
+    private static final ResourceLocation ENCHANTING_SLOT_DISABLED_SPRITE =
+            new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_DISABLED_SPRITE_LOCATION);
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(Constants.MOD_ID, "textures/gui/container/enchanting_tool.png");
+            new ResourceLocation(MOD_ID, C_ENCHANTING_TOOL_SCREEN_LOCATION);
     private static final ResourceLocation SCROLLER_SPRITE =
-            new ResourceLocation("container/loom/scroller");
+            new ResourceLocation(C_SCROLLER_SPRITE_LOCATION);
     private static final ResourceLocation SCROLLER_DISABLED_SPRITE =
-            new ResourceLocation("container/loom/scroller_disabled");
+            new ResourceLocation(C_SCROLLER_DISABLED_SPRITE_LOCATION);
     public boolean scrolling;
     //A path to the gui texture. In this example we use the texture from the dispenser
     protected int backgroundWidth = 176;
     protected int backgroundHeight = 224;
     private float scrollOffs;
+    private boolean addRemove = true;
+    private Button buttonWidget;
 
     public AbstractEnchantingToolScreen(T handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
@@ -56,13 +60,7 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
 
         Slot enchantSlot = this.menu.slots.get(0);
         ItemStack stack = enchantSlot.getItem();
-        ArrayList<Enchantment> list = new ArrayList<>();
-        if (enchantSlot.hasItem()) {
-            for (Enchantment enchantment : BuiltInRegistries.ENCHANTMENT) {
-                int lvl = EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
-                if (enchantment.category.canEnchant(stack.getItem()) && lvl == 0) list.add(enchantment);
-            }
-        }
+        ArrayList<Enchantment> list = getEnchantments(stack);
         ResourceLocation scroller = list.size() > 6 ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
         context.blitSprite(scroller, x + 137, (y + 15) + (int) this.scrollOffs, 12, 15);
         if (this.scrollOffs > 0 && enchantSlot.hasItem() && list.size() > 6) {
@@ -84,9 +82,9 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
                 boolean b3 = y + 13 + 19 * i < mouseY;
                 boolean b4 = y + 32 + 19 * i >= mouseY;
                 if (b1 && b2 && b3 && b4) {
-                    context.blit(ENCHANTMENT_SLOT_HIGHLIGHTED_SPRITE, x + 8, y + 15 + 19 * i, 0, 0, 126, 19, 126, 19);
+                    context.blit(ENCHANTING_SLOT_HIGHLIGHTED_SPRITE, x + 8, y + 15 + 19 * i, 0, 0, 126, 19, 126, 19);
                 } else {
-                    context.blit(ENCHANTMENT_SLOT_SPRITE, x + 8, y + 15 + 19 * i, 0, 0, 126, 19, 126, 19);
+                    context.blit(ENCHANTING_SLOT_SPRITE, x + 8, y + 15 + 19 * i, 0, 0, 126, 19, 126, 19);
                 }
                 ArrayList<Component> comp = new ArrayList<>();
                 BuiltInRegistries.ENCHANTMENT
@@ -95,9 +93,28 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
 
                 context.drawString(this.font, comp.get(0), x + 10, y + 20 + 19 * i, 0x404040, false);
             } else {
-                context.blit(ENCHANTMENT_SLOT_DISABLED_SPRITE, x + 8, y + 15 + 19 * i, 0, 0, 126, 19, 126, 19);
+                context.blit(ENCHANTING_SLOT_DISABLED_SPRITE, x + 8, y + 15 + 19 * i, 0, 0, 126, 19, 126, 19);
             }
         }
+    }
+
+    public ArrayList<Enchantment> getEnchantments(ItemStack stack) {
+        Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(stack);
+        ArrayList<Enchantment> presentEnchantments = new ArrayList<>(enchantmentMap.keySet());
+        ArrayList<Enchantment> list = new ArrayList<>();
+        if (this.addRemove) {
+            for (Enchantment enchantment : BuiltInRegistries.ENCHANTMENT) {
+                int lvl = EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
+                boolean compatible = true;
+                for (Enchantment e : presentEnchantments) {
+                    if (!enchantment.isCompatibleWith(e)) compatible = false;
+                }
+                if (enchantment.canEnchant(stack) && lvl == 0 && compatible) list.add(enchantment);
+            }
+        } else {
+            list = presentEnchantments;
+        }
+        return list;
     }
 
     @Override
@@ -116,8 +133,20 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
     @Override
     protected void init() {
         super.init();
+        this.addRemove = true;
+        int x = (width - backgroundWidth) / 2;
+        int y = (height - backgroundHeight) / 2;
         // Center the title
         titleLabelX = (backgroundWidth - font.width(title)) / 2;
+        buttonWidget = Button.builder(Component.literal("Add").withColor(Constants.GREEN), (bW) -> onToggleAddRemove()).pos(x + 132, y + 3).size(40, 10).build();
+        this.addRenderableWidget(buttonWidget);
+    }
+
+    public void onToggleAddRemove() {
+        this.addRemove = !this.addRemove;
+        String text = this.addRemove ? "Add" : "Remove";
+        int color = this.addRemove ? Constants.GREEN : Constants.RED;
+        buttonWidget.setMessage(Component.literal(text).withColor(color));
     }
 
     @Override
@@ -139,7 +168,7 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int $$2, double scrollX, double scrollY) {
         if (this.scrolling) {
-            this.scrollOffs = (float) mouseY - 30;
+            this.scrollOffs = (float) mouseY - 162;
             this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 99F);
             return true;
         } else {
@@ -162,13 +191,7 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
 
         ItemStack stack = enchantSlot.getItem().copy();
         if (!stack.isEmpty()) {
-            ArrayList<Enchantment> list = new ArrayList<>();
-            if (enchantSlot.hasItem()) {
-                for (Enchantment enchantment : BuiltInRegistries.ENCHANTMENT) {
-                    int lvl = EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
-                    if (enchantment.category.canEnchant(stack.getItem()) && lvl == 0) list.add(enchantment);
-                }
-            }
+            ArrayList<Enchantment> list = getEnchantments(stack);
             int list_size = Math.min(list.size(), 6);
             for (int i = 0; i < list_size; ++i) {
                 boolean b1 = x + 6.5 < mouseX;
@@ -177,13 +200,13 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
                 boolean b4 = y + 33 + 19 * i >= mouseY;
                 if (b1 && b2 && b3 && b4) {
                     Enchantment enchantment = list.get(i);
-                    Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack);
-                    map.putIfAbsent(enchantment, enchantment.getMaxLevel());
-                    EnchantmentHelper.setEnchantments(map, stack);
-                    enchantSlot.setChanged();
-                    this.menu.setItem(0, 0, stack);
-                    assert Minecraft.getInstance().gameMode != null;
-                    Minecraft.getInstance().gameMode.handleSlotStateChanged(0, menu.containerId, false);
+                    if (this.addRemove) {
+                        stack.enchant(enchantment, enchantment.getMaxLevel());
+                    } else {
+                        Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack);
+                        map.remove(enchantment, enchantment.getMaxLevel());
+                        EnchantmentHelper.setEnchantments(map, stack);
+                    }
                     sendPacket(stack);
                     return true;
                 }
@@ -199,26 +222,19 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
 
     }
 
-    // 283 126 0 -1
-    //284 127 0 1
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double $$2, double scroll_delta) {
         if (!this.scrolling) {
             Slot enchantSlot = this.menu.slots.get(0);
             ItemStack stack = enchantSlot.getItem().copy();
-            ArrayList<Enchantment> list = new ArrayList<>();
-            if (enchantSlot.hasItem()) {
-                for (Enchantment enchantment : BuiltInRegistries.ENCHANTMENT) {
-                    int lvl = EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
-                    if (enchantment.category.canEnchant(stack.getItem()) && lvl == 0) list.add(enchantment);
-                }
-            }
+            ArrayList<Enchantment> list = getEnchantments(stack);
             if (list.size() > 6) {
                 int slice = list.size() - 6;
                 float steps = (float) 99 / slice;
 
                 this.scrollOffs -= (float) scroll_delta * steps;
-                if (this.scrollOffs > 99) this.scrollOffs = 99;
+                if (this.scrollOffs < 0) this.scrollOffs = 0;
+                else if (this.scrollOffs > 99) this.scrollOffs = 99;
             }
         }
         return super.mouseScrolled(mouseX, mouseY, $$2, scroll_delta);

@@ -4,7 +4,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
@@ -13,8 +15,8 @@ import java.util.List;
 
 public class AdvancedMagnetItem extends MagnetItem {
 
-    public AdvancedMagnetItem(Properties $$0) {
-        super($$0);
+    public AdvancedMagnetItem() {
+        super(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1));
     }
 
     @Override

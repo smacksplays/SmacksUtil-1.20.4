@@ -29,6 +29,12 @@ public class PacketHandler {
                 .decoder(SEnchantPacket::new)
                 .consumerMainThread(SEnchantPacket::handle)
                 .add();
+
+        INSTANCE.messageBuilder(SBreakBlockPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(SBreakBlockPacket::encode)
+                .decoder(SBreakBlockPacket::new)
+                .consumerMainThread(SBreakBlockPacket::handle)
+                .add();
     }
 
     public static void sendToServer(Object msg) {

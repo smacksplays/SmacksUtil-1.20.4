@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.Block;
@@ -18,13 +19,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class AutoLightWand extends LightWand {
+public class AutoLightWandItem extends LightWandItem {
     private static final int GREEN = 65280;
     private static final int RED = 16711680;
     public boolean enable_wand;
 
-    public AutoLightWand(Item.Properties props) {
-        super(props);
+    public AutoLightWandItem() {
+        super(new Item.Properties().rarity(Rarity.EPIC).durability(2000));
     }
 
     @Override

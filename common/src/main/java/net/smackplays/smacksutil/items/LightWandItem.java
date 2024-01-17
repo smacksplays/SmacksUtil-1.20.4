@@ -7,15 +7,19 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
-public class LightWand extends Item {
+public class LightWandItem extends Item {
 
+    public LightWandItem() {
+        super(new Item.Properties().rarity(Rarity.EPIC).durability(200));
+    }
 
-    public LightWand(Item.Properties props) {
+    public LightWandItem(Item.Properties props) {
         super(props);
     }
 

@@ -34,7 +34,7 @@ public class LargeBackpackItem extends AbstractBackpackItem {
 
             @Override
             public AbstractContainerMenu createMenu(int syncId, @NotNull Inventory playerInventory, @NotNull Player player) {
-                return new LargeBackpackMenu(SmacksUtil.GENERIC_13X9, syncId, playerInventory, new LargeBackpackInventory(stack));
+                return new LargeBackpackMenu(SmacksUtil.LARGE_BACKPACK_SCREEN, syncId, playerInventory, new LargeBackpackInventory(stack));
             }
         };
     }

@@ -3,6 +3,7 @@ package net.smackplays.smacksutil.platform.services;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
+import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.platform.Services;
 
 public abstract class IKeyHandler {
@@ -11,8 +12,6 @@ public abstract class IKeyHandler {
     public static final String KEY_SMACKSUTIL_VEINPREVIEW = "key.smacksutil.veinpreview";
     public static final String KEY_SMACKSUTIL_FASTPLACE = "key.smacksutil.fastplace";
     public static final String KEY_SMACKSUTIL_EXACTMATCH = "key.smacksutil.exactmatch";
-    public static final int GREEN = 65280;
-    public static final int RED = 16711680;
 
     public static KeyMapping veinKey;
     public static KeyMapping veinPreviewKey;
@@ -23,7 +22,7 @@ public abstract class IKeyHandler {
         if (veinPreviewKey.consumeClick()) {
             Services.VEIN_MINER.togglePreview();
             String str = Services.VEIN_MINER.renderPreview ? "Active" : "Inactive";
-            int color = Services.VEIN_MINER.renderPreview ? GREEN : RED;
+            int color = Services.VEIN_MINER.renderPreview ? Constants.GREEN : Constants.RED;
             if (Minecraft.getInstance().player != null) {
                 Minecraft.getInstance().player.displayClientMessage(Component
                         .literal("Veinminer Preview: " + str).withColor(color), true);
@@ -35,7 +34,7 @@ public abstract class IKeyHandler {
         if (fastPlaceKey.consumeClick()) {
             Services.CONFIG.setEnabledFastPlace(!Services.CONFIG.isEnabledFastPlace());
             String str = Services.CONFIG.isEnabledFastPlace() ? "Active" : "Inactive";
-            int color = Services.CONFIG.isEnabledFastPlace() ? GREEN : RED;
+            int color = Services.CONFIG.isEnabledFastPlace() ? Constants.GREEN : Constants.RED;
             if (Minecraft.getInstance().player != null) {
                 Minecraft.getInstance().player.displayClientMessage(Component
                         .literal("Fastplace: " + str).withColor(color), true);
@@ -47,7 +46,7 @@ public abstract class IKeyHandler {
         if (exactMatchKey.consumeClick()) {
             Services.VEIN_MINER.toggleExactMatch();
             String str = Services.VEIN_MINER.isExactMatch() ? "Active" : "Inactive";
-            int color = Services.VEIN_MINER.isExactMatch() ? GREEN : RED;
+            int color = Services.VEIN_MINER.isExactMatch() ? Constants.GREEN : Constants.RED;
             if (Minecraft.getInstance().player != null) {
                 Minecraft.getInstance().player.displayClientMessage(Component
                         .literal("Exact Match: " + str).withColor(color), true);

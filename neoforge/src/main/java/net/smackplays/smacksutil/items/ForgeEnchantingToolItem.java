@@ -10,9 +10,9 @@ import net.smackplays.smacksutil.inventories.EnchantmentToolInventory;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import org.jetbrains.annotations.NotNull;
 
-public class ForgeEnchantingTool extends AbstractEnchantingTool {
-    public ForgeEnchantingTool(Properties $$0) {
-        super($$0);
+public class ForgeEnchantingToolItem extends AbstractEnchantingToolItem {
+    public ForgeEnchantingToolItem() {
+        super();
     }
 
     @Override

@@ -11,6 +11,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -21,12 +22,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class MobImprisonmentTool extends Item {
+public class MobCatcherItem extends Item {
 
     private boolean isHolding;
 
-    public MobImprisonmentTool(Properties props) {
-        super(props);
+    public MobCatcherItem() {
+        super(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1));
     }
 
     @Override
