@@ -1,6 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.0.13] - 2024.01.17
+
+### Added
+Instant leave decay.
+
+### Changed
+Enchanting Tool now can add and remove enchants. Incompatible enchants can't be combined anymore.
+
+Mob Imprisonment Tool renamed to Mob Catcher.
+
+### Fixed
+Veinminer breaks tools.
+
 ## [0.0.12] - 2024.01.16
 
 ### Added
