@@ -2,6 +2,6 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "smacksutil:item/backpack_item",
-    "layer1": "smacksutil:item/backpack_overlay"
+    "layer1": "smacksutil:item/backpack_item_overlay"
   }
 }

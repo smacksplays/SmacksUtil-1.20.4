@@ -9,7 +9,7 @@
   ],
   "key": {
     "L": {
-      "item": "smacksutil:light_wand"
+      "item": "smacksutil:light_wand_item"
     },
     "D": {
       "item": "minecraft:diamond_block"
@@ -22,6 +22,6 @@
     }
   },
   "result": {
-    "item": "smacksutil:auto_light_wand"
+    "item": "smacksutil:auto_light_wand_item"
   }
 }

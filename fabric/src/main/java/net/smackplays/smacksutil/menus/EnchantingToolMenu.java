@@ -9,7 +9,7 @@ import net.smackplays.smacksutil.inventories.ImplementedInventory;
 public class EnchantingToolMenu extends AbstractEnchantingToolMenu {
 
     public EnchantingToolMenu(int syncId, Inventory playerInv, Container inv) {
-        super(SmacksUtil.ENCHANTING_TOOL, syncId, playerInv, inv);
+        super(SmacksUtil.ENCHANTING_TOOL_SCREEN, syncId, playerInv, inv);
     }
 
     @SuppressWarnings("unused")

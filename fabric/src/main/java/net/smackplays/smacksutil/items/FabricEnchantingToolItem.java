@@ -1,6 +1,9 @@
 package net.smackplays.smacksutil.items;
 
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -10,14 +13,18 @@ import net.smackplays.smacksutil.inventories.EnchantmentToolInventory;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import org.jetbrains.annotations.NotNull;
 
-public class ForgeEnchantingTool extends AbstractEnchantingTool {
-    public ForgeEnchantingTool(Properties $$0) {
-        super($$0);
+public class FabricEnchantingToolItem extends AbstractEnchantingToolItem {
+    public FabricEnchantingToolItem() {
+        super();
     }
 
     @Override
     MenuProvider createScreenHandlerFactory(ItemStack stack) {
-        return new MenuProvider() {
+        return new ExtendedScreenHandlerFactory() {
+            @Override
+            public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+            }
+
             @Override
             public @NotNull Component getDisplayName() {
                 return stack.getHoverName();

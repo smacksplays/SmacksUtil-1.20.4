@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "smacksutil:item/light_wand"
+    "layer0": "smacksutil:item/auto_light_wand_item"
   }
 }

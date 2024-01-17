@@ -7,13 +7,14 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractEnchantingTool extends Item {
-    public AbstractEnchantingTool(Properties $$0) {
-        super($$0);
+public abstract class AbstractEnchantingToolItem extends Item {
+    public AbstractEnchantingToolItem() {
+        super(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1));
     }
 
     @Override

@@ -8,13 +8,15 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.menus.AbstractBackpackMenu;
 import org.jetbrains.annotations.NotNull;
 
+import static net.smackplays.smacksutil.Constants.C_BACKPACK_SCREEN_LOCATION;
+import static net.smackplays.smacksutil.Constants.MOD_ID;
+
 
 public abstract class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends AbstractContainerScreen<T> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Constants.MOD_ID, "textures/gui/container/backpack.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, C_BACKPACK_SCREEN_LOCATION);
     //A path to the gui texture. In this example we use the texture from the dispenser
     protected int backgroundWidth = 176;
     protected int backgroundHeight = 221;

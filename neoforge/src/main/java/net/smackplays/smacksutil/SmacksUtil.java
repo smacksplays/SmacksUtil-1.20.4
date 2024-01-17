@@ -5,7 +5,10 @@ import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -28,44 +31,36 @@ import net.smackplays.smacksutil.items.*;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
-import net.smackplays.smacksutil.networking.EnchantData;
-import net.smackplays.smacksutil.networking.ServerEnchantPayloadHandler;
-import net.smackplays.smacksutil.networking.ServerSortPayloadHandler;
-import net.smackplays.smacksutil.networking.SortData;
+import net.smackplays.smacksutil.networking.*;
 import net.smackplays.smacksutil.screens.BackpackScreen;
 import net.smackplays.smacksutil.screens.EnchantingToolScreen;
 import net.smackplays.smacksutil.screens.LargeBackpackScreen;
 
 import java.util.function.Supplier;
 
-import static net.smackplays.smacksutil.Constants.MOD_ID;
+import static net.smackplays.smacksutil.Constants.*;
 
 @SuppressWarnings("unused")
 @Mod(MOD_ID)
 public class SmacksUtil {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MOD_ID);
     public static final DeferredRegister<MenuType<?>> SCREENS = DeferredRegister.create(Registries.MENU, MOD_ID);
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
-    public static final DeferredHolder<MenuType<?>, MenuType<EnchantingToolMenu>> ENCHANTING_TOOL =
-            SCREENS.register("enchanting_tool", () -> new MenuType<>(EnchantingToolMenu::create, FeatureFlags.DEFAULT_FLAGS));
-    public static final DeferredItem<Item> BACKPACK_ITEM = ITEMS.register("backpack_item", BackpackItem::new);    public static final DeferredHolder<MenuType<?>, MenuType<BackpackMenu>> GENERIC_9X6 =
-            SCREENS.register("backpack_screen", () -> new MenuType<>(BackpackMenu::createGeneric9x6, FeatureFlags.DEFAULT_FLAGS));
-    public static final DeferredItem<Item> LARGE_BACKPACK_ITEM = ITEMS.register("large_backpack_item", LargeBackpackItem::new);
-    public static final DeferredItem<Item> LIGHT_WAND = ITEMS.register("light_wand", () ->
-            new LightWand(new Item.Properties().rarity(Rarity.EPIC).durability(200)));    public static final DeferredHolder<MenuType<?>, MenuType<LargeBackpackMenu>> GENERIC_13X9 =
-            SCREENS.register("large_backpack_screen", () -> new MenuType<>(LargeBackpackMenu::createGeneric13x9, FeatureFlags.DEFAULT_FLAGS));
-    public static final DeferredItem<Item> AUTO_LIGHT_WAND = ITEMS.register("auto_light_wand", () ->
-            new AutoLightWand(new Item.Properties().rarity(Rarity.EPIC).durability(2000)));
-    public static final DeferredItem<Item> MAGNET_ITEM = ITEMS.register("magnet_item", () ->
-            new MagnetItem(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
-    public static final DeferredItem<Item> ADVANCED_MAGNET_ITEM = ITEMS.register("advanced_magnet_item", () ->
-            new AdvancedMagnetItem(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
-    public static final DeferredItem<Item> MOB_TOOL_ITEM = ITEMS.register("mob_imprisonment_tool", () ->
-            new MobImprisonmentTool(new Item.Properties().rarity(Rarity.EPIC).durability(200)));
-    public static final DeferredItem<Item> ADV_MOB_TOOL_ITEM = ITEMS.register("advanced_mob_imp_tool", () ->
-            new AdvancedMobImpTool(new Item.Properties().rarity(Rarity.EPIC).durability(2000)));
-    public static final DeferredItem<Item> ENCH_TOOL = ITEMS.register("enchanting_tool", () ->
-            new ForgeEnchantingTool(new Item.Properties().rarity(Rarity.EPIC).stacksTo(1)));
+    public static final DeferredItem<Item> BACKPACK_ITEM = ITEMS.register(C_BACKPACK_ITEM, BackpackItem::new);
+    public static final DeferredItem<Item> LARGE_BACKPACK_ITEM = ITEMS.register(C_LARGE_BACKPACK_ITEM, LargeBackpackItem::new);
+    public static final DeferredItem<Item> LIGHT_WAND_ITEM = ITEMS.register(C_LIGHT_WAND_ITEM, () -> new LightWandItem());
+    public static final DeferredItem<Item> AUTO_LIGHT_WAND_ITEM = ITEMS.register(C_AUTO_LIGHT_WAND_ITEM, AutoLightWandItem::new);
+    public static final DeferredItem<Item> MAGNET_ITEM = ITEMS.register(C_MAGNET_ITEM, () -> new MagnetItem());
+    public static final DeferredItem<Item> ADVANCED_MAGNET_ITEM = ITEMS.register(C_ADVANCED_MAGNET_ITEM, AdvancedMagnetItem::new);
+    public static final DeferredItem<Item> MOB_CATCHER_ITEM = ITEMS.register(C_MOB_CATCHER_ITEM, MobCatcherItem::new);
+    public static final DeferredItem<Item> ADVANCED_MOB_CATCHER_ITEM = ITEMS.register(C_ADVANCED_MOB_CATCHER_ITEM, AdvancedMobCatcherItem::new);
+    public static final DeferredItem<Item> ENCHANTING_TOOL_ITEM = ITEMS.register(C_ENCHANTING_TOOL_ITEM, ForgeEnchantingToolItem::new);
+    public static final DeferredHolder<MenuType<?>, MenuType<BackpackMenu>> BACKPACK_SCREEN =
+            SCREENS.register(C_BACKPACK_SCREEN, () -> new MenuType<>(BackpackMenu::createGeneric9x6, FeatureFlags.DEFAULT_FLAGS));
+    public static final DeferredHolder<MenuType<?>, MenuType<LargeBackpackMenu>> LARGE_BACKPACK_SCREEN =
+            SCREENS.register(C_LARGE_BACKPACK_SCREEN, () -> new MenuType<>(LargeBackpackMenu::createGeneric13x9, FeatureFlags.DEFAULT_FLAGS));
+    public static final DeferredHolder<MenuType<?>, MenuType<EnchantingToolMenu>> ENCHANTING_TOOL_SCREEN =
+            SCREENS.register(C_ENCHANTING_TOOL_SCREEN, () -> new MenuType<>(EnchantingToolMenu::create, FeatureFlags.DEFAULT_FLAGS));
+
     public SmacksUtil(IEventBus modEventBus) {
         Constants.LOG.info("Hello NeoForge world!");
         CommonClass.init();
@@ -74,8 +69,6 @@ public class SmacksUtil {
 
         ITEMS.register(modEventBus);
         SCREENS.register(modEventBus);
-
-        CREATIVE_MODE_TABS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -95,13 +88,13 @@ public class SmacksUtil {
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(BACKPACK_ITEM);
             event.accept(LARGE_BACKPACK_ITEM);
-            event.accept(LIGHT_WAND);
-            event.accept(AUTO_LIGHT_WAND);
+            event.accept(LIGHT_WAND_ITEM);
+            event.accept(AUTO_LIGHT_WAND_ITEM);
             event.accept(MAGNET_ITEM);
             event.accept(ADVANCED_MAGNET_ITEM);
-            event.accept(MOB_TOOL_ITEM);
-            event.accept(ADV_MOB_TOOL_ITEM);
-            event.accept(ENCH_TOOL);
+            event.accept(MOB_CATCHER_ITEM);
+            event.accept(ADVANCED_MOB_CATCHER_ITEM);
+            event.accept(ENCHANTING_TOOL_ITEM);
         }
     }
 
@@ -114,9 +107,9 @@ public class SmacksUtil {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            MenuScreens.register(SmacksUtil.GENERIC_13X9.get(), LargeBackpackScreen::new);
-            MenuScreens.register(SmacksUtil.GENERIC_9X6.get(), BackpackScreen::new);
-            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL.get(), EnchantingToolScreen::new);
+            MenuScreens.register(SmacksUtil.LARGE_BACKPACK_SCREEN.get(), LargeBackpackScreen::new);
+            MenuScreens.register(SmacksUtil.BACKPACK_SCREEN.get(), BackpackScreen::new);
+            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_SCREEN.get(), EnchantingToolScreen::new);
             CauldronInteraction.WATER.map().putIfAbsent(BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
             CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
         }
@@ -141,12 +134,14 @@ public class SmacksUtil {
                     .optional();
             enchantRegistrar.play(EnchantData.ID, EnchantData::new, handler -> handler
                     .server(ServerEnchantPayloadHandler.getInstance()::handleData));
+            final IPayloadRegistrar breakBlockRegistrar = event.registrar(Constants.MOD_ID)
+                    .versioned(NeoForgeVersion.getSpec())
+                    .optional();
+            breakBlockRegistrar.play(BreakBlockData.ID, BreakBlockData::new, handler -> handler
+                    .server(ServerBreakBlockPayloadHandler.getInstance()::handleData));
 
         }
     }
-
-
-
 
 
 }

@@ -20,7 +20,7 @@ public abstract class ClientLevelMixin {
         Player player = Minecraft.getInstance().player;
         if (player == null) return;
         ItemStack stack = player.getMainHandItem();
-        if (stack.is(SmacksUtil.LIGHT_WAND.get()) || stack.is(SmacksUtil.AUTO_LIGHT_WAND.get())) {
+        if (stack.is(SmacksUtil.LIGHT_WAND_ITEM.get()) || stack.is(SmacksUtil.AUTO_LIGHT_WAND_ITEM.get())) {
             BlockItem blockItem = (BlockItem) Items.LIGHT;
             cir.setReturnValue(blockItem.getBlock());
         }
