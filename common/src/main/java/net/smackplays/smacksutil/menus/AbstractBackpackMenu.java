@@ -70,11 +70,11 @@ public class AbstractBackpackMenu extends AbstractContainerMenu {
         if (slot.hasItem()) {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
-            if (index < this.rows * this.cols) {
+            if (index < this.rows * this.cols + 4) {
                 if (!this.moveItemStackTo(itemStack2, this.rows * this.cols, this.slots.size(), true, 64)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.moveItemStackTo(itemStack2, 0, this.rows * this.cols, false, inventory.getMaxStackSize())) {
+            } else if (!this.moveItemStackTo(itemStack2, 4, this.rows * this.cols + 4, false, inventory.getMaxStackSize())) {
                 return ItemStack.EMPTY;
             }
 
