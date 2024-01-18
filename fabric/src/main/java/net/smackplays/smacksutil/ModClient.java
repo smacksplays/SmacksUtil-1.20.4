@@ -10,6 +10,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeableLeatherItem;
@@ -28,8 +30,12 @@ import static net.smackplays.smacksutil.Constants.*;
 
 public class ModClient implements ClientModInitializer {
 
+    public static final Attribute BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE = new RangedAttribute("attribute.name.generic.upgrade_multiplier", 1, 1, 8);
     public static final Item BACKPACK_ITEM = new BackpackItem();
     public static final Item LARGE_BACKPACK_ITEM = new LargeBackpackItem();
+    public static final Item BACKPACK_UPGRADE_TIER1_ITEM = new BackpackUpgradeItem(2);
+    public static final Item BACKPACK_UPGRADE_TIER2_ITEM = new BackpackUpgradeItem(4);
+    public static final Item BACKPACK_UPGRADE_TIER3_ITEM = new BackpackUpgradeItem(8);
     public static final Item LIGHT_WAND_ITEM = new LightWandItem();
     public static final Item AUTO_LIGHT_WAND_ITEM = new AutoLightWandItem();
     public static final Item MAGNET_ITEM = new MagnetItem();
@@ -54,6 +60,11 @@ public class ModClient implements ClientModInitializer {
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex == 0 ? ((DyeableLeatherItem) LARGE_BACKPACK_ITEM).getColor(stack) : 0xFFFFFF, LARGE_BACKPACK_ITEM);
         CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM, CauldronInteraction.SHULKER_BOX);
         MenuScreens.register(SmacksUtil.LARGE_BACKPACK_SCREEN, LargeBackpackScreen::new);
+
+        Registry.register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation(MOD_ID, "generic.upgrade_multiplier"), BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE);
+        registerItem(C_BACKPACK_UPGRADE_TIER1_ITEM, BACKPACK_UPGRADE_TIER1_ITEM);
+        registerItem(C_BACKPACK_UPGRADE_TIER2_ITEM, BACKPACK_UPGRADE_TIER2_ITEM);
+        registerItem(C_BACKPACK_UPGRADE_TIER3_ITEM, BACKPACK_UPGRADE_TIER3_ITEM);
 
         registerItem(C_ENCHANTING_TOOL_ITEM, ENCHANTING_TOOL_ITEM);
         MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_SCREEN, EnchantingToolScreen::new);

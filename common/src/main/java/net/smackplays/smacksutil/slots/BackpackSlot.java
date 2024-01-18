@@ -14,11 +14,6 @@ public class BackpackSlot extends Slot {
 
     @Override
     public boolean mayPickup(Player player) {
-        int sel = player.getInventory().selected;
-        ItemStack s = player.getInventory().items.get(sel);
-        if (this.getItem().equals(s)) {
-            return false;
-        }
         return super.mayPickup(player);
     }
 
@@ -40,5 +35,15 @@ public class BackpackSlot extends Slot {
     @Override
     public boolean allowModification(@NotNull Player player) {
         return super.allowModification(player);
+    }
+
+    @Override
+    public int getMaxStackSize() {
+        return Math.min(64 * 2 * 2 * 2 * 2, this.container.getMaxStackSize());
+    }
+
+    @Override
+    public int getMaxStackSize(ItemStack stack) {
+        return Math.min(64 * 2 * 2 * 2 * 2, this.container.getMaxStackSize());
     }
 }

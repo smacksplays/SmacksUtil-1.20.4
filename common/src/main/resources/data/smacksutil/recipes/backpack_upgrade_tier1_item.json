@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "BU1",
+  "key": {
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "LSL",
+    "SCS",
+    "LSL"
+  ],
+  "result": {
+    "item": "smacksutil:backpack_upgrade_tier1_item"
+  }
+}

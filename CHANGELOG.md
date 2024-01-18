@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [0.0.14] - 2024.01.18
+### Added 
+Backpack upgrades can increase the slot size 2, 4 or 8 times.
+
 ## [0.0.13] - 2024.01.17
 
 ### Added

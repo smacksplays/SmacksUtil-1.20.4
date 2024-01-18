@@ -7,7 +7,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class EnchantmentToolInventory implements ImplementedInventory {
+public class EnchantmentToolInventory implements IEnchantmentToolInventory {
     private final ItemStack stack;
     private final NonNullList<ItemStack> items = NonNullList.withSize(1, ItemStack.EMPTY);
 
@@ -33,7 +33,7 @@ public class EnchantmentToolInventory implements ImplementedInventory {
 
     @Override
     public @NotNull ItemStack getItem(int slot) {
-        return ImplementedInventory.super.getItem(slot);
+        return IEnchantmentToolInventory.super.getItem(slot);
     }
 
     @Override

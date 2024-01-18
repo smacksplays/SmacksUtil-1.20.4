@@ -9,12 +9,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public interface ImplementedInventory extends WorldlyContainer {
-    static ImplementedInventory of(NonNullList<ItemStack> items) {
+public interface IEnchantmentToolInventory extends WorldlyContainer {
+    static IEnchantmentToolInventory of(NonNullList<ItemStack> items) {
         return () -> items;
     }
 
-    static ImplementedInventory ofSize(int size) {
+    static IEnchantmentToolInventory ofSize(int size) {
         return of(NonNullList.withSize(size, ItemStack.EMPTY));
     }
 

@@ -18,8 +18,8 @@ import static net.smackplays.smacksutil.Constants.MOD_ID;
 public abstract class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> extends AbstractContainerScreen<T> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, C_LARGE_BACKPACK_SCREEN_LOCATION);
     //A path to the gui texture. In this example we use the texture from the dispenser
-    protected int backgroundWidth = 248;
-    protected int backgroundHeight = 281;
+    protected int backgroundWidth = 268;
+    protected int backgroundHeight = 275;
 
     public AbstractLargeBackpackScreen(T handler, Inventory inventory, Component title) {
         super(handler, inventory, title);

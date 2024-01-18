@@ -3,6 +3,8 @@ package net.smackplays.smacksutil;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -35,6 +37,7 @@ import net.smackplays.smacksutil.networking.*;
 import net.smackplays.smacksutil.screens.BackpackScreen;
 import net.smackplays.smacksutil.screens.EnchantingToolScreen;
 import net.smackplays.smacksutil.screens.LargeBackpackScreen;
+import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.function.Supplier;
 
@@ -45,8 +48,15 @@ import static net.smackplays.smacksutil.Constants.*;
 public class SmacksUtil {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MOD_ID);
     public static final DeferredRegister<MenuType<?>> SCREENS = DeferredRegister.create(Registries.MENU, MOD_ID);
+    public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, MOD_ID);
+    public static final DeferredHolder<Attribute, ?> BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE
+            = ATTRIBUTES.register("generic.upgrade_multiplier", ()
+            -> new RangedAttribute("attribute.name.generic.upgrade_multiplier", 1, 1, 8));
     public static final DeferredItem<Item> BACKPACK_ITEM = ITEMS.register(C_BACKPACK_ITEM, BackpackItem::new);
     public static final DeferredItem<Item> LARGE_BACKPACK_ITEM = ITEMS.register(C_LARGE_BACKPACK_ITEM, LargeBackpackItem::new);
+    public static final DeferredItem<Item> BACKPACK_UPGRADE_TIER1_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER1_ITEM, () -> new BackpackUpgradeItem(2));
+    public static final DeferredItem<Item> BACKPACK_UPGRADE_TIER2_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER2_ITEM, () -> new BackpackUpgradeItem(4));
+    public static final DeferredItem<Item> BACKPACK_UPGRADE_TIER3_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER3_ITEM, () -> new BackpackUpgradeItem(8));
     public static final DeferredItem<Item> LIGHT_WAND_ITEM = ITEMS.register(C_LIGHT_WAND_ITEM, () -> new LightWandItem());
     public static final DeferredItem<Item> AUTO_LIGHT_WAND_ITEM = ITEMS.register(C_AUTO_LIGHT_WAND_ITEM, AutoLightWandItem::new);
     public static final DeferredItem<Item> MAGNET_ITEM = ITEMS.register(C_MAGNET_ITEM, () -> new MagnetItem());
@@ -67,6 +77,7 @@ public class SmacksUtil {
 
         modEventBus.addListener(this::commonSetup);
 
+        ATTRIBUTES.register(modEventBus);
         ITEMS.register(modEventBus);
         SCREENS.register(modEventBus);
 
@@ -88,6 +99,9 @@ public class SmacksUtil {
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(BACKPACK_ITEM);
             event.accept(LARGE_BACKPACK_ITEM);
+            event.accept(BACKPACK_UPGRADE_TIER1_ITEM);
+            event.accept(BACKPACK_UPGRADE_TIER2_ITEM);
+            event.accept(BACKPACK_UPGRADE_TIER3_ITEM);
             event.accept(LIGHT_WAND_ITEM);
             event.accept(AUTO_LIGHT_WAND_ITEM);
             event.accept(MAGNET_ITEM);

@@ -12,6 +12,9 @@ public class Constants {
     public static final int RED = 16711680;
     public static final String C_BACKPACK_ITEM = "backpack_item";
     public static final String C_LARGE_BACKPACK_ITEM = "large_backpack_item";
+    public static final String C_BACKPACK_UPGRADE_TIER1_ITEM = "backpack_upgrade_tier1_item";
+    public static final String C_BACKPACK_UPGRADE_TIER2_ITEM = "backpack_upgrade_tier2_item";
+    public static final String C_BACKPACK_UPGRADE_TIER3_ITEM = "backpack_upgrade_tier3_item";
     public static final String C_LIGHT_WAND_ITEM = "light_wand_item";
     public static final String C_AUTO_LIGHT_WAND_ITEM = "auto_light_wand_item";
     public static final String C_MAGNET_ITEM = "magnet_item";

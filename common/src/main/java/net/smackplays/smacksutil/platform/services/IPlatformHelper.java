@@ -1,5 +1,7 @@
 package net.smackplays.smacksutil.platform.services;
 
+import net.minecraft.world.entity.ai.attributes.Attribute;
+
 public interface IPlatformHelper {
 
     /**
@@ -33,4 +35,6 @@ public interface IPlatformHelper {
 
         return isDevelopmentEnvironment() ? "development" : "production";
     }
+
+    Attribute getBackpackUpgradeMultiplierAttribute();
 }
