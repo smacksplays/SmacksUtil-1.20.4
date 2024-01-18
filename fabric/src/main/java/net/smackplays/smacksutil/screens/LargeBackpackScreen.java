@@ -20,6 +20,8 @@ public class LargeBackpackScreen extends AbstractLargeBackpackScreen<LargeBackpa
         FriendlyByteBuf packet = PacketByteBufs.create();
         ItemStack stack = this.menu.playerInventory.getSelected();
         packet.writeItem(stack);
-        ClientPlayNetworking.send(ModClient.SORT_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(ModClient.SORT_REQUEST_ID)){
+            ClientPlayNetworking.send(ModClient.SORT_REQUEST_ID, packet);
+        }
     }
 }

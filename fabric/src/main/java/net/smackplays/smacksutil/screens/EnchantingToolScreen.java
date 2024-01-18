@@ -19,6 +19,8 @@ public class EnchantingToolScreen extends AbstractEnchantingToolScreen<Enchantin
     public void sendPacket(ItemStack stack) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeItem(stack);
-        ClientPlayNetworking.send(ModClient.ENCHANT_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(ModClient.ENCHANT_REQUEST_ID)){
+            ClientPlayNetworking.send(ModClient.ENCHANT_REQUEST_ID, packet);
+        }
     }
 }
