@@ -1,6 +1,7 @@
 package net.smackplays.smacksutil.platform;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.item.Item;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
 import net.smackplays.smacksutil.SmacksUtil;
@@ -29,5 +30,15 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     @Override
     public Attribute getBackpackUpgradeMultiplierAttribute() {
         return SmacksUtil.BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE.get();
+    }
+
+    @Override
+    public Item getLightWandItem() {
+        return SmacksUtil.LIGHT_WAND_ITEM.get();
+    }
+
+    @Override
+    public Item getAutoWandItem() {
+        return SmacksUtil.AUTO_LIGHT_WAND_ITEM.get();
     }
 }

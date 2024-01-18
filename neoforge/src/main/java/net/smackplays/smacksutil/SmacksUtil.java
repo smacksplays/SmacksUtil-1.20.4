@@ -37,7 +37,6 @@ import net.smackplays.smacksutil.networking.*;
 import net.smackplays.smacksutil.screens.BackpackScreen;
 import net.smackplays.smacksutil.screens.EnchantingToolScreen;
 import net.smackplays.smacksutil.screens.LargeBackpackScreen;
-import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.function.Supplier;
 

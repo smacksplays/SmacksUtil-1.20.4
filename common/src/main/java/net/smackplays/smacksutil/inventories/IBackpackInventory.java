@@ -1,6 +1,5 @@
 package net.smackplays.smacksutil.inventories;
 
-import com.google.common.collect.Multimap;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -10,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -19,7 +17,6 @@ import net.smackplays.smacksutil.platform.Services;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public interface IBackpackInventory extends WorldlyContainer {
@@ -95,9 +92,7 @@ public interface IBackpackInventory extends WorldlyContainer {
 
     @Override
     default void setItem(int slot, @NotNull ItemStack stack) {
-        var i = getItems();
         getItems().set(slot, stack);
-        i = getItems();
         if (stack.getCount() > getMaxStackSize()) {
             stack.setCount(getMaxStackSize());
         }
@@ -154,7 +149,7 @@ public interface IBackpackInventory extends WorldlyContainer {
         for(int i = 0; i < listTag.size(); ++i) {
             CompoundTag cTag = listTag.getCompound(i);
             int slot = cTag.getByte("Slot") & 255;
-            if (slot >= 0 && slot < items.size()) {
+            if (slot < items.size()) {
                 items.set(slot, stackOf(cTag));
             }
         }
@@ -196,8 +191,8 @@ public interface IBackpackInventory extends WorldlyContainer {
     }
 
     default CompoundTag saveStack(ItemStack stack, CompoundTag tag) {
-        ResourceLocation $$1 = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        tag.putString("id", $$1 == null ? "minecraft:air" : $$1.toString());
+        ResourceLocation location = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        tag.putString("id", location == null ? "minecraft:air" : location.toString());
         tag.putFloat("Count", (float)stack.getCount());
         if (stack.getTag() != null) {
             tag.put("tag", stack.getTag().copy());

@@ -1,6 +1,7 @@
 package net.smackplays.smacksutil.platform.services;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.item.Item;
 
 public interface IPlatformHelper {
 
@@ -37,4 +38,6 @@ public interface IPlatformHelper {
     }
 
     Attribute getBackpackUpgradeMultiplierAttribute();
+    Item getLightWandItem();
+    Item getAutoWandItem();
 }
