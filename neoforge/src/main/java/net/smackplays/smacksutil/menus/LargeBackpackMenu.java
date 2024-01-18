@@ -4,7 +4,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.smackplays.smacksutil.SmacksUtil;
-import net.smackplays.smacksutil.inventories.ImplementedInventory;
+import net.smackplays.smacksutil.inventories.IBackpackInventory;
 import org.jetbrains.annotations.Nullable;
 
 public class LargeBackpackMenu extends AbstractLargeBackpackMenu {
@@ -15,6 +15,6 @@ public class LargeBackpackMenu extends AbstractLargeBackpackMenu {
 
     @SuppressWarnings("unused")
     public static LargeBackpackMenu createGeneric13x9(int syncId, Inventory playerInventory) {
-        return new LargeBackpackMenu(SmacksUtil.LARGE_BACKPACK_SCREEN.get(), syncId, playerInventory, ImplementedInventory.ofSize(13 * 9));
+        return new LargeBackpackMenu(SmacksUtil.LARGE_BACKPACK_SCREEN.get(), syncId, playerInventory, IBackpackInventory.ofSize(13 * 9 + 4));
     }
 }

@@ -30,6 +30,9 @@ public class ModClient implements ClientModInitializer {
 
     public static final Item BACKPACK_ITEM = new BackpackItem();
     public static final Item LARGE_BACKPACK_ITEM = new LargeBackpackItem();
+    public static final Item BACKPACK_UPGRADE_TIER1_ITEM = new BackpackUpgradeTier1Item();
+    public static final Item BACKPACK_UPGRADE_TIER2_ITEM = new BackpackUpgradeTier2Item();
+    public static final Item BACKPACK_UPGRADE_TIER3_ITEM = new BackpackUpgradeTier3Item();
     public static final Item LIGHT_WAND_ITEM = new LightWandItem();
     public static final Item AUTO_LIGHT_WAND_ITEM = new AutoLightWandItem();
     public static final Item MAGNET_ITEM = new MagnetItem();
@@ -54,6 +57,10 @@ public class ModClient implements ClientModInitializer {
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex == 0 ? ((DyeableLeatherItem) LARGE_BACKPACK_ITEM).getColor(stack) : 0xFFFFFF, LARGE_BACKPACK_ITEM);
         CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM, CauldronInteraction.SHULKER_BOX);
         MenuScreens.register(SmacksUtil.LARGE_BACKPACK_SCREEN, LargeBackpackScreen::new);
+
+        registerItem(C_BACKPACK_UPGRADE_TIER1_ITEM, BACKPACK_UPGRADE_TIER1_ITEM);
+        registerItem(C_BACKPACK_UPGRADE_TIER2_ITEM, BACKPACK_UPGRADE_TIER2_ITEM);
+        registerItem(C_BACKPACK_UPGRADE_TIER3_ITEM, BACKPACK_UPGRADE_TIER3_ITEM);
 
         registerItem(C_ENCHANTING_TOOL_ITEM, ENCHANTING_TOOL_ITEM);
         MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_SCREEN, EnchantingToolScreen::new);

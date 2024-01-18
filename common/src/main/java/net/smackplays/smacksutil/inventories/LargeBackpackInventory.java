@@ -7,16 +7,15 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class LargeBackpackInventory implements ImplementedInventory {
+public class LargeBackpackInventory implements IBackpackInventory {
     private final ItemStack stack;
-    private final NonNullList<ItemStack> items = NonNullList.withSize(13 * 9, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> items = NonNullList.withSize(13 * 9 + 4, ItemStack.EMPTY);
 
     public LargeBackpackInventory(ItemStack stack) {
         this.stack = stack;
-        CompoundTag tag = stack.getTagElement("large_backpack");
-
-        if (tag != null) {
-            ContainerHelper.loadAllItems(tag, items);
+        CompoundTag tag_items = stack.getTagElement("large_backpack");
+        if (tag_items != null) {
+            loadAllItems(tag_items, items);
         }
     }
 
@@ -28,7 +27,7 @@ public class LargeBackpackInventory implements ImplementedInventory {
     @Override
     public void setChanged() {
         CompoundTag tag = stack.getOrCreateTagElement("large_backpack");
-        ContainerHelper.saveAllItems(tag, items);
+        saveAllItems(tag, items, true);
     }
 
     @Override

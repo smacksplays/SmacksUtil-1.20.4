@@ -8,12 +8,16 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.smackplays.smacksutil.inventories.ImplementedInventory;
+import net.minecraft.world.item.Items;
+import net.smackplays.smacksutil.inventories.IBackpackInventory;
 import net.smackplays.smacksutil.slots.BackpackSlot;
+import net.smackplays.smacksutil.slots.BackpackUpgradeSlot;
+import net.smackplays.smacksutil.slots.InvSlot;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
+import java.util.List;
 
 public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
     public final Container inventory;
@@ -23,28 +27,30 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
 
     public AbstractLargeBackpackMenu(@Nullable MenuType<?> menuType, int syncId, Inventory playerInv, Container inv) {
         super(menuType, syncId);
-        checkContainerSize(inv, rows * cols);
+        checkContainerSize(inv, rows * cols + 4);
         this.inventory = inv;
         this.playerInventory = playerInv;
         inv.startOpen(playerInventory.player);
         int i = (this.rows - 4) * 18;
 
-        int j;
-        int k;
-        for (j = 0; j < this.rows; ++j) {
-            for (k = 0; k < this.cols; ++k) {
-                this.addSlot(new BackpackSlot(inv, k + j * this.cols, 8 + k * 18 - 18 * 2, 18 + j * 18 - 3 - 3 * 18));
+        for (int j = 0; j < 4; ++j){
+            this.addSlot(new BackpackUpgradeSlot(inv, j, 199, 21 + j * 18 - 3 - 3 * 18));
+        }
+
+        for (int j = 0; j < this.rows; ++j) {
+            for (int k = 0; k < this.cols; ++k) {
+                this.addSlot(new BackpackSlot(inv, 4 + k + j * this.cols, -2 + k * 18 - 18 * 2, 21 + j * 18 - 3 - 3 * 18));
             }
         }
 
-        for (j = 0; j < 3; ++j) {
-            for (k = 0; k < 9; ++k) {
-                this.addSlot(new BackpackSlot(playerInventory, k + j * 9 + 9, 8 + k * 18, 46 + j * 18 + i));
+        for (int j = 0; j < 3; ++j) {
+            for (int k = 0; k < 9; ++k) {
+                this.addSlot(new InvSlot(playerInventory, k + j * 9 + 9, - 2 + k * 18, 49 + j * 18 + i));
             }
         }
 
-        for (j = 0; j < 9; ++j) {
-            this.addSlot(new BackpackSlot(playerInventory, j, 8 + j * 18, 104 + i));
+        for (int j = 0; j < 9; ++j) {
+            this.addSlot(new InvSlot(playerInventory, j, - 2 + j * 18, 107 + i));
         }
     }
 
@@ -78,22 +84,44 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
     }
 
     public void sort() {
-        ImplementedInventory impInv = (ImplementedInventory) inventory;
+        IBackpackInventory impInv = (IBackpackInventory) inventory;
         NonNullList<ItemStack> items = impInv.getItems();
-        items.sort(Comparator.comparing(this::getStringForSort));
-        for (int i = 0; i < items.size(); i++) {
+        List<ItemStack> temp = items.subList(4, rows * cols + 4);
+
+        int maxStacksize = this.inventory.getMaxStackSize();
+
+        for (int i = 0; i < temp.size(); i++){
+            for(int j = 0; j < temp.size(); j++){
+                if (i != j){
+                    ItemStack stack1 = temp.get(i);
+                    ItemStack stack2 = temp.get(j);
+                    if (ItemStack.isSameItemSameTags(stack1, stack2) && stack1.getCount() + stack2.getCount() <= maxStacksize){
+                        stack1.setCount(stack1.getCount() + stack2.getCount());
+                        temp.set(i, stack1);
+                        temp.set(j, Items.AIR.getDefaultInstance());
+                    }
+                }
+            }
+        }
+
+        temp.sort(Comparator.comparing(this::getStringForSort));
+        for (int i = 0; i < temp.size(); i++) {
+            items.set(i + 4, temp.get(i));
             this.slots.get(i).set(impInv.getItem(i));
         }
     }
 
     private String getStringForSort(ItemStack stack) {
         String s;
+        int maxStacksize = this.inventory.getMaxStackSize();
         if (stack.isEmpty()) {
-            return "zzz";
+            return "zzz" + stack.getItem().getDescriptionId() + stack.getCount();
         } else if (stack.hasCustomHoverName()) {
-            s = stack.getHoverName().getString();
-        } else {
-            s = stack.getDisplayName().getString();
+            s = stack.getHoverName().getString() + stack.getCount();
+        } else if (stack.getCount() == maxStacksize){
+            s = stack.getItem().getDescriptionId() + "00" + stack.getCount();
+        }else {
+            s = stack.getItem().getDescriptionId() + stack.getCount();
         }
         return s;
     }
