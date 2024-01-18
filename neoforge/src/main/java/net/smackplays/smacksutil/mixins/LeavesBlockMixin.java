@@ -23,10 +23,10 @@ import java.util.Objects;
 public abstract class LeavesBlockMixin {
     @Final
     @Shadow
-    public static final IntegerProperty DISTANCE = BlockStateProperties.DISTANCE;
+    public static IntegerProperty DISTANCE = BlockStateProperties.DISTANCE;
     @Final
     @Shadow
-    public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
+    public static BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
     @Inject(at = @At("HEAD"), method = "tick")
     private void tick(BlockState state, ServerLevel serverLevel, BlockPos pos, RandomSource randomSource, CallbackInfo ci) {
