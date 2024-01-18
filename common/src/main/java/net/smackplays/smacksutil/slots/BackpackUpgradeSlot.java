@@ -2,15 +2,18 @@ package net.smackplays.smacksutil.slots;
 
 
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.inventories.BackpackInventory;
 import net.smackplays.smacksutil.inventories.IBackpackInventory;
-import net.smackplays.smacksutil.items.BackpackUpgradeTier1Item;
-import net.smackplays.smacksutil.items.BaseBackpackUpgradeItem;
+import net.smackplays.smacksutil.items.BackpackUpgradeItem;
+import net.smackplays.smacksutil.platform.Services;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class BackpackUpgradeSlot extends Slot {
     public BackpackUpgradeSlot(Container inventory, int index, int x, int y) {
@@ -19,20 +22,23 @@ public class BackpackUpgradeSlot extends Slot {
 
     @Override
     public boolean mayPickup(Player player) {
-        int sel = player.getInventory().selected;
-        ItemStack s = player.getInventory().items.get(sel);
-        container.getMaxStackSize();
-        if (container instanceof BackpackInventory inv){
-            return inv.checkRemoveUpgrade(inv.getMaxStackSize() / 2);
-        }
-        if (container instanceof IBackpackInventory inv){
-            return inv.checkRemoveUpgrade(inv.getMaxStackSize() / 2);
+        ItemStack stack = getItem();
+        List<AttributeModifier> modifiers = stack.getAttributeModifiers(EquipmentSlot.MAINHAND)
+                .get(Services.PLATFORM.getBackpackUpgradeMultiplierAttribute()).stream().toList();
+        if (!modifiers.isEmpty()){
+            int offset = (int) modifiers.get(0).getAmount();
+            if (container instanceof BackpackInventory inv){
+                return inv.checkRemoveUpgrade(inv.getMaxStackSize() / offset);
+            }
+            if (container instanceof IBackpackInventory inv){
+                return inv.checkRemoveUpgrade(inv.getMaxStackSize() / offset);
+            }
         }
         return super.mayPickup(player);
     }
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.getItem() instanceof BaseBackpackUpgradeItem;
+        return stack.getItem() instanceof BackpackUpgradeItem;
     }
 
     @Override

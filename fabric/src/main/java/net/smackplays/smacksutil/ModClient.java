@@ -10,6 +10,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeableLeatherItem;
@@ -28,11 +30,12 @@ import static net.smackplays.smacksutil.Constants.*;
 
 public class ModClient implements ClientModInitializer {
 
+    public static final Attribute BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE = new RangedAttribute("attribute.name.generic.upgrade_multiplier", 1, 1, 8);
     public static final Item BACKPACK_ITEM = new BackpackItem();
     public static final Item LARGE_BACKPACK_ITEM = new LargeBackpackItem();
-    public static final Item BACKPACK_UPGRADE_TIER1_ITEM = new BackpackUpgradeTier1Item();
-    public static final Item BACKPACK_UPGRADE_TIER2_ITEM = new BackpackUpgradeTier2Item();
-    public static final Item BACKPACK_UPGRADE_TIER3_ITEM = new BackpackUpgradeTier3Item();
+    public static final Item BACKPACK_UPGRADE_TIER1_ITEM = new BackpackUpgradeItem(2);
+    public static final Item BACKPACK_UPGRADE_TIER2_ITEM = new BackpackUpgradeItem(4);
+    public static final Item BACKPACK_UPGRADE_TIER3_ITEM = new BackpackUpgradeItem(8);
     public static final Item LIGHT_WAND_ITEM = new LightWandItem();
     public static final Item AUTO_LIGHT_WAND_ITEM = new AutoLightWandItem();
     public static final Item MAGNET_ITEM = new MagnetItem();
@@ -58,6 +61,7 @@ public class ModClient implements ClientModInitializer {
         CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM, CauldronInteraction.SHULKER_BOX);
         MenuScreens.register(SmacksUtil.LARGE_BACKPACK_SCREEN, LargeBackpackScreen::new);
 
+        Registry.register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation(MOD_ID, "generic.upgrade_multiplier"), BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE);
         registerItem(C_BACKPACK_UPGRADE_TIER1_ITEM, BACKPACK_UPGRADE_TIER1_ITEM);
         registerItem(C_BACKPACK_UPGRADE_TIER2_ITEM, BACKPACK_UPGRADE_TIER2_ITEM);
         registerItem(C_BACKPACK_UPGRADE_TIER3_ITEM, BACKPACK_UPGRADE_TIER3_ITEM);

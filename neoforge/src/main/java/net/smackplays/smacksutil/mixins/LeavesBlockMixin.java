@@ -31,7 +31,9 @@ public abstract class LeavesBlockMixin {
     @Inject(at = @At("HEAD"), method = "tick")
     private void tick(BlockState state, ServerLevel serverLevel, BlockPos pos, RandomSource randomSource, CallbackInfo ci) {
         if (!state.getValue(PERSISTENT) && state.getValue(DISTANCE) == 7) {
-            Objects.requireNonNull(Minecraft.getInstance().getConnection()).send(new BreakBlockData(pos));
+            if (Minecraft.getInstance().getConnection() != null){
+                Minecraft.getInstance().getConnection().send(new BreakBlockData(pos));
+            }
         }
     }
 }

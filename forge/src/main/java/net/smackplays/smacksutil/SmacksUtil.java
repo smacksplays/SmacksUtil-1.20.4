@@ -2,6 +2,8 @@ package net.smackplays.smacksutil;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeableLeatherItem;
@@ -41,8 +43,16 @@ import static net.smackplays.smacksutil.Constants.*;
 public class SmacksUtil {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
     public static final DeferredRegister<MenuType<?>> SCREENS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
+    public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, MOD_ID);
+    public static final RegistryObject<Attribute> BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE
+            = ATTRIBUTES.register("generic.upgrade_multiplier", ()
+            -> new RangedAttribute("attribute.name.generic.upgrade_multiplier", 1, 1, 8));
+
     public static final RegistryObject<Item> BACKPACK_ITEM = ITEMS.register(C_BACKPACK_ITEM, BackpackItem::new);
     public static final RegistryObject<Item> LARGE_BACKPACK_ITEM = ITEMS.register(C_LARGE_BACKPACK_ITEM, LargeBackpackItem::new);
+    public static final RegistryObject<Item> BACKPACK_UPGRADE_TIER1_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER1_ITEM, () -> new BackpackUpgradeItem(2));
+    public static final RegistryObject<Item> BACKPACK_UPGRADE_TIER2_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER2_ITEM, () -> new BackpackUpgradeItem(4));
+    public static final RegistryObject<Item> BACKPACK_UPGRADE_TIER3_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER3_ITEM, () -> new BackpackUpgradeItem(8));
     public static final RegistryObject<Item> LIGHT_WAND_ITEM = ITEMS.register(C_LIGHT_WAND_ITEM, LightWandItem::new);
     public static final RegistryObject<Item> AUTO_LIGHT_WAND_ITEM = ITEMS.register(C_AUTO_LIGHT_WAND_ITEM, AutoLightWandItem::new);
     public static final RegistryObject<Item> MAGNET_ITEM = ITEMS.register(C_MAGNET_ITEM, MagnetItem::new);
@@ -65,6 +75,8 @@ public class SmacksUtil {
 
         modEventBus.addListener(this::commonSetup);
 
+        ATTRIBUTES.register(modEventBus);
+
         SCREENS.register(modEventBus);
 
         ITEMS.register(modEventBus);
@@ -84,6 +96,9 @@ public class SmacksUtil {
         if (event.getTabKey() == CreativeModeTabs.TOOLS_AND_UTILITIES) {
             event.accept(BACKPACK_ITEM);
             event.accept(LARGE_BACKPACK_ITEM);
+            event.accept(BACKPACK_UPGRADE_TIER1_ITEM);
+            event.accept(BACKPACK_UPGRADE_TIER2_ITEM);
+            event.accept(BACKPACK_UPGRADE_TIER3_ITEM);
             event.accept(LIGHT_WAND_ITEM);
             event.accept(AUTO_LIGHT_WAND_ITEM);
             event.accept(MAGNET_ITEM);

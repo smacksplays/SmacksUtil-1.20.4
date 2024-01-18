@@ -71,10 +71,10 @@ public class AbstractBackpackMenu extends AbstractContainerMenu {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if (index < this.rows * this.cols) {
-                if (!this.moveItemStackTo(itemStack2, this.rows * this.cols, this.slots.size(), true)) {
+                if (!this.moveItemStackTo(itemStack2, this.rows * this.cols, this.slots.size(), true, 64)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.moveItemStackTo(itemStack2, 0, this.rows * this.cols, false)) {
+            } else if (!this.moveItemStackTo(itemStack2, 0, this.rows * this.cols, false, inventory.getMaxStackSize())) {
                 return ItemStack.EMPTY;
             }
 
@@ -85,6 +85,73 @@ public class AbstractBackpackMenu extends AbstractContainerMenu {
             }
         }
         return itemStack;
+    }
+
+    protected boolean moveItemStackTo(ItemStack stack, int min, int max, boolean bl, int maxStackSize) {
+        boolean bl1 = false;
+        int $$5 = min;
+        if (bl) {
+            $$5 = max - 1;
+        }
+
+        if (stack.isStackable()) {
+            while(!stack.isEmpty() && (bl ? $$5 >= min : $$5 < max)) {
+                Slot slot = this.slots.get($$5);
+                ItemStack stack1 = slot.getItem();
+                if (!stack1.isEmpty() && ItemStack.isSameItemSameTags(stack, stack1)) {
+                    int $$8 = stack1.getCount() + stack.getCount();
+                    if ($$8 <= maxStackSize) {
+                        stack.setCount(0);
+                        stack1.setCount($$8);
+                        slot.setChanged();
+                        bl1 = true;
+                    } else if (stack1.getCount() < maxStackSize) {
+                        stack.shrink(maxStackSize - stack1.getCount());
+                        stack1.setCount(maxStackSize);
+                        slot.setChanged();
+                        bl1 = true;
+                    }
+                }
+
+                if (bl) {
+                    --$$5;
+                } else {
+                    ++$$5;
+                }
+            }
+        }
+
+        if (!stack.isEmpty()) {
+            if (bl) {
+                $$5 = max - 1;
+            } else {
+                $$5 = min;
+            }
+
+            while(bl ? $$5 >= min : $$5 < max) {
+                Slot $$9 = this.slots.get($$5);
+                ItemStack $$10 = $$9.getItem();
+                if ($$10.isEmpty() && $$9.mayPlace(stack)) {
+                    if (stack.getCount() > $$9.getMaxStackSize()) {
+                        $$9.setByPlayer(stack.split($$9.getMaxStackSize()));
+                    } else {
+                        $$9.setByPlayer(stack.split(stack.getCount()));
+                    }
+
+                    $$9.setChanged();
+                    bl1 = true;
+                    break;
+                }
+
+                if (bl) {
+                    --$$5;
+                } else {
+                    ++$$5;
+                }
+            }
+        }
+
+        return bl1;
     }
 
     public void sort() {
