@@ -33,7 +33,9 @@ public abstract class LeavesBlockMixin {
         if (!state.getValue(PERSISTENT) && state.getValue(DISTANCE) == 7) {
             FriendlyByteBuf packet = PacketByteBufs.create();
             packet.writeBlockPos(pos);
-            ClientPlayNetworking.send(ModClient.BREAK_BLOCK_REQUEST_ID, packet);
+            if (ClientPlayNetworking.canSend(ModClient.BREAK_BLOCK_REQUEST_ID)){
+                ClientPlayNetworking.send(ModClient.BREAK_BLOCK_REQUEST_ID, packet);
+            }
         }
     }
 }

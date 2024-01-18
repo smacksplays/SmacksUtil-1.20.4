@@ -52,16 +52,16 @@ public class AutoLightWandItem extends LightWandItem {
             Player player = (Player) entity;
 
             BlockPos sourcePos = player.blockPosition();
-            BlockPos pos = new BlockPos(sourcePos.getX() - 4, sourcePos.getY() - 2, sourcePos.getZ() - 4);
             ArrayList<BlockPos> toDark = new ArrayList<>();
 
-            for (int x = 0; x < 4 * 2; x++) {
-                for (int y = 0; y < 5; y++) {
-                    for (int z = 0; z < 4 * 2; z++) {
-                        BlockPos curr = pos.offset(x, y, z);
+            for (int x = -4; x < 4; x++) {
+                for (int y = -2; y < 2; y++) {
+                    for (int z = -4; z < 4; z++) {
+                        BlockPos curr = sourcePos.offset(x, y, z);
                         int light = world.getBrightness(LightLayer.BLOCK, curr);
                         if (light <= 9 && !world.getBlockState(curr.below()).is(Blocks.AIR)
-                                && world.getBlockState(curr).is(Blocks.AIR)
+                                && (world.getBlockState(curr).is(Blocks.AIR)
+                                    || world.getBlockState(curr).is(Blocks.CAVE_AIR))
                                 && world.getBlockState(curr).getFluidState().isEmpty()
                                 && Block.isShapeFullBlock(world.getBlockState(curr.below()).getShape(world, curr))) {
                             toDark.add(curr);
