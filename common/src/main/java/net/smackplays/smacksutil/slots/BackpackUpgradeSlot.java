@@ -21,7 +21,7 @@ public class BackpackUpgradeSlot extends Slot {
     }
 
     @Override
-    public boolean mayPickup(Player player) {
+    public boolean mayPickup(@NotNull Player player) {
         ItemStack stack = getItem();
         List<AttributeModifier> modifiers = stack.getAttributeModifiers(EquipmentSlot.MAINHAND)
                 .get(Services.PLATFORM.getBackpackUpgradeMultiplierAttribute()).stream().toList();

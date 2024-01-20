@@ -67,10 +67,10 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if (index < this.rows * this.cols + 4) {
-                if (!this.moveItemStackTo(itemStack2, this.rows * this.cols, this.slots.size(), true, 64)) {
+                if (this.moveItemStackTo(itemStack2, this.rows * this.cols, this.slots.size(), true, 64)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.moveItemStackTo(itemStack2, 4, this.rows * this.cols + 4, false, inventory.getMaxStackSize())) {
+            } else if (this.moveItemStackTo(itemStack2, 4, this.rows * this.cols + 4, false, inventory.getMaxStackSize())) {
                 return ItemStack.EMPTY;
             }
 
@@ -147,7 +147,7 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
             }
         }
 
-        return bl1;
+        return !bl1;
     }
     public void sort() {
         IBackpackInventory impInv = (IBackpackInventory) inventory;

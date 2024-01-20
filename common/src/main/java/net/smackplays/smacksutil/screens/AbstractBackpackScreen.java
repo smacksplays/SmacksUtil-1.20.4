@@ -18,8 +18,8 @@ import static net.smackplays.smacksutil.Constants.MOD_ID;
 public abstract class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends AbstractContainerScreen<T> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, C_BACKPACK_SCREEN_LOCATION);
     //A path to the gui texture. In this example we use the texture from the dispenser
-    protected int backgroundWidth = 196;
-    protected int backgroundHeight = 220;
+    protected final int backgroundWidth = 196;
+    protected final int backgroundHeight = 220;
 
     public AbstractBackpackScreen(T handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
@@ -28,7 +28,7 @@ public abstract class AbstractBackpackScreen<T extends AbstractBackpackMenu> ext
     @Override
     protected void renderBg(GuiGraphics context, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;

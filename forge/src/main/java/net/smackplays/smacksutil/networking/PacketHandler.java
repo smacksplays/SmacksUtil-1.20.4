@@ -35,6 +35,18 @@ public class PacketHandler {
                 .decoder(SBreakBlockPacket::new)
                 .consumerMainThread(SBreakBlockPacket::handle)
                 .add();
+
+        INSTANCE.messageBuilder(TeleportationNBTPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(TeleportationNBTPacket::encode)
+                .decoder(TeleportationNBTPacket::new)
+                .consumerMainThread(TeleportationNBTPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(TeleportationPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(TeleportationPacket::encode)
+                .decoder(TeleportationPacket::new)
+                .consumerMainThread(TeleportationPacket::handle)
+                .add();
     }
 
     public static void sendToServer(Object msg) {

@@ -10,10 +10,10 @@ import net.smackplays.smacksutil.util.ModTags;
 import java.util.ArrayList;
 
 public class VeinMode {
-    public static ArrayList<BlockPos> toBreak = new ArrayList<>();
+    public static final ArrayList<BlockPos> toBreak = new ArrayList<>();
     public static ArrayList<BlockPos> toCheck = new ArrayList<>();
     public static ArrayList<BlockPos> oldToBreak = new ArrayList<>();
-    public static ArrayList<BlockPos> checked = new ArrayList<>();
+    public static final ArrayList<BlockPos> checked = new ArrayList<>();
     public static int oldRadius;
     public static BlockPos oldSourcePos;
     public static Block oldToMatch;

@@ -34,11 +34,17 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
 
     @Override
     public Item getLightWandItem() {
-        return SmacksUtil.LIGHT_WAND_ITEM.get();
+        if (SmacksUtil.LIGHT_WAND_ITEM.isBound()) {
+            return SmacksUtil.LIGHT_WAND_ITEM.get();
+        }
+        return null;
     }
 
     @Override
     public Item getAutoWandItem() {
-        return SmacksUtil.AUTO_LIGHT_WAND_ITEM.get();
+        if (SmacksUtil.AUTO_LIGHT_WAND_ITEM.isBound()) {
+            return SmacksUtil.AUTO_LIGHT_WAND_ITEM.get();
+        }
+        return null;
     }
 }
