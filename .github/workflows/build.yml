@@ -4,7 +4,7 @@
 # against bad commits.
 
 name: Publish on CurseForge [Forge & Fabric & NeoForge]
-on: [ workflow_dispatch ]
+on: [ workflow_dispatch, pull_request]
 env: #Environment variables that can later be referenced using ${{ env.MINECRAFT_VERSION }}. These are useful for repeating information and allow for quick changes for new mod updates
   MINECRAFT_VERSION: 1.20.4
   JAVA_VERSION: 17
