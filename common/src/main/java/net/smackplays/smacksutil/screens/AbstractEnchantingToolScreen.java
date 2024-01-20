@@ -19,6 +19,7 @@ import net.smackplays.smacksutil.menus.AbstractEnchantingToolMenu;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static net.smackplays.smacksutil.Constants.*;
@@ -38,12 +39,12 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
     private static final ResourceLocation SCROLLER_DISABLED_SPRITE =
             new ResourceLocation(C_SCROLLER_DISABLED_SPRITE_LOCATION);
     public boolean scrolling;
-    //A path to the gui texture. In this example we use the texture from the dispenser
-    protected int backgroundWidth = 176;
-    protected int backgroundHeight = 224;
     private float scrollOffs;
+    protected final int backgroundWidth = 176;
+    protected final int backgroundHeight = 224;
     private boolean addRemove = true;
     private Button buttonWidget;
+    private final List<Label> labelList = new ArrayList<>();
 
     public AbstractEnchantingToolScreen(T handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
@@ -51,8 +52,9 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
 
     @Override
     protected void renderBg(GuiGraphics context, float delta, int mouseX, int mouseY) {
+        labelList.clear();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 0.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
@@ -91,7 +93,8 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
                         .getOptional(EnchantmentHelper.getEnchantmentId(ench))
                         .ifPresent(e -> comp.add(e.getFullname(e.getMaxLevel())));
 
-                context.drawString(this.font, comp.get(0), x + 10, y + 20 + 19 * i, 0x404040, false);
+
+                labelList.add(new Label(comp.get(0), 10, 20 + 19 * i, false));
             } else {
                 context.blit(ENCHANTING_SLOT_DISABLED_SPRITE, x + 8, y + 15 + 19 * i, 0, 0, 126, 19, 126, 19);
             }
@@ -126,8 +129,11 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
 
     @Override
     protected void renderLabels(GuiGraphics context, int mouseX, int mouseY) {
-        context.drawString(this.font, this.title, this.titleLabelX - 41, this.titleLabelY - 31, 0x404040, false);
+        context.drawString(this.font, this.title, this.titleLabelX - 38, this.titleLabelY - 31, 0x404040, false);
         context.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX - 1, this.inventoryLabelY + 30, 0x404040, false);
+        for (Label l : labelList){
+            context.drawString(this.font, l.component, titleLabelX - 45 + l.x, titleLabelY - 34 + l.y, 0x404040, l.shadow);
+        }
     }
 
     @Override
@@ -167,8 +173,9 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
 
     @Override
     public boolean mouseDragged(double mouseX, double mouseY, int $$2, double scrollX, double scrollY) {
+        int y = (height - backgroundHeight) / 2;
         if (this.scrolling) {
-            this.scrollOffs = (float) mouseY - 162;
+            this.scrollOffs = (float) mouseY - y - 22;
             this.scrollOffs = Mth.clamp(this.scrollOffs, 0.0F, 99F);
             return true;
         } else {
@@ -238,5 +245,8 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
             }
         }
         return super.mouseScrolled(mouseX, mouseY, $$2, scroll_delta);
+    }
+
+    private record Label(Component component, int x, int y, boolean shadow) {
     }
 }

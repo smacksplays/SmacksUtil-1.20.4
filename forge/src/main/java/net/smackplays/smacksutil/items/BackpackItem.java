@@ -22,7 +22,7 @@ public class BackpackItem extends AbstractBackpackItem {
         return new MenuProvider() {
             @Override
             public @NotNull AbstractContainerMenu createMenu(int syncId, @NotNull Inventory playerInventory, @NotNull Player player) {
-                return new BackpackMenu(SmacksUtil.BACKPACK_SCREEN.get(), syncId, playerInventory, new BackpackInventory(stack));
+                return new BackpackMenu(SmacksUtil.BACKPACK_MENU.get(), syncId, playerInventory, new BackpackInventory(stack));
             }
 
             @Override

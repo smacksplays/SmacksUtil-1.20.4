@@ -13,7 +13,7 @@ public class BackpackSlot extends Slot {
     }
 
     @Override
-    public boolean mayPickup(Player player) {
+    public boolean mayPickup(@NotNull Player player) {
         return super.mayPickup(player);
     }
 
@@ -43,7 +43,7 @@ public class BackpackSlot extends Slot {
     }
 
     @Override
-    public int getMaxStackSize(ItemStack stack) {
+    public int getMaxStackSize(@NotNull ItemStack stack) {
         return Math.min(64 * 2 * 2 * 2 * 2, this.container.getMaxStackSize());
     }
 }

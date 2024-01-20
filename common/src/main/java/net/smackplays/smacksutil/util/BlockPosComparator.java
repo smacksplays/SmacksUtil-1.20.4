@@ -7,7 +7,7 @@ import java.util.Comparator;
 
 public class BlockPosComparator implements Comparator<BlockPos> {
 
-    BlockPos sourcePos;
+    final BlockPos sourcePos;
 
     public BlockPosComparator(BlockPos sourcePosIn) {
         sourcePos = sourcePosIn;

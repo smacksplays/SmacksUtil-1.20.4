@@ -8,7 +8,7 @@ import java.util.Comparator;
 
 public class PlayerComparator implements Comparator<BlockPos> {
 
-    Player player;
+    final Player player;
 
     public PlayerComparator(Player playerIn) {
         player = playerIn;

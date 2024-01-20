@@ -22,7 +22,7 @@ public class LargeBackpackItem extends AbstractBackpackItem {
         return new MenuProvider() {
             @Override
             public AbstractContainerMenu createMenu(int syncId, @NotNull Inventory playerInventory, @NotNull Player player) {
-                return new LargeBackpackMenu(SmacksUtil.LARGE_BACKPACK_SCREEN.get(), syncId, playerInventory, new LargeBackpackInventory(stack));
+                return new LargeBackpackMenu(SmacksUtil.LARGE_BACKPACK_MENU.get(), syncId, playerInventory, new LargeBackpackInventory(stack));
             }
 
             @Override

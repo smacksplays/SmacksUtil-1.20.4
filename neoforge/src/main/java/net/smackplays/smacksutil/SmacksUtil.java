@@ -33,10 +33,12 @@ import net.smackplays.smacksutil.items.*;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
+import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
 import net.smackplays.smacksutil.networking.*;
 import net.smackplays.smacksutil.screens.BackpackScreen;
 import net.smackplays.smacksutil.screens.EnchantingToolScreen;
 import net.smackplays.smacksutil.screens.LargeBackpackScreen;
+import net.smackplays.smacksutil.screens.TeleportationTabletScreen;
 
 import java.util.function.Supplier;
 
@@ -63,12 +65,15 @@ public class SmacksUtil {
     public static final DeferredItem<Item> MOB_CATCHER_ITEM = ITEMS.register(C_MOB_CATCHER_ITEM, MobCatcherItem::new);
     public static final DeferredItem<Item> ADVANCED_MOB_CATCHER_ITEM = ITEMS.register(C_ADVANCED_MOB_CATCHER_ITEM, AdvancedMobCatcherItem::new);
     public static final DeferredItem<Item> ENCHANTING_TOOL_ITEM = ITEMS.register(C_ENCHANTING_TOOL_ITEM, ForgeEnchantingToolItem::new);
-    public static final DeferredHolder<MenuType<?>, MenuType<BackpackMenu>> BACKPACK_SCREEN =
-            SCREENS.register(C_BACKPACK_SCREEN, () -> new MenuType<>(BackpackMenu::createGeneric9x6, FeatureFlags.DEFAULT_FLAGS));
-    public static final DeferredHolder<MenuType<?>, MenuType<LargeBackpackMenu>> LARGE_BACKPACK_SCREEN =
-            SCREENS.register(C_LARGE_BACKPACK_SCREEN, () -> new MenuType<>(LargeBackpackMenu::createGeneric13x9, FeatureFlags.DEFAULT_FLAGS));
-    public static final DeferredHolder<MenuType<?>, MenuType<EnchantingToolMenu>> ENCHANTING_TOOL_SCREEN =
-            SCREENS.register(C_ENCHANTING_TOOL_SCREEN, () -> new MenuType<>(EnchantingToolMenu::create, FeatureFlags.DEFAULT_FLAGS));
+    public static final DeferredItem<Item> TELEPORTATION_TABLET_ITEM = ITEMS.register(C_TELEPORTATION_TABLET_ITEM, TeleportationTablet::new);
+    public static final DeferredHolder<MenuType<?>, MenuType<BackpackMenu>> BACKPACK_MENU =
+            SCREENS.register(C_BACKPACK_MENU, () -> new MenuType<>(BackpackMenu::createGeneric9x6, FeatureFlags.DEFAULT_FLAGS));
+    public static final DeferredHolder<MenuType<?>, MenuType<LargeBackpackMenu>> LARGE_BACKPACK_MENU =
+            SCREENS.register(C_LARGE_BACKPACK_MENU, () -> new MenuType<>(LargeBackpackMenu::createGeneric13x9, FeatureFlags.DEFAULT_FLAGS));
+    public static final DeferredHolder<MenuType<?>, MenuType<EnchantingToolMenu>> ENCHANTING_TOOL_MENU =
+            SCREENS.register(C_ENCHANTING_TOOL_MENU, () -> new MenuType<>(EnchantingToolMenu::create, FeatureFlags.DEFAULT_FLAGS));
+    public static final DeferredHolder<MenuType<?>, MenuType<TeleportationTabletMenu>> TELEPORTATION_TABLET_MENU =
+            SCREENS.register(C_TELEPORTATION_TABLET_MENU, () -> new MenuType<>(TeleportationTabletMenu::create, FeatureFlags.DEFAULT_FLAGS));
 
     public SmacksUtil(IEventBus modEventBus) {
         Constants.LOG.info("Hello NeoForge world!");
@@ -108,6 +113,7 @@ public class SmacksUtil {
             event.accept(MOB_CATCHER_ITEM);
             event.accept(ADVANCED_MOB_CATCHER_ITEM);
             event.accept(ENCHANTING_TOOL_ITEM);
+            event.accept(TELEPORTATION_TABLET_ITEM);
         }
     }
 
@@ -120,9 +126,10 @@ public class SmacksUtil {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            MenuScreens.register(SmacksUtil.LARGE_BACKPACK_SCREEN.get(), LargeBackpackScreen::new);
-            MenuScreens.register(SmacksUtil.BACKPACK_SCREEN.get(), BackpackScreen::new);
-            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_SCREEN.get(), EnchantingToolScreen::new);
+            MenuScreens.register(SmacksUtil.LARGE_BACKPACK_MENU.get(), LargeBackpackScreen::new);
+            MenuScreens.register(SmacksUtil.BACKPACK_MENU.get(), BackpackScreen::new);
+            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_MENU.get(), EnchantingToolScreen::new);
+            MenuScreens.register(SmacksUtil.TELEPORTATION_TABLET_MENU.get(), TeleportationTabletScreen::new);
             CauldronInteraction.WATER.map().putIfAbsent(BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
             CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
         }
@@ -152,6 +159,16 @@ public class SmacksUtil {
                     .optional();
             breakBlockRegistrar.play(BreakBlockData.ID, BreakBlockData::new, handler -> handler
                     .server(ServerBreakBlockPayloadHandler.getInstance()::handleData));
+            final IPayloadRegistrar teleportRegistrar = event.registrar(Constants.MOD_ID)
+                    .versioned(NeoForgeVersion.getSpec())
+                    .optional();
+            teleportRegistrar.play(TeleportationData.ID, TeleportationData::new, handler -> handler
+                    .server(ServerTeleportationPayloadHandler.getInstance()::handleData));
+            final IPayloadRegistrar teleportNBTRegistrar = event.registrar(Constants.MOD_ID)
+                    .versioned(NeoForgeVersion.getSpec())
+                    .optional();
+            teleportNBTRegistrar.play(TeleportationNBTData.ID, TeleportationNBTData::new, handler -> handler
+                    .server(ServerTeleportationNBTPayloadHandler.getInstance()::handleData));
 
         }
     }

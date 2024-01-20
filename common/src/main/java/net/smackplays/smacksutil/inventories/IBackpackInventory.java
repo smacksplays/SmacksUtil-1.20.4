@@ -161,7 +161,9 @@ public interface IBackpackInventory extends WorldlyContainer {
         stack.setCount((int) tag.getFloat("Count"));
         if (tag.contains("tag", 10)) {
             stack.setTag(tag.getCompound("tag").copy());
-            stack.getItem().verifyTagAfterLoad(stack.getTag());
+            if (stack.getTag() != null) {
+                stack.getItem().verifyTagAfterLoad(stack.getTag());
+            }
         }
 
         if (stack.getItem().canBeDepleted()) {
@@ -170,7 +172,7 @@ public interface IBackpackInventory extends WorldlyContainer {
         return stack;
     }
 
-    default CompoundTag saveAllItems(CompoundTag tag, NonNullList<ItemStack> items, boolean bl) {
+    default void saveAllItems(CompoundTag tag, NonNullList<ItemStack> items, boolean bl) {
         ListTag listTag = new ListTag();
 
         for(int i = 0; i < items.size(); ++i) {
@@ -187,17 +189,15 @@ public interface IBackpackInventory extends WorldlyContainer {
             tag.put("Items", listTag);
         }
 
-        return tag;
     }
 
-    default CompoundTag saveStack(ItemStack stack, CompoundTag tag) {
+    default void saveStack(ItemStack stack, CompoundTag tag) {
         ResourceLocation location = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        tag.putString("id", location == null ? "minecraft:air" : location.toString());
+        tag.putString("id", location.toString());
         tag.putFloat("Count", (float)stack.getCount());
         if (stack.getTag() != null) {
             tag.put("tag", stack.getTag().copy());
         }
 
-        return tag;
     }
 }

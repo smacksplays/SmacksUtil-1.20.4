@@ -19,6 +19,7 @@
   "item.smacksutil.enchanting_tool_item": "Enchanting Tool",
   "smacksutil.screen.backpack.item": "Backpack",
   "smacksutil.configsceren.title": "SmacksUtil",
+  "item.smacksutil.teleportation_tablet_item": "Teleporter",
   "smacksutil.category.config": "Config",
   "text.autoconfig.smacksutil.option.maxRenderBlocks": "Max Blocks to Render",
   "text.autoconfig.smacksutil.option.maxRenderBlocks.@Tooltip": "Allows the player to define how many Blocks can be rendered. This is used to reduce lag.",

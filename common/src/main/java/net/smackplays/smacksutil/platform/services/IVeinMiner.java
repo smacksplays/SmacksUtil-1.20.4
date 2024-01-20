@@ -31,15 +31,15 @@ public abstract class IVeinMiner {
     public static ArrayList<BlockPos> toBreak;
     public static VeinMode mode;
     public static int radius = 2;
-    public static VeinMode ShapelessMode = new Shapeless();
-    public static VeinMode ShapelessVerticalMode = new ShapelessVertical();
-    public static VeinMode TunnelMode = new Tunnel();
-    public static VeinMode MineshaftMode = new Mineshaft();
-    public static VeinMode CropsMode = new Crops();
-    public static VeinMode OresMode = new Ores();
-    public static VeinMode VegetationMode = new Vegetation();
-    public static VeinMode TreeMode = new Trees();
-    public static ArrayList<VeinMode> modeList = new ArrayList<>() {{
+    public static final VeinMode ShapelessMode = new Shapeless();
+    public static final VeinMode ShapelessVerticalMode = new ShapelessVertical();
+    public static final VeinMode TunnelMode = new Tunnel();
+    public static final VeinMode MineshaftMode = new Mineshaft();
+    public static final VeinMode CropsMode = new Crops();
+    public static final VeinMode OresMode = new Ores();
+    public static final VeinMode VegetationMode = new Vegetation();
+    public static final VeinMode TreeMode = new Trees();
+    public static final  ArrayList<VeinMode> modeList = new ArrayList<>() {{
         add(ShapelessMode);
         add(ShapelessVerticalMode);
         add(TunnelMode);

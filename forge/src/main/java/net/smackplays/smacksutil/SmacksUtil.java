@@ -30,10 +30,12 @@ import net.smackplays.smacksutil.items.*;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
+import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
 import net.smackplays.smacksutil.networking.PacketHandler;
 import net.smackplays.smacksutil.screens.BackpackScreen;
 import net.smackplays.smacksutil.screens.EnchantingToolScreen;
 import net.smackplays.smacksutil.screens.LargeBackpackScreen;
+import net.smackplays.smacksutil.screens.TeleportationTabletScreen;
 
 import static net.smackplays.smacksutil.Constants.*;
 
@@ -60,12 +62,15 @@ public class SmacksUtil {
     public static final RegistryObject<Item> MOB_CATCHER_ITEM = ITEMS.register(C_MOB_CATCHER_ITEM, MobCatcherItem::new);
     public static final RegistryObject<Item> ADVANCED_MOB_CATCHER_ITEM = ITEMS.register(C_ADVANCED_MOB_CATCHER_ITEM, AdvancedMobCatcherItem::new);
     public static final RegistryObject<Item> ENCHANTING_TOOL_ITEM = ITEMS.register(C_ENCHANTING_TOOL_ITEM, ForgeEnchantingToolItem::new);
-    public static final RegistryObject<MenuType<EnchantingToolMenu>> ENCHANTING_TOOL_SCREEN =
-            SCREENS.register(C_ENCHANTING_TOOL_SCREEN, () -> IForgeMenuType.create(EnchantingToolMenu::create));
-    public static final RegistryObject<MenuType<BackpackMenu>> BACKPACK_SCREEN =
-            SCREENS.register(C_BACKPACK_SCREEN, () -> IForgeMenuType.create(BackpackMenu::createGeneric9x6));
-    public static final RegistryObject<MenuType<LargeBackpackMenu>> LARGE_BACKPACK_SCREEN =
-            SCREENS.register(C_LARGE_BACKPACK_SCREEN, () -> IForgeMenuType.create(LargeBackpackMenu::createGeneric13x9));
+    public static final RegistryObject<Item> TELEPORTATION_TABLET_ITEM = ITEMS.register(C_TELEPORTATION_TABLET_ITEM, TeleportationTablet::new);
+    public static final RegistryObject<MenuType<EnchantingToolMenu>> ENCHANTING_TOOL_MENU =
+            SCREENS.register(C_ENCHANTING_TOOL_MENU, () -> IForgeMenuType.create(EnchantingToolMenu::create));
+    public static final RegistryObject<MenuType<BackpackMenu>> BACKPACK_MENU =
+            SCREENS.register(C_BACKPACK_MENU, () -> IForgeMenuType.create(BackpackMenu::createGeneric9x6));
+    public static final RegistryObject<MenuType<LargeBackpackMenu>> LARGE_BACKPACK_MENU =
+            SCREENS.register(C_LARGE_BACKPACK_MENU, () -> IForgeMenuType.create(LargeBackpackMenu::createGeneric13x9));
+    public static final RegistryObject<MenuType<TeleportationTabletMenu>> TELEPORTATION_TABLET_MENU =
+            SCREENS.register(C_TELEPORTATION_TABLET_MENU, () -> IForgeMenuType.create(TeleportationTabletMenu::create));
 
     public SmacksUtil() {
         Constants.LOG.info("Hello Forge world!");
@@ -106,6 +111,7 @@ public class SmacksUtil {
             event.accept(MOB_CATCHER_ITEM);
             event.accept(ADVANCED_MOB_CATCHER_ITEM);
             event.accept(ENCHANTING_TOOL_ITEM);
+            event.accept(TELEPORTATION_TABLET_ITEM);
         }
     }
 
@@ -117,9 +123,10 @@ public class SmacksUtil {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            MenuScreens.register(SmacksUtil.LARGE_BACKPACK_SCREEN.get(), LargeBackpackScreen::new);
-            MenuScreens.register(SmacksUtil.BACKPACK_SCREEN.get(), BackpackScreen::new);
-            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_SCREEN.get(), EnchantingToolScreen::new);
+            MenuScreens.register(SmacksUtil.LARGE_BACKPACK_MENU.get(), LargeBackpackScreen::new);
+            MenuScreens.register(SmacksUtil.BACKPACK_MENU.get(), BackpackScreen::new);
+            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_MENU.get(), EnchantingToolScreen::new);
+            MenuScreens.register(SmacksUtil.TELEPORTATION_TABLET_MENU.get(), TeleportationTabletScreen::new);
             CauldronInteraction.WATER.map().putIfAbsent(BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
             CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
         }
