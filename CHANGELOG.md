@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 ### Added 
 Backpack upgrades can increase the slot size 2, 4 or 8 times.
 
+Teleportation Tablet added
+
 ## [0.0.13] - 2024.01.17
 
 ### Added
