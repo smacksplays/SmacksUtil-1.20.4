@@ -3,13 +3,19 @@
   "category": "misc",
   "group": "AM",
   "pattern": [
-    "DDD",
-    "DDD",
-    "DDD"
+    "DBD",
+    "BNB",
+    "DBD"
   ],
   "key": {
     "D": {
       "item": "minecraft:diamond_block"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    },
+    "B": {
+      "item": "minecraft:book"
     }
   },
   "result": {

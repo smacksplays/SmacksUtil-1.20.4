@@ -50,6 +50,8 @@ public class ServerTeleportationNBTPayloadHandler {
                                 posTag.remove(i);
                                 tag.put("Positions", posTag);
                                 stack.setTag(tag);
+                                player.getInventory().setItem(player.getInventory().selected, stack);
+                                player.inventoryMenu.broadcastChanges();
                                 return;
                             }
                         }
@@ -59,6 +61,8 @@ public class ServerTeleportationNBTPayloadHandler {
                 }
                 tag.put("Positions", posTag);
                 stack.setTag(tag);
+                player.getInventory().setItem(player.getInventory().selected, stack);
+                player.inventoryMenu.broadcastChanges();
             }
         });
     }
