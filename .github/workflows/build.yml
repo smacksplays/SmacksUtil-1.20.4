@@ -52,7 +52,7 @@ jobs:
           name: Forge Artifacts
           path: forge/build/libs/
       - name: publish (CurseForge Fabric)
-        if: ${{ runner.os == 'Linux' && matrix.java == '21' && github.event_name == 'workflow_dispatch'}} # Only upload artifacts built from latest java on one OS
+        if: ${{ (github.base_ref == 'master_1.20.4' || github.event_name == 'workflow_dispatch') && runner.os == 'Linux' && matrix.java == '21'}} # Only upload artifacts built from latest java on one OS
         uses: Kir-Antipov/mc-publish@v3.3.0
         with:
           curseforge-id: 952860                                             #The id of your CurseForge project
@@ -73,7 +73,7 @@ jobs:
             1.20.4
 
       - name: publish (CurseForge Forge)
-        if: ${{ runner.os == 'Linux' && matrix.java == '21' && github.event_name == 'workflow_dispatch'}} # Only upload artifacts built from latest java on one OS
+        if: ${{ (github.base_ref == 'master_1.20.4' || github.event_name == 'workflow_dispatch') && runner.os == 'Linux' && matrix.java == '21'}} # Only upload artifacts built from latest java on one OS
         uses: Kir-Antipov/mc-publish@v3.3.0
         with:
           curseforge-id: 952860                                             #The id of your CurseForge project
@@ -94,7 +94,7 @@ jobs:
             1.20.4
 
       - name: publish (CurseForge NeoForge)
-        if: ${{ runner.os == 'Linux' && matrix.java == '21' && github.event_name == 'workflow_dispatch'}} # Only upload artifacts built from latest java on one OS
+        if: ${{ (github.base_ref == 'master_1.20.4' || github.event_name == 'workflow_dispatch') && matrix.java == '21'}} # Only upload artifacts built from latest java on one OS
         uses: Kir-Antipov/mc-publish@v3.3.0
         with:
           curseforge-id: 952860                                             #The id of your CurseForge project
