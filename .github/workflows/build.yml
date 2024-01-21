@@ -11,7 +11,7 @@ env: #Environment variables that can later be referenced using ${{ env.MINECRAFT
   JAVA_LTS: 21
   VERSION: 0.0.14
   RELEASE_NAME: SmackUtil-1.20.4-0.0.14
-  TAG: release_1.20.4*
+  TAG: release_1.20.4_V*
 
 jobs:
   build:
@@ -33,20 +33,8 @@ jobs:
         run: chmod +x ./gradlew
       - name: build
         run: ./gradlew build
-      - name: capture build artifacts fabric
-        if: ${{ runner.os == 'Linux' && ${{ env.JAVA_LTS }} == '21' }} # Only upload artifacts built from latest java on one OS
-        uses: actions/upload-artifact@v3
-        with:
-          name: Fabric Artifacts
-          path: fabric/build/libs/
-      - name: capture build artifacts forge
-        if: ${{ runner.os == 'Linux' && ${{ env.JAVA_LTS }} == '21' }} # Only upload artifacts built from latest java on one OS
-        uses: actions/upload-artifact@v3
-        with:
-          name: Forge Artifacts
-          path: forge/build/libs/
       - name: publish (CurseForge Fabric)
-        if: ${{ (github.base_ref == 'master_1.20.4' || github.event_name == 'workflow_dispatch') && runner.os == 'Linux' && ${{ env.JAVA_LTS }} == '21'}} # Only upload artifacts built from latest java on one OS
+        if: ${{ github.base_ref == 'master_1.20.4' || github.event_name == 'workflow_dispatch' }} # Only upload artifacts built from latest java on one OS
         uses: Kir-Antipov/mc-publish@v3.3.0
         with:
           curseforge-id: 952860                                             #The id of your CurseForge project
@@ -67,7 +55,7 @@ jobs:
             1.20.4
 
       - name: publish (CurseForge Forge)
-        if: ${{ (github.base_ref == 'master_1.20.4' || github.event_name == 'workflow_dispatch') && runner.os == 'Linux' && ${{ env.JAVA_LTS }} == '21'}} # Only upload artifacts built from latest java on one OS
+        if: ${{ github.base_ref == 'master_1.20.4' || github.event_name == 'workflow_dispatch' }} # Only upload artifacts built from latest java on one OS
         uses: Kir-Antipov/mc-publish@v3.3.0
         with:
           curseforge-id: 952860                                             #The id of your CurseForge project
@@ -88,7 +76,7 @@ jobs:
             1.20.4
 
       - name: publish (CurseForge NeoForge)
-        if: ${{ (github.base_ref == 'master_1.20.4' || github.event_name == 'workflow_dispatch') && ${{ env.JAVA_LTS }} == '21'}} # Only upload artifacts built from latest java on one OS
+        if: ${{ github.base_ref == 'master_1.20.4' || github.event_name == 'workflow_dispatch' }} # Only upload artifacts built from latest java on one OS
         uses: Kir-Antipov/mc-publish@v3.3.0
         with:
           curseforge-id: 952860                                             #The id of your CurseForge project
@@ -107,11 +95,13 @@ jobs:
 
           game-versions: |
             1.20.4
+
       - name: Tag exists
         uses: mukunku/tag-exists-action@v1.5.0
         id: check-tag
         with:
           tag: ${{ env.TAG }}
+
       - name: Create Release
         if: ${{ steps.check-tag.outputs.exists == 'true' }}
         id: create_release
@@ -124,7 +114,30 @@ jobs:
           body: Test
           draft: false
           prerelease: false
+
       - name: Upload Fabric Files
+        if: ${{ steps.check-tag.outputs.exists == 'true' }}
+        id: upload_files
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: fabric/build/libs/*.jar
+          asset_content_type: application/jar
+
+      - name: Upload Forge Files
+        if: ${{ steps.check-tag.outputs.exists == 'true' }}
+        id: upload_files
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: forge/build/libs/*.jar
+          asset_content_type: application/jar
+
+      - name: Upload NeoForge Files
         if: ${{ steps.check-tag.outputs.exists == 'true' }}
         id: upload_files
         uses: actions/upload-release-asset@v1
