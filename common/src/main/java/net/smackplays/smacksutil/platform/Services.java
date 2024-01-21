@@ -14,8 +14,8 @@ public class Services {
     // For example this can be used to check if the code is running on Forge vs Fabric, or to ask the modloader if another
     // mod is loaded.
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
-    public static final IModConfig CONFIG = load_1(IModConfig.class);
-    public static final IVeinMiner VEIN_MINER = load_1(IVeinMiner.class);
+    public static final IModConfig CONFIG = load(IModConfig.class);
+    public static final IVeinMiner VEIN_MINER = load(IVeinMiner.class);
     public static final IKeyHandler KEY_HANDLER = load(IKeyHandler.class);
     public static final IPacketSender PACKET_SENDER = load(IPacketSender.class);
 

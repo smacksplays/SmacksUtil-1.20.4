@@ -18,6 +18,8 @@ public abstract class IKeyHandler {
     public static KeyMapping fastPlaceKey;
     public static KeyMapping exactMatchKey;
 
+    public static boolean veinKeyDown;
+
     public static void veinPreviewConsume() {
         if (veinPreviewKey.consumeClick()) {
             Services.VEIN_MINER.togglePreview();

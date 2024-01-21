@@ -37,8 +37,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.smackplays.smacksutil.events.veinminer.ClientPlayerBlockBreak;
-import net.smackplays.smacksutil.events.veinminer.ServerPlayerBlockBreak;
+import net.smackplays.smacksutil.events.veinminer.PlayerBlockBreak;
 import net.smackplays.smacksutil.items.*;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
@@ -86,11 +85,7 @@ public class SmacksUtil implements ModInitializer {
     public void onInitialize() {
         LOG.info("Hello Fabric world!");
         CommonClass.init();
-        if (Services.PLATFORM.isClient()){
-            PlayerBlockBreakEvents.BEFORE.register(new ClientPlayerBlockBreak());
-        } else {
-            PlayerBlockBreakEvents.BEFORE.register(new ServerPlayerBlockBreak());
-        }
+        PlayerBlockBreakEvents.BEFORE.register(new PlayerBlockBreak());
 
         Registry.register(BuiltInRegistries.MENU, new ResourceLocation(MOD_ID, C_LARGE_BACKPACK_MENU), LARGE_BACKPACK_MENU);
         Registry.register(BuiltInRegistries.MENU, new ResourceLocation(MOD_ID, C_BACKPACK_MENU), BACKPACK_MENU);
