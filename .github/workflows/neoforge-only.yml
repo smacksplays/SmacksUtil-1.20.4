@@ -3,8 +3,8 @@
 # certain platforms or Java versions, and provides a first line of defence
 # against bad commits.
 
-name: Publish on CurseForge [Forge]
-on: [ workflow_dispatch ]
+name: Publish on CurseForge [NeoForge]
+on: [ workflow_dispatch]
 env: #Environment variables that can later be referenced using ${{ env.MINECRAFT_VERSION }}. These are useful for repeating information and allow for quick changes for new mod updates
   MINECRAFT_VERSION: 1.20.4
   JAVA_VERSION: 17
