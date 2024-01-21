@@ -2,6 +2,8 @@ package net.smackplays.smacksutil;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.BlockEventData;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.smackplays.smacksutil.platform.Services;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
@@ -29,5 +31,6 @@ public class CommonClass {
 
             Constants.LOG.info("Hello to {}", Constants.MOD_ID);
         }
+
     }
 }

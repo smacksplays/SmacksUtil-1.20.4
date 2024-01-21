@@ -8,14 +8,16 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.menus.AbstractLargeBackpackMenu;
+import net.smackplays.smacksutil.platform.Services;
 import org.jetbrains.annotations.NotNull;
 
 import static net.smackplays.smacksutil.Constants.C_LARGE_BACKPACK_SCREEN_LOCATION;
 import static net.smackplays.smacksutil.Constants.MOD_ID;
 
 
-public abstract class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> extends AbstractContainerScreen<T> {
+public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> extends AbstractContainerScreen<T> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, C_LARGE_BACKPACK_SCREEN_LOCATION);
     //A path to the gui texture. In this example we use the texture from the dispenser
     protected final int backgroundWidth = 268;
@@ -61,7 +63,8 @@ public abstract class AbstractLargeBackpackScreen<T extends AbstractLargeBackpac
     }
 
     public void onButtonWidgetPressed() {
-
+        ItemStack stack = this.menu.playerInventory.getSelected();
+        Services.PACKET_SENDER.sendToServerSortPacket(stack);
     }
 
     @Override

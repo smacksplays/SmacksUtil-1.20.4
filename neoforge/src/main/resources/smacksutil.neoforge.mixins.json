@@ -8,7 +8,7 @@
     "LightBlockMixin"
   ],
   "client": [
-    "ClientLevelMixin"
+    "ServerLevelMixin"
   ],
   "server": [
   ],

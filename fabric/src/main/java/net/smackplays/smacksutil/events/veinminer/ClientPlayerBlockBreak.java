@@ -10,11 +10,11 @@ import net.smackplays.smacksutil.platform.Services;
 import net.smackplays.smacksutil.platform.services.IKeyHandler;
 import org.jetbrains.annotations.Nullable;
 
-public class PlayerBlockBreak implements PlayerBlockBreakEvents.Before {
+public class ClientPlayerBlockBreak implements PlayerBlockBreakEvents.Before {
 
     @Override
     public boolean beforeBlockBreak(Level world, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
-        if (!IKeyHandler.veinKey.isDown() || Services.VEIN_MINER.isDrawing() || Services.VEIN_MINER.isMining()) {
+        if (!Services.KEY_HANDLER.veinKey.isDown() || Services.VEIN_MINER.isDrawing() || Services.VEIN_MINER.isMining()) {
             Services.VEIN_MINER.isMining = false;
             return true;
         }

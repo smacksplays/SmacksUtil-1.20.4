@@ -7,14 +7,15 @@
   "mixins": [
   ],
   "client": [
-    "fastplace.MinecraftClientMixin",
-    "veinminer.MouseScroll",
-    "veinminer.OutlineRender",
-    "backpacks.GuiGraphicsMixin",
     "ClientLevelMixin",
+    "LeavesBlockMixin",
     "LightBlockMixin",
     "PlayerMixin",
-    "fasteat.ItemMixin"
+    "backpacks.GuiGraphicsMixin",
+    "fasteat.ItemMixin",
+    "fastplace.MinecraftClientMixin",
+    "veinminer.MouseScroll",
+    "veinminer.OutlineRender"
   ],
   "server": [
   ],

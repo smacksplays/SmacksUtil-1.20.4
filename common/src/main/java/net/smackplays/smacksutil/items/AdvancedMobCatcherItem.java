@@ -17,6 +17,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.smackplays.smacksutil.platform.Services;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,8 +62,7 @@ public class AdvancedMobCatcherItem extends Item {
         return InteractionResult.SUCCESS;
     }
 
-    @Override
-    public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity livingEntity, @NotNull InteractionHand interactionHand) {
+    public boolean pickupLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity livingEntity, @NotNull InteractionHand interactionHand) {
         Level world = player.level();
         ItemStack mainHandStack = player.getItemInHand(interactionHand);
         CompoundTag tag = mainHandStack.getOrCreateTag();
@@ -76,7 +76,6 @@ public class AdvancedMobCatcherItem extends Item {
             CompoundTag entityTag = new CompoundTag();
             livingEntity.save(entityTag);
             if (entityTag.isEmpty()) {
-                return InteractionResult.CONSUME;
             }
             livingEntity.addAdditionalSaveData(entityTag);
             if (!list.contains(entityTag)) {
@@ -86,10 +85,9 @@ public class AdvancedMobCatcherItem extends Item {
             //mainHandStack.setTag(entityTag);
             mainHandStack.getOrCreateTag().putBoolean("is_Holding", true);
             setHolding(true);
-            livingEntity.remove(Entity.RemovalReason.KILLED);
-            return InteractionResult.CONSUME;
+            return true;
         }
-        return InteractionResult.PASS;
+        return false;
     }
 
     public boolean isHolding(ItemStack stack) {

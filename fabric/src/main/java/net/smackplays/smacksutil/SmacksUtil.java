@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -21,28 +20,35 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.DyeableLeatherItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.smackplays.smacksutil.events.veinminer.PlayerBlockBreak;
+import net.smackplays.smacksutil.events.veinminer.ClientPlayerBlockBreak;
+import net.smackplays.smacksutil.events.veinminer.ServerPlayerBlockBreak;
 import net.smackplays.smacksutil.items.*;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
-import net.smackplays.smacksutil.screens.BackpackScreen;
-import net.smackplays.smacksutil.screens.EnchantingToolScreen;
-import net.smackplays.smacksutil.screens.LargeBackpackScreen;
-import net.smackplays.smacksutil.screens.TeleportationTabletScreen;
+import net.smackplays.smacksutil.platform.Services;
 
+import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static net.smackplays.smacksutil.Constants.*;
 
@@ -62,11 +68,15 @@ public class SmacksUtil implements ModInitializer {
     public static final Item ADVANCED_MOB_CATCHER_ITEM = new AdvancedMobCatcherItem();
     public static final Item ENCHANTING_TOOL_ITEM = new FabricEnchantingToolItem();
     public static final Item TELEPORTATION_TABLET_ITEM = new TeleportationTablet();
-    public static final ResourceLocation ENCHANT_REQUEST_ID = new ResourceLocation(MOD_ID, "enchant-request");
-    public static final ResourceLocation SORT_REQUEST_ID = new ResourceLocation(MOD_ID, "sort-request");
-    public static final ResourceLocation BREAK_BLOCK_REQUEST_ID = new ResourceLocation(MOD_ID, "break-block-request");
-    public static final ResourceLocation TELEPORT_REQUEST_ID = new ResourceLocation(MOD_ID, "teleport-request");
-    public static final ResourceLocation TELEPORT_NBT_REQUEST_ID = new ResourceLocation(MOD_ID, "teleport-nbt-request");
+    public static final ResourceLocation ENCHANT_REQUEST_ID = new ResourceLocation(MOD_ID, C_ENCHANT_REQUEST);
+    public static final ResourceLocation SORT_REQUEST_ID = new ResourceLocation(MOD_ID, C_SORT_REQUEST);
+    public static final ResourceLocation BREAK_BLOCK_REQUEST_ID = new ResourceLocation(MOD_ID, C_BREAK_BLOCK_REQUEST);
+    public static final ResourceLocation SET_BLOCK_AIR_REQUEST_ID = new ResourceLocation(MOD_ID, C_SET_BLOCK_AIR_REQUEST);
+    public static final ResourceLocation TELEPORT_REQUEST_ID = new ResourceLocation(MOD_ID, C_TELEPORT_REQUEST);
+    public static final ResourceLocation TELEPORT_NBT_REQUEST_ID = new ResourceLocation(MOD_ID, C_TELEPORT_NBT_REQUEST);
+    public static final ResourceLocation INTERACT_ENTITY_REQUEST_ID = new ResourceLocation(MOD_ID, C_INTERACT_ENTITY_REQUEST);
+    public static final ResourceLocation VEINMINER_BREAK_REQUEST_ID = new ResourceLocation(MOD_ID, C_VEINMINER_BREAK_REQUEST);
+    public static final ResourceLocation VEINMINER_SERVER_BREAK_REQUEST_ID = new ResourceLocation(MOD_ID, C_VEINMINER_SERVER_BREAK_REQUEST);
     public static final MenuType<BackpackMenu> BACKPACK_MENU = new ExtendedScreenHandlerType<>(BackpackMenu::createGeneric9x6);
     public static final MenuType<LargeBackpackMenu> LARGE_BACKPACK_MENU = new ExtendedScreenHandlerType<>(LargeBackpackMenu::createGeneric13x9);
     public static final MenuType<EnchantingToolMenu> ENCHANTING_TOOL_MENU = new ExtendedScreenHandlerType<>(EnchantingToolMenu::create);
@@ -74,10 +84,13 @@ public class SmacksUtil implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        Constants.LOG.info("Hello Fabric world!");
+        LOG.info("Hello Fabric world!");
         CommonClass.init();
-
-        PlayerBlockBreakEvents.BEFORE.register(new PlayerBlockBreak());
+        if (Services.PLATFORM.isClient()){
+            PlayerBlockBreakEvents.BEFORE.register(new ClientPlayerBlockBreak());
+        } else {
+            PlayerBlockBreakEvents.BEFORE.register(new ServerPlayerBlockBreak());
+        }
 
         Registry.register(BuiltInRegistries.MENU, new ResourceLocation(MOD_ID, C_LARGE_BACKPACK_MENU), LARGE_BACKPACK_MENU);
         Registry.register(BuiltInRegistries.MENU, new ResourceLocation(MOD_ID, C_BACKPACK_MENU), BACKPACK_MENU);
@@ -112,9 +125,16 @@ public class SmacksUtil implements ModInitializer {
 
         ServerPlayNetworking.registerGlobalReceiver(BREAK_BLOCK_REQUEST_ID, this::handleBreakBlockRequest);
 
+        ServerPlayNetworking.registerGlobalReceiver(SET_BLOCK_AIR_REQUEST_ID, this::handleSetBlockAirRequest);
+
         ServerPlayNetworking.registerGlobalReceiver(TELEPORT_NBT_REQUEST_ID, this::handleTeleportNBTRequest);
 
         ServerPlayNetworking.registerGlobalReceiver(TELEPORT_REQUEST_ID, this::handleTeleportRequest);
+
+        ServerPlayNetworking.registerGlobalReceiver(INTERACT_ENTITY_REQUEST_ID, this::handleInteractEntityRequest);
+
+        ServerPlayNetworking.registerGlobalReceiver(VEINMINER_BREAK_REQUEST_ID, this::handleVeinMinerBreakRequest);
+
     }
 
     private void registerItem(String name, Item item) {
@@ -151,6 +171,16 @@ public class SmacksUtil implements ModInitializer {
             BlockPos pos = buf.readBlockPos();
             if (world.isClientSide) return;
             world.destroyBlock(pos, true);
+        });
+    }
+
+    private void handleSetBlockAirRequest(MinecraftServer server, ServerPlayer player,
+                                          ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender){
+        server.execute(() -> {
+            Level world = player.level();
+            BlockPos pos = buf.readBlockPos();
+            if (world.isClientSide) return;
+            world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
         });
     }
 
@@ -221,5 +251,56 @@ public class SmacksUtil implements ModInitializer {
         });
     }
 
+    private void handleInteractEntityRequest(MinecraftServer server, ServerPlayer player,
+                                             ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender){
+        server.execute(() -> {
+            Level world = player.level();
+            ItemStack stack = buf.readItem();
+            UUID entityUUID = buf.readUUID();
+            AABB aabb = new AABB(player.position().add(-5,-5,-5), player.position().add(5,5,5));
+            List<LivingEntity> entityList = world.getEntitiesOfClass(LivingEntity.class, aabb, entity -> true);
+            LivingEntity livingEntity = null;
+            for  (LivingEntity e : entityList){
+                if (e.getUUID().equals(entityUUID)){
+                    livingEntity = e;
+                }
+            }
+            if (livingEntity == null) return;
+            InteractionHand hand = buf.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+            if (stack.getItem() instanceof MobCatcherItem mobItem){
+                if (mobItem.pickupLivingEntity(stack, player, livingEntity, hand)){
+                    livingEntity.remove(Entity.RemovalReason.KILLED);
+                }
+            }
+            if (stack.getItem() instanceof AdvancedMobCatcherItem mobItem){
+                if (mobItem.pickupLivingEntity(stack, player, livingEntity, hand)){
+                    livingEntity.remove(Entity.RemovalReason.KILLED);
+                }
+            }
+        });
+    }
 
+    private void handleVeinMinerBreakRequest(MinecraftServer server, ServerPlayer player,
+                                             ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender){
+        server.execute(() -> {
+            Level world = player.level();
+            ItemStack mainHandStack = buf.readItem();
+            BlockPos curr = buf.readBlockPos();
+            boolean isCreative = buf.readBoolean();
+            boolean replaceSeeds = buf.readBoolean();
+            BlockState currBlockState = world.getBlockState(curr);
+
+            world.setBlockAndUpdate(curr, Blocks.AIR.defaultBlockState());
+            if (!isCreative) {
+                BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
+                Block.dropResources(currBlockState, world, curr, currBlockEntity, null, ItemStack.EMPTY);
+                if (mainHandStack.isDamageableItem()) {
+                    mainHandStack.hurt(1, player.getRandom(), player);
+                }
+            }
+            if (replaceSeeds) {
+                world.setBlockAndUpdate(curr, currBlockState.getBlock().defaultBlockState());
+            }
+        });
+    }
 }

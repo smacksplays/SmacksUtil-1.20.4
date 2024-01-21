@@ -1,9 +1,6 @@
 package net.smackplays.smacksutil.mixins;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -11,8 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.smackplays.smacksutil.ModClient;
-import net.smackplays.smacksutil.SmacksUtil;
+import net.smackplays.smacksutil.platform.Services;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,11 +28,7 @@ public abstract class LeavesBlockMixin {
     @Inject(at = @At("HEAD"), method = "tick")
     private void tick(BlockState state, ServerLevel serverLevel, BlockPos pos, RandomSource randomSource, CallbackInfo ci) {
         if (!state.getValue(PERSISTENT) && state.getValue(DISTANCE) == 7) {
-            FriendlyByteBuf packet = PacketByteBufs.create();
-            packet.writeBlockPos(pos);
-            if (ClientPlayNetworking.canSend(SmacksUtil.BREAK_BLOCK_REQUEST_ID)){
-                ClientPlayNetworking.send(SmacksUtil.BREAK_BLOCK_REQUEST_ID, packet);
-            }
+            Services.PACKET_SENDER.sendToServerBreakBlockPacket(pos);
         }
     }
 }
