@@ -40,4 +40,6 @@ public interface IPlatformHelper {
     Attribute getBackpackUpgradeMultiplierAttribute();
     Item getLightWandItem();
     Item getAutoWandItem();
+
+    boolean isClient();
 }

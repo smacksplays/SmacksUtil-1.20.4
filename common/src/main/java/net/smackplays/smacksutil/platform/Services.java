@@ -17,9 +17,9 @@ public class Services {
     // For example this can be used to check if the code is running on Forge vs Fabric, or to ask the modloader if another
     // mod is loaded.
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
-    public static final IModConfig CONFIG = load(IModConfig.class);
-    public static final IVeinMiner VEIN_MINER = load(IVeinMiner.class);
-    public static final IKeyHandler KEY_HANDLER = load(IKeyHandler.class);
+    public static final IModConfig CONFIG = load_1(IModConfig.class);
+    public static final IVeinMiner VEIN_MINER = load_1(IVeinMiner.class);
+    public static final IKeyHandler KEY_HANDLER = load_1(IKeyHandler.class);
 
     // This code is used to load a service for the current environment. Your implementation of the service must be defined
     // manually by including a text file in META-INF/services named with the fully qualified class name of the service.
@@ -33,4 +33,11 @@ public class Services {
         Constants.LOG.debug("Loaded {} for service {}", loadedService, clazz);
         return loadedService;
     }
+    public static <T> T load_1(Class<T> clazz) {
+        if (PLATFORM.isClient()){
+            return load(clazz);
+        }
+        return null;
+    }
+
 }

@@ -47,4 +47,9 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
         }
         return null;
     }
+
+    @Override
+    public boolean isClient() {
+        return FMLLoader.getDist().isClient();
+    }
 }

@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.ModClient;
+import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 
 
@@ -19,8 +20,8 @@ public class EnchantingToolScreen extends AbstractEnchantingToolScreen<Enchantin
     public void sendPacket(ItemStack stack) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeItem(stack);
-        if (ClientPlayNetworking.canSend(ModClient.ENCHANT_REQUEST_ID)){
-            ClientPlayNetworking.send(ModClient.ENCHANT_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(SmacksUtil.ENCHANT_REQUEST_ID)){
+            ClientPlayNetworking.send(SmacksUtil.ENCHANT_REQUEST_ID, packet);
         }
     }
 }

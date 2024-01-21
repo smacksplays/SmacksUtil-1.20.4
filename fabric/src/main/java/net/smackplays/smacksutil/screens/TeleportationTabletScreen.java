@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.smackplays.smacksutil.ModClient;
+import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
 
 public class TeleportationTabletScreen extends AbstractTeleportationTabletScreen<TeleportationTabletMenu> {
@@ -27,8 +28,8 @@ public class TeleportationTabletScreen extends AbstractTeleportationTabletScreen
         packet.writeUtf(name);
         packet.writeUtf(dim);
         packet.writeBoolean(false);
-        if (ClientPlayNetworking.canSend(ModClient.TELEPORT_NBT_REQUEST_ID)){
-            ClientPlayNetworking.send(ModClient.TELEPORT_NBT_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(SmacksUtil.TELEPORT_NBT_REQUEST_ID)){
+            ClientPlayNetworking.send(SmacksUtil.TELEPORT_NBT_REQUEST_ID, packet);
         }
     }
 
@@ -43,8 +44,8 @@ public class TeleportationTabletScreen extends AbstractTeleportationTabletScreen
             packet.writeUtf(name);
             packet.writeUtf(dim);
             packet.writeBoolean(true);
-            if (ClientPlayNetworking.canSend(ModClient.TELEPORT_NBT_REQUEST_ID)){
-                ClientPlayNetworking.send(ModClient.TELEPORT_NBT_REQUEST_ID, packet);
+            if (ClientPlayNetworking.canSend(SmacksUtil.TELEPORT_NBT_REQUEST_ID)){
+                ClientPlayNetworking.send(SmacksUtil.TELEPORT_NBT_REQUEST_ID, packet);
             }
         } else {
             FriendlyByteBuf packet = PacketByteBufs.create();
@@ -52,8 +53,8 @@ public class TeleportationTabletScreen extends AbstractTeleportationTabletScreen
             packet.writeVec3(pos);
             packet.writeFloat(xRot);
             packet.writeFloat(yRot);
-            if (ClientPlayNetworking.canSend(ModClient.TELEPORT_REQUEST_ID)){
-                ClientPlayNetworking.send(ModClient.TELEPORT_REQUEST_ID, packet);
+            if (ClientPlayNetworking.canSend(SmacksUtil.TELEPORT_REQUEST_ID)){
+                ClientPlayNetworking.send(SmacksUtil.TELEPORT_REQUEST_ID, packet);
             }
         }
     }

@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.smackplays.smacksutil.ModClient;
+import net.smackplays.smacksutil.SmacksUtil;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,8 +34,8 @@ public abstract class LeavesBlockMixin {
         if (!state.getValue(PERSISTENT) && state.getValue(DISTANCE) == 7) {
             FriendlyByteBuf packet = PacketByteBufs.create();
             packet.writeBlockPos(pos);
-            if (ClientPlayNetworking.canSend(ModClient.BREAK_BLOCK_REQUEST_ID)){
-                ClientPlayNetworking.send(ModClient.BREAK_BLOCK_REQUEST_ID, packet);
+            if (ClientPlayNetworking.canSend(SmacksUtil.BREAK_BLOCK_REQUEST_ID)){
+                ClientPlayNetworking.send(SmacksUtil.BREAK_BLOCK_REQUEST_ID, packet);
             }
         }
     }
