@@ -11,7 +11,7 @@ env: #Environment variables that can later be referenced using ${{ env.MINECRAFT
   JAVA_LTS: 21
   VERSION: 0.0.14
   RELEASE_NAME: SmackUtil-1.20.4-0.0.14
-  TAG: release_1.20.4_V*
+  TAG: V0.0.14
 
 jobs:
   build:
