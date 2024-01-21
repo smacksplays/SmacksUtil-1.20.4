@@ -105,45 +105,11 @@ jobs:
       - name: Create Release
         if: ${{ steps.check-tag.outputs.exists == 'true' }}
         id: create_release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        uses: marvinpinto/action-automatic-releases@latest
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: Test
-          draft: false
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: false
-
-      - name: Upload Fabric Files
-        if: ${{ steps.check-tag.outputs.exists == 'true' }}
-        id: upload_fabric_files
-        uses: actions/upload-release-asset@latest
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: fabric/build/libs/*.jar
-          asset_content_type: application/jar
-
-      - name: Upload Forge Files
-        if: ${{ steps.check-tag.outputs.exists == 'true' }}
-        id: upload_forge_files
-        uses: actions/upload-release-asset@latest
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: forge/build/libs/*.jar
-          asset_content_type: application/jar
-
-      - name: Upload NeoForge Files
-        if: ${{ steps.check-tag.outputs.exists == 'true' }}
-        id: upload_neoforge_files
-        uses: actions/upload-release-asset@latest
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: neoforge/build/libs/*.jar
-          asset_content_type: application/jar
+          files: |
+            fabric/build/libs/*.jar
+            forge/build/libs/*.jar
+            neoforge/build/libs/*.jar
