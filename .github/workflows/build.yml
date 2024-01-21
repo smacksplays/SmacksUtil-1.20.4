@@ -13,15 +13,7 @@ env: #Environment variables that can later be referenced using ${{ env.MINECRAFT
 
 jobs:
   build:
-    strategy:
-      matrix:
-        # Use these Java versions
-        java: [
-          21,    # Current Java LTS
-        ]
-        # and run on both Linux and Windows
-        os: [ ubuntu-22.04 ]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
@@ -113,3 +105,25 @@ jobs:
 
           game-versions: |
             1.20.4
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: Test
+          draft: false
+          prerelease: false
+
+      - name: Upload Fabric Files
+        id: upload_files
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: neoforge/build/libs/*.jar
+          asset_content_type: application/jar
