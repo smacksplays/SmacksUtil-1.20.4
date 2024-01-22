@@ -8,16 +8,13 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.menus.AbstractBackpackMenu;
 import net.smackplays.smacksutil.platform.Services;
-import net.smackplays.smacksutil.slots.BackpackSlot;
 import org.jetbrains.annotations.NotNull;
 
 import static net.smackplays.smacksutil.Constants.C_BACKPACK_SCREEN_LOCATION;

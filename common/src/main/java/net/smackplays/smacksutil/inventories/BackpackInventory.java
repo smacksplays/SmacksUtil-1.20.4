@@ -4,8 +4,6 @@ package net.smackplays.smacksutil.inventories;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.smackplays.smacksutil.platform.Services;
-import net.smackplays.smacksutil.screens.BackpackGuiGraphics;
 import org.jetbrains.annotations.NotNull;
 
 public class BackpackInventory implements IBackpackInventory {

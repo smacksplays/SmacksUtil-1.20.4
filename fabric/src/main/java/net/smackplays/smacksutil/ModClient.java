@@ -3,32 +3,23 @@ package net.smackplays.smacksutil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.network.ServerGamePacketListenerImpl;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeableLeatherItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
 import net.smackplays.smacksutil.platform.Services;
-import static net.smackplays.smacksutil.SmacksUtil.*;
+import net.smackplays.smacksutil.screens.AbstractBackpackScreen;
+import net.smackplays.smacksutil.screens.AbstractEnchantingToolScreen;
+import net.smackplays.smacksutil.screens.AbstractLargeBackpackScreen;
+import net.smackplays.smacksutil.screens.AbstractTeleportationTabletScreen;
 
-import net.smackplays.smacksutil.platform.services.IKeyHandler;
-import net.smackplays.smacksutil.screens.*;
+import static net.smackplays.smacksutil.SmacksUtil.*;
 
 public class ModClient implements ClientModInitializer {
 

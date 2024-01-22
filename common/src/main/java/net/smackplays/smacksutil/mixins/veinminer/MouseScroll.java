@@ -2,7 +2,6 @@ package net.smackplays.smacksutil.mixins.veinminer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
-import net.minecraft.world.entity.player.Player;
 import net.smackplays.smacksutil.platform.Services;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
