@@ -20,9 +20,7 @@ public class PlayerBlockBreak implements PlayerBlockBreakEvents.Before {
 
     @Override
     public boolean beforeBlockBreak(Level world, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
-        FriendlyByteBuf buf = PacketByteBufs.create();
-        buf.writeBlockPos(pos);
-        ServerPlayNetworking.send((ServerPlayer) player, new ResourceLocation(MOD_ID, "test"), buf);
+        Services.PACKET_SENDER.sendToPlayerBlockBreakPacket((ServerPlayer) player, pos);
         return true;
     }
 }

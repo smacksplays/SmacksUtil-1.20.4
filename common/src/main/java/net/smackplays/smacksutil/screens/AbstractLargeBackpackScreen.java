@@ -5,9 +5,14 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.menus.AbstractLargeBackpackMenu;
 import net.smackplays.smacksutil.platform.Services;
@@ -41,7 +46,21 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
     @Override
     public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta) {
         renderBackground(context, mouseX, mouseY, delta);
-        super.render(context, mouseX, mouseY, delta);
+
+        ItemStack backpack = this.menu.playerInventory.getSelected();
+        CompoundTag tag = backpack.getOrCreateTagElement("backpack");
+        ListTag listTag = tag.getList("Items", 10);
+        for(int i = 0; i < listTag.size(); ++i) {
+            CompoundTag cTag = listTag.getCompound(i);
+            int slot = cTag.getByte("Slot") & 255;
+            if (slot < this.menu.slots.size()) {
+                ItemStack s = stackof(cTag);
+                this.menu.setItem(slot, 0, s);
+            }
+        }
+
+        BackpackGuiGraphics c = new BackpackGuiGraphics(context, this.minecraft, this.menu.playerInventory);
+        super.render(c, mouseX, mouseY, delta);
         renderTooltip(context, mouseX, mouseY);
     }
 
@@ -73,5 +92,22 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
                 || mouseX > (double) (width + backgroundWidth) / 2 + 10
                 || mouseY < (double) (height - backgroundHeight) / 2 - 10
                 || mouseY > (double) (height + backgroundHeight) / 2 + 10;
+    }
+
+    private ItemStack stackof(CompoundTag tag){
+        Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(tag.getString("id")));
+        ItemStack stack = new ItemStack(item);
+        stack.setCount((int) tag.getFloat("Count"));
+        if (tag.contains("tag", 10)) {
+            stack.setTag(tag.getCompound("tag").copy());
+            if (stack.getTag() != null) {
+                stack.getItem().verifyTagAfterLoad(stack.getTag());
+            }
+        }
+
+        if (stack.getItem().canBeDepleted()) {
+            stack.setDamageValue(stack.getDamageValue());
+        }
+        return stack;
     }
 }

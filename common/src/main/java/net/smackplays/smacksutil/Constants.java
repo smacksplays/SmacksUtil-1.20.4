@@ -56,5 +56,6 @@ public class Constants {
     public static final String C_SET_BLOCK_AIR_REQUEST = "set-block-air-request";
     public static final String C_INTERACT_ENTITY_REQUEST = "interact-entity-request";
     public static final String C_VEINMINER_BREAK_REQUEST = "veinminer-break-request";
-    public static final String C_VEINMINER_SERVER_BREAK_REQUEST = "veinminer-server-break-request";
+    public static final String C_VEINMINER_SERVER_BLOCK_BREAK_REQUEST = "veinminer-server-block-break-request";
+    public static final String C_VEINMINER_SERVER_BACKPACK_SORT_REQUEST = "veinminer-server-backpack-sort-request";
 }

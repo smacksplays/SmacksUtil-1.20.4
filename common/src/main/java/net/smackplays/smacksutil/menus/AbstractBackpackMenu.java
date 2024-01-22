@@ -1,6 +1,7 @@
 package net.smackplays.smacksutil.menus;
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -10,6 +11,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.smackplays.smacksutil.inventories.IBackpackInventory;
+import net.smackplays.smacksutil.platform.Services;
 import net.smackplays.smacksutil.slots.BackpackSlot;
 import net.smackplays.smacksutil.slots.BackpackUpgradeSlot;
 import net.smackplays.smacksutil.slots.InvSlot;
@@ -68,7 +70,7 @@ public class AbstractBackpackMenu extends AbstractContainerMenu {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if (index < this.rows * this.cols + 4) {
-                if (this.moveItemStackTo(itemStack2, this.rows * this.cols, this.slots.size(), true, 64)) {
+                if (this.moveItemStackTo(itemStack2, this.rows * this.cols + 4, this.slots.size(), true, 64)) {
                     return ItemStack.EMPTY;
                 }
             } else if (this.moveItemStackTo(itemStack2, 4, this.rows * this.cols + 4, false, inventory.getMaxStackSize())) {

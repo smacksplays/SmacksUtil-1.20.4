@@ -1,7 +1,9 @@
 package net.smackplays.smacksutil.platform.services;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -25,4 +27,6 @@ public interface IPacketSender {
     void sendToServerTeleportNBTPacket(ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove);
 
     void sendToServerInteractEntityPacket(ItemStack stack, UUID entityUUID, boolean hand);
+
+    void sendToPlayerBlockBreakPacket(ServerPlayer player, BlockPos pos);
 }

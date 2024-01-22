@@ -105,6 +105,7 @@ public interface IBackpackInventory extends WorldlyContainer {
 
     @Override
     default void setChanged() {
+        int i = 0;
     }
 
     @Override

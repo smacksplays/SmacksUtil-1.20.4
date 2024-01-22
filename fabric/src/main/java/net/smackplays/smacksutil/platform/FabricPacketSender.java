@@ -1,22 +1,21 @@
 package net.smackplays.smacksutil.platform;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.platform.services.IPacketSender;
 
 import java.util.UUID;
+
+import static net.smackplays.smacksutil.SmacksUtil.*;
 
 public class FabricPacketSender implements IPacketSender {
     @Override
@@ -26,8 +25,8 @@ public class FabricPacketSender implements IPacketSender {
         packet.writeBlockPos(pos);
         packet.writeBoolean(isCreative);
         packet.writeBoolean(replaceSeeds);
-        if (ClientPlayNetworking.canSend(SmacksUtil.VEINMINER_BREAK_REQUEST_ID)){
-            ClientPlayNetworking.send(SmacksUtil.VEINMINER_BREAK_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(VEINMINER_BREAK_REQUEST_ID)){
+            ClientPlayNetworking.send(VEINMINER_BREAK_REQUEST_ID, packet);
         }
     }
 
@@ -35,8 +34,8 @@ public class FabricPacketSender implements IPacketSender {
     public void sendToServerEnchantPacket(ItemStack stack) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeItem(stack);
-        if (ClientPlayNetworking.canSend(SmacksUtil.ENCHANT_REQUEST_ID)){
-            ClientPlayNetworking.send(SmacksUtil.ENCHANT_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(ENCHANT_REQUEST_ID)){
+            ClientPlayNetworking.send(ENCHANT_REQUEST_ID, packet);
         }
     }
 
@@ -44,8 +43,8 @@ public class FabricPacketSender implements IPacketSender {
     public void sendToServerSortPacket(ItemStack stack) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeItem(stack);
-        if (ClientPlayNetworking.canSend(SmacksUtil.SORT_REQUEST_ID)){
-            ClientPlayNetworking.send(SmacksUtil.SORT_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(SORT_REQUEST_ID)){
+            ClientPlayNetworking.send(SORT_REQUEST_ID, packet);
         }
     }
 
@@ -53,8 +52,8 @@ public class FabricPacketSender implements IPacketSender {
     public void sendToServerBreakBlockPacket(BlockPos pos) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeBlockPos(pos);
-        if (ClientPlayNetworking.canSend(SmacksUtil.BREAK_BLOCK_REQUEST_ID)){
-            ClientPlayNetworking.send(SmacksUtil.BREAK_BLOCK_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(BREAK_BLOCK_REQUEST_ID)){
+            ClientPlayNetworking.send(BREAK_BLOCK_REQUEST_ID, packet);
         }
     }
 
@@ -62,8 +61,8 @@ public class FabricPacketSender implements IPacketSender {
     public void sendToServerSetBlockAirPacket(BlockPos pos) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeBlockPos(pos);
-        if (ClientPlayNetworking.canSend(SmacksUtil.SET_BLOCK_AIR_REQUEST_ID)){
-            ClientPlayNetworking.send(SmacksUtil.SET_BLOCK_AIR_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(SET_BLOCK_AIR_REQUEST_ID)){
+            ClientPlayNetworking.send(SET_BLOCK_AIR_REQUEST_ID, packet);
         }
     }
 
@@ -74,8 +73,8 @@ public class FabricPacketSender implements IPacketSender {
         packet.writeVec3(pos);
         packet.writeFloat(xRot);
         packet.writeFloat(yRot);
-        if (ClientPlayNetworking.canSend(SmacksUtil.TELEPORT_REQUEST_ID)){
-            ClientPlayNetworking.send(SmacksUtil.TELEPORT_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(TELEPORT_REQUEST_ID)){
+            ClientPlayNetworking.send(TELEPORT_REQUEST_ID, packet);
         }
     }
 
@@ -89,8 +88,8 @@ public class FabricPacketSender implements IPacketSender {
         packet.writeUtf(name);
         packet.writeUtf(dim);
         packet.writeBoolean(remove);
-        if (ClientPlayNetworking.canSend(SmacksUtil.TELEPORT_NBT_REQUEST_ID)){
-            ClientPlayNetworking.send(SmacksUtil.TELEPORT_NBT_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(TELEPORT_NBT_REQUEST_ID)){
+            ClientPlayNetworking.send(TELEPORT_NBT_REQUEST_ID, packet);
         }
     }
 
@@ -101,8 +100,17 @@ public class FabricPacketSender implements IPacketSender {
         packet.writeItem(stack);
         packet.writeUUID(entityUUID);
         packet.writeBoolean(hand);
-        if (ClientPlayNetworking.canSend(SmacksUtil.INTERACT_ENTITY_REQUEST_ID)){
-            ClientPlayNetworking.send(SmacksUtil.INTERACT_ENTITY_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(INTERACT_ENTITY_REQUEST_ID)){
+            ClientPlayNetworking.send(INTERACT_ENTITY_REQUEST_ID, packet);
+        }
+    }
+
+    @Override
+    public void sendToPlayerBlockBreakPacket(ServerPlayer player, BlockPos pos) {
+        FriendlyByteBuf buf = PacketByteBufs.create();
+        buf.writeBlockPos(pos);
+        if (ServerPlayNetworking.canSend(player, VEINMINER_SERVER_BLOCK_BREAK_REQUEST_ID)){
+            ServerPlayNetworking.send(player, VEINMINER_SERVER_BLOCK_BREAK_REQUEST_ID, buf);
         }
     }
 }

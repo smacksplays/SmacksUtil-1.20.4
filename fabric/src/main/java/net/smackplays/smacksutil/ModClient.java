@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -24,9 +25,6 @@ import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
 import net.smackplays.smacksutil.platform.Services;
-
-import static net.smackplays.smacksutil.Constants.C_VEINMINER_SERVER_BREAK_REQUEST;
-import static net.smackplays.smacksutil.Constants.MOD_ID;
 import static net.smackplays.smacksutil.SmacksUtil.*;
 
 import net.smackplays.smacksutil.platform.services.IKeyHandler;
@@ -46,10 +44,10 @@ public class ModClient implements ClientModInitializer {
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex == 0 ? ((DyeableLeatherItem) BACKPACK_ITEM).getColor(stack) : 0xFFFFFF, BACKPACK_ITEM);
         ColorProviderRegistry.ITEM.register((stack, tintIndex) -> tintIndex == 0 ? ((DyeableLeatherItem) LARGE_BACKPACK_ITEM).getColor(stack) : 0xFFFFFF, LARGE_BACKPACK_ITEM);
 
-        ClientPlayNetworking.registerGlobalReceiver(new ResourceLocation(MOD_ID, "test"), this::handler);
+        ClientPlayNetworking.registerGlobalReceiver(VEINMINER_SERVER_BLOCK_BREAK_REQUEST_ID, this::handleServerBlockBreak);
     }
 
-    public void handler (Minecraft client, ClientPacketListener handler, FriendlyByteBuf buf, PacketSender responseSender){
+    public void handleServerBlockBreak (Minecraft client, ClientPacketListener handler, FriendlyByteBuf buf, PacketSender responseSender){
         client.execute(() -> {
             if (Services.KEY_HANDLER.isVeinKeyDown()){
                 Services.VEIN_MINER.veinMiner(client.level, client.player, buf.readBlockPos());

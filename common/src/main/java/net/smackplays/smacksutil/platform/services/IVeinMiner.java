@@ -103,16 +103,8 @@ public abstract class IVeinMiner {
             matching = (ArrayList<BlockPos>) VegetationMode.getBlocks(worldIn, playerIn, sourcePosIn, 10, isExactMatch).clone();
         } else if (sourceBlockState.is(ModTags.Blocks.TREE_BLOCKS)) {
             matching = (ArrayList<BlockPos>) TreeMode.getBlocks(worldIn, playerIn, sourcePosIn, 10, isExactMatch).clone();
-        } else if (mode.equals(ShapelessMode)) {
-            matching = (ArrayList<BlockPos>) ShapelessMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
-        } else if (mode.equals(ShapelessVerticalMode) && Services.CONFIG.isEnabledShapelessVerticalMode()) {
-            matching = (ArrayList<BlockPos>) ShapelessVerticalMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
-        } else if (mode.equals(TunnelMode) && Services.CONFIG.isEnabledTunnelMode()) {
-            matching = (ArrayList<BlockPos>) TunnelMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
-        } else if (mode.equals(MineshaftMode) && Services.CONFIG.isEnabledMineshaftMode()) {
-            matching = (ArrayList<BlockPos>) MineshaftMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
         } else {
-            matching = new ArrayList<>();
+            matching = (ArrayList<BlockPos>) mode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
         }
 
         return matching;
