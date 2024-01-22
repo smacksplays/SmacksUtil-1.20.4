@@ -52,7 +52,6 @@ public class Constants {
     public static final String C_SCROLLER_SPRITE_LOCATION = "container/loom/scroller";
     public static final String C_SCROLLER_DISABLED_SPRITE_LOCATION = "container/loom/scroller_disabled";
     // --------------------------------- VEINMINER
-    public static final String C_BREAK_BLOCK_REQUEST = "break-block-request";
     public static final String C_SET_BLOCK_AIR_REQUEST = "set-block-air-request";
     public static final String C_INTERACT_ENTITY_REQUEST = "interact-entity-request";
     public static final String C_VEINMINER_BREAK_REQUEST = "veinminer-break-request";

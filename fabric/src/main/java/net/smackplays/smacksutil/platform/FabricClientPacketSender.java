@@ -46,15 +46,6 @@ public class FabricClientPacketSender implements IClientPacketSender {
     }
 
     @Override
-    public void sendToServerBreakBlockPacket(BlockPos pos) {
-        FriendlyByteBuf packet = PacketByteBufs.create();
-        packet.writeBlockPos(pos);
-        if (ClientPlayNetworking.canSend(BREAK_BLOCK_REQUEST_ID)){
-            ClientPlayNetworking.send(BREAK_BLOCK_REQUEST_ID, packet);
-        }
-    }
-
-    @Override
     public void sendToServerSetBlockAirPacket(BlockPos pos) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeBlockPos(pos);

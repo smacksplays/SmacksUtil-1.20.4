@@ -68,7 +68,6 @@ public class SmacksUtil implements ModInitializer {
     public static final Item TELEPORTATION_TABLET_ITEM = new TeleportationTablet();
     public static final ResourceLocation ENCHANT_REQUEST_ID = new ResourceLocation(MOD_ID, C_ENCHANT_REQUEST);
     public static final ResourceLocation SORT_REQUEST_ID = new ResourceLocation(MOD_ID, C_SORT_REQUEST);
-    public static final ResourceLocation BREAK_BLOCK_REQUEST_ID = new ResourceLocation(MOD_ID, C_BREAK_BLOCK_REQUEST);
     public static final ResourceLocation SET_BLOCK_AIR_REQUEST_ID = new ResourceLocation(MOD_ID, C_SET_BLOCK_AIR_REQUEST);
     public static final ResourceLocation TELEPORT_REQUEST_ID = new ResourceLocation(MOD_ID, C_TELEPORT_REQUEST);
     public static final ResourceLocation TELEPORT_NBT_REQUEST_ID = new ResourceLocation(MOD_ID, C_TELEPORT_NBT_REQUEST);
@@ -117,8 +116,6 @@ public class SmacksUtil implements ModInitializer {
 
         ServerPlayNetworking.registerGlobalReceiver(SORT_REQUEST_ID, this::handleSortRequest);
 
-        ServerPlayNetworking.registerGlobalReceiver(BREAK_BLOCK_REQUEST_ID, this::handleBreakBlockRequest);
-
         ServerPlayNetworking.registerGlobalReceiver(SET_BLOCK_AIR_REQUEST_ID, this::handleSetBlockAirRequest);
 
         ServerPlayNetworking.registerGlobalReceiver(TELEPORT_NBT_REQUEST_ID, this::handleTeleportNBTRequest);
@@ -155,16 +152,6 @@ public class SmacksUtil implements ModInitializer {
             } else if (stack.getItem() instanceof AbstractBackpackItem && screenHandler instanceof BackpackMenu backpackMenu) {
                 backpackMenu.sort();
             }
-        });
-    }
-
-    private void handleBreakBlockRequest(MinecraftServer server, ServerPlayer player,
-                                         ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender){
-        server.execute(() -> {
-            Level world = player.level();
-            BlockPos pos = buf.readBlockPos();
-            if (world.isClientSide) return;
-            world.destroyBlock(pos, true);
         });
     }
 
