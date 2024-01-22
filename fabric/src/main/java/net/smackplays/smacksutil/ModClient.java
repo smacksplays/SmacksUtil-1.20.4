@@ -51,7 +51,9 @@ public class ModClient implements ClientModInitializer {
 
     public void handler (Minecraft client, ClientPacketListener handler, FriendlyByteBuf buf, PacketSender responseSender){
         client.execute(() -> {
-            Services.VEIN_MINER.veinMiner(client.level, client.player, buf.readBlockPos());
+            if (Services.KEY_HANDLER.isVeinKeyDown()){
+                Services.VEIN_MINER.veinMiner(client.level, client.player, buf.readBlockPos());
+            }
         });
     }
 

@@ -26,9 +26,19 @@ import net.smackplays.smacksutil.veinminer.modes.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.smackplays.smacksutil.Constants.C_VEINMINER_UPDATE_RATE;
+
 public abstract class IVeinMiner {
     public static int MAX_RADIUS = 6;
-    public static ArrayList<BlockPos> toBreak;
+    public long lastUpdate = System.currentTimeMillis();
+
+    public static ArrayList<BlockPos> old_toBreak = new ArrayList<>();
+
+    public static ArrayList<BlockPos> toBreak = new ArrayList<>();
+    public BlockPos old_lastBlockPos = new BlockPos(0,0,0);
+    public BlockPos lastBlockPos = new BlockPos(0,0,0);
+    public static boolean isCreative = false;
+    public static boolean replaceSeeds = false;
     public static VeinMode mode;
     public static int radius = 2;
     public static final VeinMode ShapelessMode = new Shapeless();
@@ -112,21 +122,16 @@ public abstract class IVeinMiner {
     public void veinMiner(Level world, Player player, BlockPos sourcePos) {
         if (isMining) return;
         isMining = true;
-        boolean isCreative = false;
-        BlockState sourceBlockState = world.getBlockState(sourcePos);
-        boolean replaceSeeds = sourceBlockState.is(ModTags.Blocks.CROP_BLOCKS);
+        if (sourcePos.equals(old_lastBlockPos)) toBreak = old_toBreak;
+
         ItemStack mainHandStack = player.getMainHandItem();
         Item mainHand = player.getMainHandItem().getItem();
         boolean mainHandIsTool = TieredItem.class.isAssignableFrom(mainHand.getClass());
-        if (player.isCreative()) isCreative = true;
-
-        toBreak = (ArrayList<BlockPos>) getBlocks(world, player, sourcePos).clone();
 
         int maxDMG = mainHandStack.getMaxDamage();
 
         for (BlockPos curr : toBreak) {
             BlockState currBlockState = world.getBlockState(curr);
-            Block currBlock = world.getBlockState(curr).getBlock();
 
             if (mainHandIsTool && mainHandStack.getDamageValue() == maxDMG - 1) {
                 isMining = false;
@@ -136,24 +141,7 @@ public abstract class IVeinMiner {
 
             boolean canHarvest = (player.hasCorrectToolForDrops(currBlockState) || player.isCreative());
             if (canHarvest) {
-                //world.destroyBlock(curr, !isCreative);
-                if (Services.PLATFORM.isClient()){
-                    Services.PACKET_SENDER.sendToServerVeinMinerBreakPacket(mainHandStack, curr, isCreative, replaceSeeds);
-                }else{
-                    world.setBlockAndUpdate(curr, Blocks.AIR.defaultBlockState());
-                    if (!isCreative) {
-                        BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
-                        Block.dropResources(currBlockState, world, curr, currBlockEntity, null, ItemStack.EMPTY);
-                        if (mainHandStack.isDamageableItem()) {
-                            mainHandStack.hurt(1, player.getRandom(), (ServerPlayer) player);
-                        }
-                    }
-                    if (replaceSeeds) {
-                        world.setBlockAndUpdate(curr, currBlock.defaultBlockState());
-                    }
-                }
-                /*
-                */
+                Services.PACKET_SENDER.sendToServerVeinMinerBreakPacket(mainHandStack, curr, isCreative, replaceSeeds);
             }
         }
 
@@ -170,7 +158,7 @@ public abstract class IVeinMiner {
         renderPreview = !renderPreview;
     }
 
-    public boolean getRenderPreview() {
+    public boolean isRenderPreview() {
         return renderPreview;
     }
 
@@ -269,5 +257,21 @@ public abstract class IVeinMiner {
 
     public int getRadius() {
         return radius;
+    }
+
+    public boolean isAcceptUpdate(BlockPos pos) {
+        if (!lastBlockPos.equals(pos)) return true;
+        if (isMining) return false;
+        return System.currentTimeMillis() - lastUpdate > C_VEINMINER_UPDATE_RATE;
+    }
+    public void updateBlocks(Level world, Player player, BlockPos sourcePos){
+        old_toBreak = (ArrayList<BlockPos>) toBreak.clone();
+        old_lastBlockPos = lastBlockPos;
+        lastBlockPos = sourcePos;
+        lastUpdate = System.currentTimeMillis();
+        isCreative = player.isCreative();
+        BlockState sourceBlockState = world.getBlockState(sourcePos);
+        replaceSeeds = sourceBlockState.is(ModTags.Blocks.CROP_BLOCKS);
+        toBreak = (ArrayList<BlockPos>) getBlocks(world, player, sourcePos).clone();
     }
 }

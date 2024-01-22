@@ -12,6 +12,7 @@ public class Constants {
     public static final int GREEN = 65280;
     public static final int RED = 16711680;
     public static final int WHITE = 16777215;
+    public static final int C_VEINMINER_UPDATE_RATE = 128;
     // --------------------------------- BACKPACKS
     public static final String C_BACKPACK_ITEM = "backpack_item";
     public static final String C_LARGE_BACKPACK_ITEM = "large_backpack_item";

@@ -56,6 +56,10 @@ public abstract class IKeyHandler {
         }
     }
 
+    public boolean isVeinKeyDown(){
+        return veinKey.isDown();
+    }
+
     public void register() {
     }
 }
