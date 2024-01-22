@@ -180,7 +180,7 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
             Level level = this.menu.playerInventory.player.level();
             String dim = level.dimensionTypeId().location().getPath();
 
-            Services.CLIENT_PACKET_SENDER.sendToServerTeleportNBTPacket(stack, pos, xRot, yRot, name, dim, false);
+            Services.C2S_PACKET_SENDER.sendToServerTeleportNBTPacket(stack, pos, xRot, yRot, name, dim, false);
         }
     }
 
@@ -258,9 +258,9 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
                     if (b1 && b2 && b3 && b4) {
                         String name = keyList.get(i);
                         if (!isRemove){
-                            Services.CLIENT_PACKET_SENDER.sendToServerTeleportNBTPacket(stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot, name, posMap.get(name).dim, isRemove);
+                            Services.C2S_PACKET_SENDER.sendToServerTeleportNBTPacket(stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot, name, posMap.get(name).dim, isRemove);
                         } else {
-                            Services.CLIENT_PACKET_SENDER.sendToServerTeleportPacket(posMap.get(name).levelKey, stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot);
+                            Services.C2S_PACKET_SENDER.sendToServerTeleportPacket(posMap.get(name).levelKey, stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot);
                         }
                         return true;
                     }

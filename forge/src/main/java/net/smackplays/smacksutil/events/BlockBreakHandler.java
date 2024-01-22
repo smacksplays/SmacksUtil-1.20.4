@@ -16,7 +16,7 @@ public class BlockBreakHandler {
 
         @SubscribeEvent
         public static void onBreakBlock(BlockEvent.BreakEvent event) {
-            Services.SERVER_PACKET_SENDER.sendToPlayerBlockBreakPacket((ServerPlayer) event.getPlayer(), event.getPos());
+            Services.S2C_PACKET_SENDER.sendToPlayerBlockBreakPacket((ServerPlayer) event.getPlayer(), event.getPos());
         }
     }
 }

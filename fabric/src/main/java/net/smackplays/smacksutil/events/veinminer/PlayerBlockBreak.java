@@ -14,7 +14,7 @@ public class PlayerBlockBreak implements PlayerBlockBreakEvents.Before {
 
     @Override
     public boolean beforeBlockBreak(Level world, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
-        Services.SERVER_PACKET_SENDER.sendToPlayerBlockBreakPacket((ServerPlayer) player, pos);
+        Services.S2C_PACKET_SENDER.sendToPlayerBlockBreakPacket((ServerPlayer) player, pos);
         return true;
     }
 }

@@ -17,8 +17,8 @@ public class Services {
     public static final IModConfig CONFIG = load_1(IModConfig.class);
     public static final IVeinMiner VEIN_MINER = load(IVeinMiner.class);
     public static final IKeyHandler KEY_HANDLER = load(IKeyHandler.class);
-    public static final IClientPacketSender CLIENT_PACKET_SENDER = load(IClientPacketSender.class);
-    public static final IServerPacketSender SERVER_PACKET_SENDER = load(IServerPacketSender.class);
+    public static final IClientPacketSender C2S_PACKET_SENDER = load_1(IClientPacketSender.class);
+    public static final IServerPacketSender S2C_PACKET_SENDER = load(IServerPacketSender.class);
 
     // This code is used to load a service for the current environment. Your implementation of the service must be defined
     // manually by including a text file in META-INF/services named with the fully qualified class name of the service.

@@ -15,8 +15,6 @@ public interface IClientPacketSender {
 
     void sendToServerSortPacket(ItemStack stack);
 
-    void sendToServerBreakBlockPacket(BlockPos pos);
-
     void sendToServerSetBlockAirPacket(BlockPos pos);
 
     void sendToServerTeleportPacket(ResourceKey<Level> levelKey, ItemStack stack, Vec3 pos, float xRot, float yRot);

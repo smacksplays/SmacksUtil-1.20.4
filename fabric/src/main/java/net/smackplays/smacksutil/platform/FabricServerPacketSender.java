@@ -5,7 +5,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.smackplays.smacksutil.platform.services.IClientPacketSender;
 import net.smackplays.smacksutil.platform.services.IServerPacketSender;
 
 import static net.smackplays.smacksutil.SmacksUtil.*;
