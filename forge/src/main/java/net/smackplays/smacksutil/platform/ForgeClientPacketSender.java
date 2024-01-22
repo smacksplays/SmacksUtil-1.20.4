@@ -2,18 +2,16 @@ package net.smackplays.smacksutil.platform;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.smackplays.smacksutil.networking.*;
 import net.smackplays.smacksutil.networking.C2SPacket.*;
-import net.smackplays.smacksutil.networking.S2CPacket.PlayerBlockBreakPacket;
 import net.smackplays.smacksutil.platform.services.IClientPacketSender;
 
 import java.util.UUID;
 
-public class ForgePacketSender implements IClientPacketSender {
+public class ForgeClientPacketSender implements IClientPacketSender {
     @Override
     public void sendToServerVeinMinerBreakPacket(ItemStack meinHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds) {
 
@@ -27,11 +25,6 @@ public class ForgePacketSender implements IClientPacketSender {
     @Override
     public void sendToServerSortPacket(ItemStack stack) {
         PacketHandler.sendToServer(new SSortPacket(stack));
-    }
-
-    @Override
-    public void sendToServerBreakBlockPacket(BlockPos pos) {
-        PacketHandler.sendToServer(new BreakBlockPacket(pos));
     }
 
     @Override
@@ -52,10 +45,5 @@ public class ForgePacketSender implements IClientPacketSender {
     @Override
     public void sendToServerInteractEntityPacket(ItemStack stack, UUID entityUUID, boolean hand) {
         PacketHandler.sendToServer(new InteractEntityPacket(stack, entityUUID, hand));
-    }
-
-    @Override
-    public void sendToPlayerBlockBreakPacket(ServerPlayer player, BlockPos pos) {
-        PacketHandler.sendToPlayer(new PlayerBlockBreakPacket(pos), player);
     }
 }
