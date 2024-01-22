@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.networking;
+package net.smackplays.smacksutil.networking.C2SPacket;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;

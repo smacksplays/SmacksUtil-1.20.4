@@ -82,7 +82,7 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
 
     public void onButtonWidgetPressed() {
         ItemStack stack = this.menu.playerInventory.getSelected();
-        Services.PACKET_SENDER.sendToServerSortPacket(stack);
+        Services.CLIENT_PACKET_SENDER.sendToServerSortPacket(stack);
     }
 
     @Override

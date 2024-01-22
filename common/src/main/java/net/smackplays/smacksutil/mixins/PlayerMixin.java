@@ -19,6 +19,6 @@ public abstract class PlayerMixin {
     private void onScroll(Entity entity, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResult> cir) {
         Player player = (Player) (Object) this;
         ItemStack mainHand = player.getItemInHand(interactionHand);
-        Services.PACKET_SENDER.sendToServerInteractEntityPacket(mainHand, entity.getUUID(), interactionHand.equals(InteractionHand.MAIN_HAND));
+        Services.CLIENT_PACKET_SENDER.sendToServerInteractEntityPacket(mainHand, entity.getUUID(), interactionHand.equals(InteractionHand.MAIN_HAND));
     }
 }

@@ -17,7 +17,6 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -25,17 +24,16 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.smackplays.smacksutil.config.ClothConfigForge;
 import net.smackplays.smacksutil.items.*;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
 import net.smackplays.smacksutil.networking.PacketHandler;
-import net.smackplays.smacksutil.screens.BackpackScreen;
-import net.smackplays.smacksutil.screens.EnchantingToolScreen;
-import net.smackplays.smacksutil.screens.LargeBackpackScreen;
-import net.smackplays.smacksutil.screens.TeleportationTabletScreen;
+import net.smackplays.smacksutil.screens.AbstractBackpackScreen;
+import net.smackplays.smacksutil.screens.AbstractEnchantingToolScreen;
+import net.smackplays.smacksutil.screens.AbstractLargeBackpackScreen;
+import net.smackplays.smacksutil.screens.AbstractTeleportationTabletScreen;
 
 import static net.smackplays.smacksutil.Constants.*;
 
@@ -44,7 +42,7 @@ import static net.smackplays.smacksutil.Constants.*;
 @Mod(MOD_ID)
 public class SmacksUtil {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
-    public static final DeferredRegister<MenuType<?>> SCREENS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, MOD_ID);
     public static final RegistryObject<Attribute> BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE
             = ATTRIBUTES.register("generic.upgrade_multiplier", ()
@@ -64,13 +62,13 @@ public class SmacksUtil {
     public static final RegistryObject<Item> ENCHANTING_TOOL_ITEM = ITEMS.register(C_ENCHANTING_TOOL_ITEM, ForgeEnchantingToolItem::new);
     public static final RegistryObject<Item> TELEPORTATION_TABLET_ITEM = ITEMS.register(C_TELEPORTATION_TABLET_ITEM, TeleportationTablet::new);
     public static final RegistryObject<MenuType<EnchantingToolMenu>> ENCHANTING_TOOL_MENU =
-            SCREENS.register(C_ENCHANTING_TOOL_MENU, () -> IForgeMenuType.create(EnchantingToolMenu::create));
+            MENUS.register(C_ENCHANTING_TOOL_MENU, () -> IForgeMenuType.create(EnchantingToolMenu::create));
     public static final RegistryObject<MenuType<BackpackMenu>> BACKPACK_MENU =
-            SCREENS.register(C_BACKPACK_MENU, () -> IForgeMenuType.create(BackpackMenu::createGeneric9x6));
+            MENUS.register(C_BACKPACK_MENU, () -> IForgeMenuType.create(BackpackMenu::createGeneric9x6));
     public static final RegistryObject<MenuType<LargeBackpackMenu>> LARGE_BACKPACK_MENU =
-            SCREENS.register(C_LARGE_BACKPACK_MENU, () -> IForgeMenuType.create(LargeBackpackMenu::createGeneric13x9));
+            MENUS.register(C_LARGE_BACKPACK_MENU, () -> IForgeMenuType.create(LargeBackpackMenu::createGeneric13x9));
     public static final RegistryObject<MenuType<TeleportationTabletMenu>> TELEPORTATION_TABLET_MENU =
-            SCREENS.register(C_TELEPORTATION_TABLET_MENU, () -> IForgeMenuType.create(TeleportationTabletMenu::create));
+            MENUS.register(C_TELEPORTATION_TABLET_MENU, () -> IForgeMenuType.create(TeleportationTabletMenu::create));
 
     public SmacksUtil() {
         Constants.LOG.info("Hello Forge world!");
@@ -82,15 +80,13 @@ public class SmacksUtil {
 
         ATTRIBUTES.register(modEventBus);
 
-        SCREENS.register(modEventBus);
+        MENUS.register(modEventBus);
 
         ITEMS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);
-
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClothConfigForge::registerModsPage);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -123,10 +119,11 @@ public class SmacksUtil {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            MenuScreens.register(SmacksUtil.LARGE_BACKPACK_MENU.get(), LargeBackpackScreen::new);
-            MenuScreens.register(SmacksUtil.BACKPACK_MENU.get(), BackpackScreen::new);
-            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_MENU.get(), EnchantingToolScreen::new);
-            MenuScreens.register(SmacksUtil.TELEPORTATION_TABLET_MENU.get(), TeleportationTabletScreen::new);
+            //DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> ClothConfigForge::registerModsPage);
+            MenuScreens.register(SmacksUtil.BACKPACK_MENU.get(), AbstractBackpackScreen<BackpackMenu>::new);
+            MenuScreens.register(SmacksUtil.LARGE_BACKPACK_MENU.get(), AbstractLargeBackpackScreen<LargeBackpackMenu>::new);
+            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_MENU.get(), AbstractEnchantingToolScreen<EnchantingToolMenu>::new);
+            MenuScreens.register(SmacksUtil.TELEPORTATION_TABLET_MENU.get(), AbstractTeleportationTabletScreen<TeleportationTabletMenu>::new);
             CauldronInteraction.WATER.map().putIfAbsent(BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
             CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
         }

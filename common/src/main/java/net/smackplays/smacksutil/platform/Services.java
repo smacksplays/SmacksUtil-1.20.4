@@ -14,10 +14,11 @@ public class Services {
     // For example this can be used to check if the code is running on Forge vs Fabric, or to ask the modloader if another
     // mod is loaded.
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
-    public static final IModConfig CONFIG = load(IModConfig.class);
+    public static final IModConfig CONFIG = load_1(IModConfig.class);
     public static final IVeinMiner VEIN_MINER = load(IVeinMiner.class);
     public static final IKeyHandler KEY_HANDLER = load(IKeyHandler.class);
-    public static final IPacketSender PACKET_SENDER = load(IPacketSender.class);
+    public static final IClientPacketSender CLIENT_PACKET_SENDER = load(IClientPacketSender.class);
+    public static final IServerPacketSender SERVER_PACKET_SENDER = load(IServerPacketSender.class);
 
     // This code is used to load a service for the current environment. Your implementation of the service must be defined
     // manually by including a text file in META-INF/services named with the fully qualified class name of the service.

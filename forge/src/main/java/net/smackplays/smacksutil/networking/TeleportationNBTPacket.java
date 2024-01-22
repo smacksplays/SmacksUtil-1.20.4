@@ -3,7 +3,6 @@ package net.smackplays.smacksutil.networking;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -12,7 +11,6 @@ import net.minecraftforge.event.network.CustomPayloadEvent;
 import java.nio.charset.StandardCharsets;
 
 public class TeleportationNBTPacket {
-    private final ResourceKey<?> levelKey;
     private final ItemStack stack;
     private final Vec3 pos;
     private final float xRot;
@@ -21,8 +19,7 @@ public class TeleportationNBTPacket {
     private final String dim;
     private final boolean remove;
 
-    public TeleportationNBTPacket(ResourceKey<?> levelKey, ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove) {
-        this.levelKey = levelKey;
+    public TeleportationNBTPacket(ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove) {
         this.stack = stack;
         this.pos = pos;
         this.xRot = xRot;
@@ -33,7 +30,6 @@ public class TeleportationNBTPacket {
     }
 
     public TeleportationNBTPacket(FriendlyByteBuf buffer) {
-        levelKey = buffer.readRegistryKey();
         stack = buffer.readItem();
         pos = buffer.readVec3();
         xRot = buffer.readFloat();
@@ -44,7 +40,6 @@ public class TeleportationNBTPacket {
     }
 
     public void encode(FriendlyByteBuf buffer) {
-        buffer.writeResourceKey(levelKey);
         buffer.writeItem(stack);
         buffer.writeVec3(pos);
         buffer.writeFloat(xRot);

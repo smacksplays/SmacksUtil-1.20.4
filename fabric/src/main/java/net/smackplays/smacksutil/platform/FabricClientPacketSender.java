@@ -2,21 +2,19 @@ package net.smackplays.smacksutil.platform;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.smackplays.smacksutil.platform.services.IPacketSender;
+import net.smackplays.smacksutil.platform.services.IClientPacketSender;
 
 import java.util.UUID;
 
 import static net.smackplays.smacksutil.SmacksUtil.*;
 
-public class FabricPacketSender implements IPacketSender {
+public class FabricClientPacketSender implements IClientPacketSender {
     @Override
     public void sendToServerVeinMinerBreakPacket(ItemStack meinHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds) {
         FriendlyByteBuf packet = PacketByteBufs.create();
@@ -101,15 +99,6 @@ public class FabricPacketSender implements IPacketSender {
         packet.writeBoolean(hand);
         if (ClientPlayNetworking.canSend(INTERACT_ENTITY_REQUEST_ID)){
             ClientPlayNetworking.send(INTERACT_ENTITY_REQUEST_ID, packet);
-        }
-    }
-
-    @Override
-    public void sendToPlayerBlockBreakPacket(ServerPlayer player, BlockPos pos) {
-        FriendlyByteBuf buf = PacketByteBufs.create();
-        buf.writeBlockPos(pos);
-        if (ServerPlayNetworking.canSend(player, VEINMINER_SERVER_BLOCK_BREAK_REQUEST_ID)){
-            ServerPlayNetworking.send(player, VEINMINER_SERVER_BLOCK_BREAK_REQUEST_ID, buf);
         }
     }
 }
