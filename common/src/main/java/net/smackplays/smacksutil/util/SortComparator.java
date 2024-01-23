@@ -1,16 +1,10 @@
 package net.smackplays.smacksutil.util;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Tuple;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import java.awt.*;
 import java.util.Comparator;
-import java.util.Map;
 
 public class SortComparator implements Comparator<ItemStack> {
     public SortComparator(){

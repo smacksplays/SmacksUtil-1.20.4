@@ -37,7 +37,10 @@ import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
 import net.smackplays.smacksutil.networking.C2SPacket.*;
 import net.smackplays.smacksutil.networking.S2CPacket.S2CBlockBreakPacket;
 import net.smackplays.smacksutil.networking.S2CPacket.S2CBlockBreakPacketHandler;
-import net.smackplays.smacksutil.screens.*;
+import net.smackplays.smacksutil.screens.AbstractBackpackScreen;
+import net.smackplays.smacksutil.screens.AbstractEnchantingToolScreen;
+import net.smackplays.smacksutil.screens.AbstractLargeBackpackScreen;
+import net.smackplays.smacksutil.screens.AbstractTeleportationTabletScreen;
 
 import java.util.function.Supplier;
 

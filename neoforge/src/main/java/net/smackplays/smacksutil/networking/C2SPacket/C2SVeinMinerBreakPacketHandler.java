@@ -11,8 +11,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-import java.util.Set;
-
 public class C2SVeinMinerBreakPacketHandler {private static final C2SVeinMinerBreakPacketHandler INSTANCE = new C2SVeinMinerBreakPacketHandler();
 
     public static C2SVeinMinerBreakPacketHandler getInstance() {

@@ -1,6 +1,5 @@
 package net.smackplays.smacksutil.platform.services;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;

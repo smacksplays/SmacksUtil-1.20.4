@@ -4,7 +4,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.smackplays.smacksutil.SmacksUtil;
-import net.smackplays.smacksutil.inventories.IBackpackInventory;
 import net.smackplays.smacksutil.inventories.LargeBackpackInventory;
 import org.jetbrains.annotations.Nullable;
 

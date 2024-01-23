@@ -5,7 +5,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.inventories.BackpackInventory;
-import net.smackplays.smacksutil.inventories.IBackpackInventory;
 import org.jetbrains.annotations.Nullable;
 
 public class BackpackMenu extends AbstractBackpackMenu {
