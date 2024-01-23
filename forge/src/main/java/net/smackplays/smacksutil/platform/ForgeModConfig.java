@@ -10,6 +10,7 @@ import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.common.Mod;
 import net.smackplays.smacksutil.Constants;
@@ -17,7 +18,7 @@ import net.smackplays.smacksutil.platform.services.IModConfig;
 
 @SuppressWarnings({"unused", "rawtypes", "UnstableApiUsage"})
 @Config(name = Constants.MOD_ID)
-@Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ForgeModConfig implements IModConfig, ConfigData {
     @ConfigEntry.Gui.Excluded
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
