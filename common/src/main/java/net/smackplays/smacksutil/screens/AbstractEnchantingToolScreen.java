@@ -216,7 +216,9 @@ public class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> 
                         EnchantmentHelper.setEnchantments(map, stack);
                     }
 
-                    Services.C2S_PACKET_SENDER.sendToServerEnchantPacket(stack);
+                    if (Services.C2S_PACKET_SENDER != null) {
+                        Services.C2S_PACKET_SENDER.sendToServerEnchantPacket(stack);
+                    }
                     return true;
                 }
             }

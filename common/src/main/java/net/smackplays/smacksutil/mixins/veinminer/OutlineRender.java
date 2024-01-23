@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LevelRenderer.class)
 public abstract class OutlineRender {
-    @Inject(at = @At("HEAD"), method = "renderHitOutline", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "renderHitOutline")
     private void drawBlockOutline(PoseStack matrices, VertexConsumer vertexConsumer,
                                   Entity entity, double cameraX, double cameraY,
                                   double cameraZ, BlockPos pos, BlockState state, CallbackInfo ci) {

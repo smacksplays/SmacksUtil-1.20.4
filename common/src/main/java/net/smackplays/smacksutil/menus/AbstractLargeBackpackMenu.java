@@ -13,6 +13,7 @@ import net.smackplays.smacksutil.inventories.IBackpackInventory;
 import net.smackplays.smacksutil.slots.BackpackSlot;
 import net.smackplays.smacksutil.slots.BackpackUpgradeSlot;
 import net.smackplays.smacksutil.slots.InvSlot;
+import net.smackplays.smacksutil.util.SortComparator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -170,7 +171,7 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
             }
         }
 
-        temp.sort(Comparator.comparing(this::getStringForSort));
+        temp.sort(new SortComparator());
         for (int i = 0; i < temp.size(); i++) {
             items.set(i + 4, temp.get(i));
             this.slots.get(i).set(impInv.getItem(i));

@@ -8,6 +8,7 @@ import net.smackplays.smacksutil.platform.Services;
 public class C2SBreakBlockPacket {
     private final BlockPos pos;
 
+    @SuppressWarnings("unused")
     public C2SBreakBlockPacket(BlockPos p) {
         pos = p;
     }
@@ -21,8 +22,10 @@ public class C2SBreakBlockPacket {
     }
 
     public void handle(CustomPayloadEvent.Context context) {
-        if (Services.KEY_HANDLER.isVeinKeyDown()){
-            Services.VEIN_MINER.veinMiner(context.getSender().level(), context.getSender(), pos);
+        if (context.getSender() != null){
+            if (Services.KEY_HANDLER.isVeinKeyDown()){
+                Services.VEIN_MINER.veinMiner(context.getSender().level(), context.getSender(), pos);
+            }
         }
     }
 }

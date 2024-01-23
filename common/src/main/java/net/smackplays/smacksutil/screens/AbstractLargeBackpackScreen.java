@@ -66,7 +66,7 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
         }
 
 
-        BackpackGuiGraphics c = new BackpackGuiGraphics(context, this.minecraft, this.menu.playerInventory);
+        BackpackGuiGraphics c = new BackpackGuiGraphics(context, this.minecraft);
         super.render(c, mouseX, mouseY, delta);
         renderTooltip(context, mouseX, mouseY);
     }
@@ -91,7 +91,9 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
 
     public void onButtonWidgetPressed() {
         ItemStack stack = this.menu.playerInventory.getSelected();
-        Services.C2S_PACKET_SENDER.sendToServerSortPacket(stack);
+        if (Services.C2S_PACKET_SENDER != null) {
+            Services.C2S_PACKET_SENDER.sendToServerSortPacket(stack);
+        }
     }
 
     @Override

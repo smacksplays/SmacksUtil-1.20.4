@@ -104,7 +104,6 @@ public abstract class IVeinMiner {
         return matching;
     }
 
-    @SuppressWarnings("unchecked")
     public void veinMiner(Level world, Player player, BlockPos sourcePos) {
         if (isMining) return;
         isMining = true;
@@ -127,7 +126,9 @@ public abstract class IVeinMiner {
 
             boolean canHarvest = (player.hasCorrectToolForDrops(currBlockState) || player.isCreative());
             if (canHarvest) {
-                Services.C2S_PACKET_SENDER.sendToServerVeinMinerBreakPacket(mainHandStack, curr, isCreative, replaceSeeds);
+                if (Services.C2S_PACKET_SENDER != null) {
+                    Services.C2S_PACKET_SENDER.sendToServerVeinMinerBreakPacket(mainHandStack, curr, isCreative, replaceSeeds);
+                }
             }
         }
 
@@ -148,11 +149,6 @@ public abstract class IVeinMiner {
         return renderPreview;
     }
 
-    public boolean isToBreakEmpty() {
-        if (toBreak == null) return true;
-        return toBreak.isEmpty();
-    }
-
     public VoxelShape combine(Level world, BlockPos pos, List<BlockPos> toRender) {
         VoxelShape shape = Shapes.empty();
         for (BlockPos pos1 : toRender) {
@@ -165,14 +161,6 @@ public abstract class IVeinMiner {
         return shape;
     }
 
-    public boolean isDrawing() {
-        return isDrawing;
-    }
-
-    public boolean isMining() {
-        return isMining;
-    }
-
     public void toggleExactMatch() {
         isExactMatch = !isExactMatch;
     }
@@ -183,46 +171,50 @@ public abstract class IVeinMiner {
 
     public VeinMode getMode(Level world, BlockPos pos) {
         BlockState sourceBlockState = world.getBlockState(pos);
-        if (sourceBlockState.is(ModTags.Blocks.CROP_BLOCKS)) {
-            return CropsMode;
-        } else if (sourceBlockState.is(ModTags.Blocks.ORE_BLOCKS)) {
-            return OresMode;
-        } else if (sourceBlockState.is(ModTags.Blocks.VEGETATION_BLOCKS)) {
-            return VegetationMode;
-        } else if (sourceBlockState.is(ModTags.Blocks.TREE_BLOCKS)) {
-            return TreeMode;
-        } else if (mode.equals(ShapelessMode)) {
-            return ShapelessMode;
-        } else if (mode.equals(ShapelessVerticalMode) && Services.CONFIG.isEnabledShapelessVerticalMode()) {
-            return ShapelessVerticalMode;
-        } else if (mode.equals(TunnelMode) && Services.CONFIG.isEnabledTunnelMode()) {
-            return TunnelMode;
-        } else if (mode.equals(MineshaftMode) && Services.CONFIG.isEnabledMineshaftMode()) {
-            return MineshaftMode;
+        if (Services.CONFIG != null){
+            if (sourceBlockState.is(ModTags.Blocks.CROP_BLOCKS)) {
+                return CropsMode;
+            } else if (sourceBlockState.is(ModTags.Blocks.ORE_BLOCKS)) {
+                return OresMode;
+            } else if (sourceBlockState.is(ModTags.Blocks.VEGETATION_BLOCKS)) {
+                return VegetationMode;
+            } else if (sourceBlockState.is(ModTags.Blocks.TREE_BLOCKS)) {
+                return TreeMode;
+            } else if (mode.equals(ShapelessMode)) {
+                return ShapelessMode;
+            } else if (mode.equals(ShapelessVerticalMode) && Services.CONFIG.isEnabledShapelessVerticalMode()) {
+                return ShapelessVerticalMode;
+            } else if (mode.equals(TunnelMode) && Services.CONFIG.isEnabledTunnelMode()) {
+                return TunnelMode;
+            } else if (mode.equals(MineshaftMode) && Services.CONFIG.isEnabledMineshaftMode()) {
+                return MineshaftMode;
+            }
         }
         return mode;
     }
 
     public void scroll(double vertical, Player player) {
 
-        ShapelessMode.MAX_RADIUS = Services.CONFIG.getMaxShapelessRadius();
-        if (Services.CONFIG.isEnabledShapelessVerticalMode() && !modeList.contains(ShapelessVerticalMode)) {
-            modeList.add(ShapelessVerticalMode);
-        } else if (!Services.CONFIG.isEnabledShapelessVerticalMode()) {
-            modeList.remove(ShapelessVerticalMode);
-        }
-        ShapelessVerticalMode.MAX_RADIUS = Services.CONFIG.getMaxShapelessVerticalRadius();
-        if (Services.CONFIG.isEnabledTunnelMode() && !modeList.contains(TunnelMode)) {
-            modeList.add(TunnelMode);
-        } else if (!Services.CONFIG.isEnabledTunnelMode()) {
-            modeList.remove(TunnelMode);
-        }
-        if (Services.CONFIG.isEnabledMineshaftMode() && !modeList.contains(MineshaftMode)) {
-            modeList.add(MineshaftMode);
-        } else if (!Services.CONFIG.isEnabledMineshaftMode()) {
-            modeList.remove(MineshaftMode);
-        }
+        if (Services.CONFIG != null) {
+            ShapelessMode.MAX_RADIUS = Services.CONFIG.getMaxShapelessRadius();
+            if (Services.CONFIG.isEnabledShapelessVerticalMode() && !modeList.contains(ShapelessVerticalMode)) {
+                modeList.add(ShapelessVerticalMode);
+            } else if (!Services.CONFIG.isEnabledShapelessVerticalMode()) {
+                modeList.remove(ShapelessVerticalMode);
+            }
+            ShapelessVerticalMode.MAX_RADIUS = Services.CONFIG.getMaxShapelessVerticalRadius();
+            if (Services.CONFIG.isEnabledTunnelMode() && !modeList.contains(TunnelMode)) {
+                modeList.add(TunnelMode);
+            } else if (!Services.CONFIG.isEnabledTunnelMode()) {
+                modeList.remove(TunnelMode);
+            }
+            if (Services.CONFIG.isEnabledMineshaftMode() && !modeList.contains(MineshaftMode)) {
+                modeList.add(MineshaftMode);
+            } else if (!Services.CONFIG.isEnabledMineshaftMode()) {
+                modeList.remove(MineshaftMode);
+            }
 
+        }
         if (player != null && IKeyHandler.veinKey.isDown()) {
             if (player.isCrouching()) {
                 currMode += (int) vertical;
@@ -254,6 +246,8 @@ public abstract class IVeinMiner {
         if (isMining) return false;
         return System.currentTimeMillis() - lastUpdate > C_VEINMINER_UPDATE_RATE;
     }
+
+    @SuppressWarnings("unchecked")
     public void updateBlocks(Level world, Player player, BlockPos sourcePos){
         old_toBreak = (ArrayList<BlockPos>) toBreak.clone();
         old_lastBlockPos = lastBlockPos;

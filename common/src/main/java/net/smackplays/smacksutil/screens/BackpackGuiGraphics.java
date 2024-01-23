@@ -8,19 +8,20 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
 public class BackpackGuiGraphics extends GuiGraphics {
     private final Minecraft minecraft;
 
-    public BackpackGuiGraphics(GuiGraphics context, Minecraft client, Inventory pInv) {
+    public BackpackGuiGraphics(GuiGraphics context, Minecraft client) {
         super(client, context.bufferSource());
         minecraft = client;
     }
 
     @Override
-    public void renderItemDecorations(Font font, ItemStack stack, int offsetX, int offsetY, @Nullable String yellowString) {
+    public void renderItemDecorations(@NotNull Font font, ItemStack stack, int offsetX, int offsetY, @Nullable String yellowString) {
         if (!stack.isEmpty()) {
             pose().pushPose();
             if (stack.getCount() != 1 || yellowString != null) {

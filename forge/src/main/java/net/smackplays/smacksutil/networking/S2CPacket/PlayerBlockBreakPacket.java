@@ -22,8 +22,6 @@ public class PlayerBlockBreakPacket {
     }
 
     public void handle(CustomPayloadEvent.Context context) {
-        context.enqueueWork(() ->{
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> PlayerBlockBreakPacketHandler.handle(pos));
-        });
+        context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> PlayerBlockBreakPacketHandler.handle(pos)));
     }
 }

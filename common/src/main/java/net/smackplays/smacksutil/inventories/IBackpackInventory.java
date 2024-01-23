@@ -24,6 +24,7 @@ public interface IBackpackInventory extends WorldlyContainer {
         return () -> items;
     }
 
+    @SuppressWarnings("unused")
     static IBackpackInventory ofSize(int size) {
         return of(NonNullList.withSize(size, ItemStack.EMPTY));
     }
@@ -106,7 +107,6 @@ public interface IBackpackInventory extends WorldlyContainer {
 
     @Override
     default void setChanged() {
-        int i = 0;
     }
 
     @Override

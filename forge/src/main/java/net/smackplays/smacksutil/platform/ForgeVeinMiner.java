@@ -27,7 +27,10 @@ public class ForgeVeinMiner extends IVeinMiner {
         setMode();
         ArrayList<BlockPos> toRender = (ArrayList<BlockPos>) toBreak.clone();
         //toBreak = (ArrayList<BlockPos>) Services.VEIN_MINER.getBlocks(world, player, pos).clone();
-        int maxRenderBlocks = Services.CONFIG.getMaxRenderBlocks();
+        int maxRenderBlocks = 0;
+        if (Services.CONFIG != null) {
+            maxRenderBlocks = Services.CONFIG.getMaxRenderBlocks();
+        }
         if (toRender.size() > maxRenderBlocks) {
             toRender = new ArrayList<>(toRender.subList(0, maxRenderBlocks));
         }
