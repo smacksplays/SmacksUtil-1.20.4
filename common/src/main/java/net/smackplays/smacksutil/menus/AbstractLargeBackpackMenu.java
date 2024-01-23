@@ -17,7 +17,6 @@ import net.smackplays.smacksutil.util.SortComparator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
@@ -176,20 +175,5 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
             items.set(i + 4, temp.get(i));
             this.slots.get(i).set(impInv.getItem(i));
         }
-    }
-
-    private String getStringForSort(ItemStack stack) {
-        String s;
-        int maxStacksize = this.inventory.getMaxStackSize();
-        if (stack.isEmpty()) {
-            return "zzz" + stack.getItem().getDescriptionId() + stack.getCount();
-        } else if (stack.hasCustomHoverName()) {
-            s = stack.getHoverName().getString() + stack.getCount();
-        } else if (stack.getCount() == maxStacksize){
-            s = stack.getItem().getDescriptionId() + "00" + stack.getCount();
-        }else {
-            s = stack.getItem().getDescriptionId() + stack.getCount();
-        }
-        return s;
     }
 }

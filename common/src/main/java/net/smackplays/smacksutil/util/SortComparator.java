@@ -1,7 +1,6 @@
 package net.smackplays.smacksutil.util;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Comparator;
