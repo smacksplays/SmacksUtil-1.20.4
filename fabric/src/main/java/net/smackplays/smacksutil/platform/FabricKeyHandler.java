@@ -14,6 +14,7 @@ public class FabricKeyHandler extends IKeyHandler {
                 veinPreviewConsume();
                 fastPlaceConsume();
                 exactMatchConsume();
+                veinKeyDown = veinKey.isDown();
             }
         });
     }

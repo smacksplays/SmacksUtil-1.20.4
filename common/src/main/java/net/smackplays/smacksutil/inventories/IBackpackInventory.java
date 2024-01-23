@@ -24,6 +24,7 @@ public interface IBackpackInventory extends WorldlyContainer {
         return () -> items;
     }
 
+    @SuppressWarnings("unused")
     static IBackpackInventory ofSize(int size) {
         return of(NonNullList.withSize(size, ItemStack.EMPTY));
     }
@@ -76,6 +77,7 @@ public interface IBackpackInventory extends WorldlyContainer {
     @Override
     default @NotNull ItemStack removeItem(int slot, int count) {
         if (count > 64) count = 64;
+        if (!getItem(slot).isStackable()) count = 1;
         ItemStack result = ContainerHelper.removeItem(getItems(), slot, count);
 
         if (!result.isEmpty()) {

@@ -53,8 +53,7 @@ public class MobCatcherItem extends Item {
         return InteractionResult.SUCCESS;
     }
 
-    @Override
-    public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity livingEntity, @NotNull InteractionHand interactionHand) {
+    public boolean pickupLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity livingEntity, @NotNull InteractionHand interactionHand) {
         Level world = player.level();
         ItemStack mainHandStack = player.getItemInHand(interactionHand);
         if (!isHolding(mainHandStack) && !world.isClientSide && interactionHand.equals(InteractionHand.MAIN_HAND)) {
@@ -64,9 +63,9 @@ public class MobCatcherItem extends Item {
             mainHandStack.setTag(tag);
             mainHandStack.getOrCreateTag().putBoolean("is_Holding", true);
             setHolding(true);
-            livingEntity.remove(Entity.RemovalReason.KILLED);
+            return true;
         }
-        return super.interactLivingEntity(stack, player, livingEntity, interactionHand);
+        return false;
     }
 
     public boolean isHolding(ItemStack stack) {

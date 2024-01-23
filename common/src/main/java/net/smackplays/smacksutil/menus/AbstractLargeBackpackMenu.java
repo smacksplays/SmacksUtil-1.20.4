@@ -13,10 +13,10 @@ import net.smackplays.smacksutil.inventories.IBackpackInventory;
 import net.smackplays.smacksutil.slots.BackpackSlot;
 import net.smackplays.smacksutil.slots.BackpackUpgradeSlot;
 import net.smackplays.smacksutil.slots.InvSlot;
+import net.smackplays.smacksutil.util.SortComparator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
@@ -67,7 +67,7 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if (index < this.rows * this.cols + 4) {
-                if (this.moveItemStackTo(itemStack2, this.rows * this.cols, this.slots.size(), true, 64)) {
+                if (this.moveItemStackTo(itemStack2, this.rows * this.cols + 4, this.slots.size(), true, 64)) {
                     return ItemStack.EMPTY;
                 }
             } else if (this.moveItemStackTo(itemStack2, 4, this.rows * this.cols + 4, false, inventory.getMaxStackSize())) {
@@ -170,25 +170,10 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
             }
         }
 
-        temp.sort(Comparator.comparing(this::getStringForSort));
+        temp.sort(new SortComparator());
         for (int i = 0; i < temp.size(); i++) {
             items.set(i + 4, temp.get(i));
             this.slots.get(i).set(impInv.getItem(i));
         }
-    }
-
-    private String getStringForSort(ItemStack stack) {
-        String s;
-        int maxStacksize = this.inventory.getMaxStackSize();
-        if (stack.isEmpty()) {
-            return "zzz" + stack.getItem().getDescriptionId() + stack.getCount();
-        } else if (stack.hasCustomHoverName()) {
-            s = stack.getHoverName().getString() + stack.getCount();
-        } else if (stack.getCount() == maxStacksize){
-            s = stack.getItem().getDescriptionId() + "00" + stack.getCount();
-        }else {
-            s = stack.getItem().getDescriptionId() + stack.getCount();
-        }
-        return s;
     }
 }

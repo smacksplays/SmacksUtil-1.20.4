@@ -16,6 +16,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.menus.AbstractEnchantingToolMenu;
+import net.smackplays.smacksutil.platform.Services;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.Map;
 import static net.smackplays.smacksutil.Constants.*;
 
 
-public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> extends AbstractContainerScreen<T> {
+public class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> extends AbstractContainerScreen<T> {
     private static final ResourceLocation ENCHANTING_SLOT_HIGHLIGHTED_SPRITE =
             new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_HIGHLIGHTED_SPRITE_LOCATION);
     private static final ResourceLocation ENCHANTING_SLOT_SPRITE =
@@ -214,7 +215,10 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
                         map.remove(enchantment, enchantment.getMaxLevel());
                         EnchantmentHelper.setEnchantments(map, stack);
                     }
-                    sendPacket(stack);
+
+                    if (Services.C2S_PACKET_SENDER != null) {
+                        Services.C2S_PACKET_SENDER.sendToServerEnchantPacket(stack);
+                    }
                     return true;
                 }
             }
@@ -223,10 +227,6 @@ public abstract class AbstractEnchantingToolScreen<T extends AbstractEnchantingT
             }
         }
         return super.mouseClicked(mouseX, mouseY, $$2);
-    }
-
-    public void sendPacket(ItemStack stack) {
-
     }
 
     @Override

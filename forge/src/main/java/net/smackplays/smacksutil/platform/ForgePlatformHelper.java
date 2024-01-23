@@ -41,4 +41,9 @@ public class ForgePlatformHelper implements IPlatformHelper {
     public Item getAutoWandItem() {
         return SmacksUtil.AUTO_LIGHT_WAND_ITEM.get();
     }
+
+    @Override
+    public boolean isClient() {
+        return FMLLoader.getDist().isClient();
+    }
 }

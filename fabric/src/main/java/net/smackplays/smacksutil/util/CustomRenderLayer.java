@@ -9,7 +9,7 @@ import java.util.OptionalDouble;
 
 public class CustomRenderLayer extends RenderType {
     public static final RenderType LINES = RenderType.create("lines", DefaultVertexFormat.POSITION_COLOR_NORMAL,
-            VertexFormat.Mode.LINES, 1536,
+            VertexFormat.Mode.LINES, 1536, false, false,
             CompositeState.builder()
                     .setShaderState(RENDERTYPE_LINES_SHADER)
                     .setLineState(new LineStateShard(OptionalDouble.empty()))
