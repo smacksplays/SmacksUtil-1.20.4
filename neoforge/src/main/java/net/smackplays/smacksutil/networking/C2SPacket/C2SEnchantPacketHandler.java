@@ -1,18 +1,18 @@
-package net.smackplays.smacksutil.networking;
+package net.smackplays.smacksutil.networking.C2SPacket;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class ServerEnchantPayloadHandler {
-    private static final ServerEnchantPayloadHandler INSTANCE = new ServerEnchantPayloadHandler();
+public class C2SEnchantPacketHandler {
+    private static final C2SEnchantPacketHandler INSTANCE = new C2SEnchantPacketHandler();
 
-    public static ServerEnchantPayloadHandler getInstance() {
+    public static C2SEnchantPacketHandler getInstance() {
         return INSTANCE;
     }
 
-    public void handleData(final EnchantData data, final PlayPayloadContext context) {
+    public void handleData(final C2SEnchantPacket data, final PlayPayloadContext context) {
         // Do something with the data, on the network thread
 
         // Do something with the data, on the main thread

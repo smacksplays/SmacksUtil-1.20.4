@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.networking;
+package net.smackplays.smacksutil.networking.C2SPacket;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -11,17 +11,15 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import java.util.Set;
 
-public class ServerTeleportationPayloadHandler {
-    private static final ServerTeleportationPayloadHandler INSTANCE = new ServerTeleportationPayloadHandler();
+public class C2STeleportationPacketHandler {
+    private static final C2STeleportationPacketHandler INSTANCE = new C2STeleportationPacketHandler();
 
-    public static ServerTeleportationPayloadHandler getInstance() {
+    public static C2STeleportationPacketHandler getInstance() {
         return INSTANCE;
     }
 
     @SuppressWarnings("unused")
-    public void handleData(final TeleportationData data, final PlayPayloadContext context) {
-        // Do something with the data, on the network thread
-
+    public void handleData(final C2STeleportationPacket data, final PlayPayloadContext context) {
         // Do something with the data, on the main thread
         context.workHandler().submitAsync(() -> {
             if (context.level().isPresent() && context.player().isPresent()) {

@@ -260,7 +260,7 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
                         if (isRemove){
                             Services.C2S_PACKET_SENDER.sendToServerTeleportNBTPacket(stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot, name, posMap.get(name).dim, isRemove);
                         } else {
-                            Services.C2S_PACKET_SENDER.sendToServerTeleportPacket(posMap.get(name).levelKey, stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot);
+                            Services.C2S_PACKET_SENDER.sendToServerTeleportPacket(posMap.get(name).levelKey, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot);
                         }
                         return true;
                     }

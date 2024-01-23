@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.inventories.BackpackInventory;
+import net.smackplays.smacksutil.inventories.LargeBackpackInventory;
 import net.smackplays.smacksutil.menus.AbstractLargeBackpackMenu;
 import net.smackplays.smacksutil.platform.Services;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +52,7 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
         renderBackground(context, mouseX, mouseY, delta);
 
         ItemStack backpack = this.menu.playerInventory.getSelected();
-        BackpackInventory inv = (BackpackInventory) this.menu.inventory;
+        LargeBackpackInventory inv = (LargeBackpackInventory) this.menu.inventory;
         CompoundTag tag = backpack.getOrCreateTagElement("large_backpack");
         ListTag listTag = tag.getList("Items", 10);
         Map<Integer, ItemStack> corrList = new HashMap<>();

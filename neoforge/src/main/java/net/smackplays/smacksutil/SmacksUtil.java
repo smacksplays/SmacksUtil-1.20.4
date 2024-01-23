@@ -34,11 +34,10 @@ import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
-import net.smackplays.smacksutil.networking.*;
-import net.smackplays.smacksutil.screens.BackpackScreen;
-import net.smackplays.smacksutil.screens.EnchantingToolScreen;
-import net.smackplays.smacksutil.screens.LargeBackpackScreen;
-import net.smackplays.smacksutil.screens.TeleportationTabletScreen;
+import net.smackplays.smacksutil.networking.C2SPacket.*;
+import net.smackplays.smacksutil.networking.S2CPacket.S2CBlockBreakPacket;
+import net.smackplays.smacksutil.networking.S2CPacket.S2CBlockBreakPacketHandler;
+import net.smackplays.smacksutil.screens.*;
 
 import java.util.function.Supplier;
 
@@ -48,7 +47,7 @@ import static net.smackplays.smacksutil.Constants.*;
 @Mod(MOD_ID)
 public class SmacksUtil {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MOD_ID);
-    public static final DeferredRegister<MenuType<?>> SCREENS = DeferredRegister.create(Registries.MENU, MOD_ID);
+    public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MOD_ID);
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, MOD_ID);
     public static final DeferredHolder<Attribute, ?> BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE
             = ATTRIBUTES.register("generic.upgrade_multiplier", ()
@@ -67,13 +66,13 @@ public class SmacksUtil {
     public static final DeferredItem<Item> ENCHANTING_TOOL_ITEM = ITEMS.register(C_ENCHANTING_TOOL_ITEM, ForgeEnchantingToolItem::new);
     public static final DeferredItem<Item> TELEPORTATION_TABLET_ITEM = ITEMS.register(C_TELEPORTATION_TABLET_ITEM, TeleportationTablet::new);
     public static final DeferredHolder<MenuType<?>, MenuType<BackpackMenu>> BACKPACK_MENU =
-            SCREENS.register(C_BACKPACK_MENU, () -> new MenuType<>(BackpackMenu::createGeneric9x6, FeatureFlags.DEFAULT_FLAGS));
+            MENUS.register(C_BACKPACK_MENU, () -> new MenuType<>(BackpackMenu::createGeneric9x6, FeatureFlags.DEFAULT_FLAGS));
     public static final DeferredHolder<MenuType<?>, MenuType<LargeBackpackMenu>> LARGE_BACKPACK_MENU =
-            SCREENS.register(C_LARGE_BACKPACK_MENU, () -> new MenuType<>(LargeBackpackMenu::createGeneric13x9, FeatureFlags.DEFAULT_FLAGS));
+            MENUS.register(C_LARGE_BACKPACK_MENU, () -> new MenuType<>(LargeBackpackMenu::createGeneric13x9, FeatureFlags.DEFAULT_FLAGS));
     public static final DeferredHolder<MenuType<?>, MenuType<EnchantingToolMenu>> ENCHANTING_TOOL_MENU =
-            SCREENS.register(C_ENCHANTING_TOOL_MENU, () -> new MenuType<>(EnchantingToolMenu::create, FeatureFlags.DEFAULT_FLAGS));
+            MENUS.register(C_ENCHANTING_TOOL_MENU, () -> new MenuType<>(EnchantingToolMenu::create, FeatureFlags.DEFAULT_FLAGS));
     public static final DeferredHolder<MenuType<?>, MenuType<TeleportationTabletMenu>> TELEPORTATION_TABLET_MENU =
-            SCREENS.register(C_TELEPORTATION_TABLET_MENU, () -> new MenuType<>(TeleportationTabletMenu::create, FeatureFlags.DEFAULT_FLAGS));
+            MENUS.register(C_TELEPORTATION_TABLET_MENU, () -> new MenuType<>(TeleportationTabletMenu::create, FeatureFlags.DEFAULT_FLAGS));
 
     public SmacksUtil(IEventBus modEventBus) {
         Constants.LOG.info("Hello NeoForge world!");
@@ -83,7 +82,7 @@ public class SmacksUtil {
 
         ATTRIBUTES.register(modEventBus);
         ITEMS.register(modEventBus);
-        SCREENS.register(modEventBus);
+        MENUS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(this);
 
@@ -126,10 +125,10 @@ public class SmacksUtil {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            MenuScreens.register(SmacksUtil.LARGE_BACKPACK_MENU.get(), LargeBackpackScreen::new);
-            MenuScreens.register(SmacksUtil.BACKPACK_MENU.get(), BackpackScreen::new);
-            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_MENU.get(), EnchantingToolScreen::new);
-            MenuScreens.register(SmacksUtil.TELEPORTATION_TABLET_MENU.get(), TeleportationTabletScreen::new);
+            MenuScreens.register(SmacksUtil.BACKPACK_MENU.get(), AbstractBackpackScreen<BackpackMenu>::new);
+            MenuScreens.register(SmacksUtil.LARGE_BACKPACK_MENU.get(), AbstractLargeBackpackScreen<LargeBackpackMenu>::new);
+            MenuScreens.register(SmacksUtil.ENCHANTING_TOOL_MENU.get(), AbstractEnchantingToolScreen<EnchantingToolMenu>::new);
+            MenuScreens.register(SmacksUtil.TELEPORTATION_TABLET_MENU.get(), AbstractTeleportationTabletScreen<TeleportationTabletMenu>::new);
             CauldronInteraction.WATER.map().putIfAbsent(BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
             CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM.get(), CauldronInteraction.DYED_ITEM);
         }
@@ -141,37 +140,68 @@ public class SmacksUtil {
             event.register((ItemStack stack, int tintIndex) -> tintIndex == 0 ?
                     ((DyeableLeatherItem) LARGE_BACKPACK_ITEM.get()).getColor(stack) : 0xFFFFFF, LARGE_BACKPACK_ITEM.get());
         }
+    }
 
+    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class PacketEvents {
         @SubscribeEvent
         public static void register(final RegisterPayloadHandlerEvent event) {
             final IPayloadRegistrar sortRegistrar = event.registrar(Constants.MOD_ID)
                     .versioned(NeoForgeVersion.getSpec())
                     .optional();
-            sortRegistrar.play(SortData.ID, SortData::new, handler -> handler
-                    .server(ServerSortPayloadHandler.getInstance()::handleData));
+            sortRegistrar.play(C2SSortPacket.ID, C2SSortPacket::new, handler -> handler
+                    .server(C2SSortPacketHandler.getInstance()::handleData)
+                    .client(C2SSortPacketHandler.getInstance()::handleData));
+
             final IPayloadRegistrar enchantRegistrar = event.registrar(Constants.MOD_ID)
                     .versioned(NeoForgeVersion.getSpec())
                     .optional();
-            enchantRegistrar.play(EnchantData.ID, EnchantData::new, handler -> handler
-                    .server(ServerEnchantPayloadHandler.getInstance()::handleData));
+            enchantRegistrar.play(C2SEnchantPacket.ID, C2SEnchantPacket::new, handler -> handler
+                    .server(C2SEnchantPacketHandler.getInstance()::handleData)
+                    .client(C2SEnchantPacketHandler.getInstance()::handleData));
+
             final IPayloadRegistrar breakBlockRegistrar = event.registrar(Constants.MOD_ID)
                     .versioned(NeoForgeVersion.getSpec())
                     .optional();
-            breakBlockRegistrar.play(BreakBlockData.ID, BreakBlockData::new, handler -> handler
-                    .server(ServerBreakBlockPayloadHandler.getInstance()::handleData));
+            breakBlockRegistrar.play(C2SVeinMinerBreakPacket.ID, C2SVeinMinerBreakPacket::new, handler -> handler
+                    .server(C2SVeinMinerBreakPacketHandler.getInstance()::handleData)
+                    .client(C2SVeinMinerBreakPacketHandler.getInstance()::handleData));
+
+            final IPayloadRegistrar setBlockAirRegistrar = event.registrar(Constants.MOD_ID)
+                    .versioned(NeoForgeVersion.getSpec())
+                    .optional();
+            setBlockAirRegistrar.play(C2SSetBlockAirPacket.ID, C2SSetBlockAirPacket::new, handler -> handler
+                    .server(C2SSetBlockAirPacketHandler.getInstance()::handleData)
+                    .client(C2SSetBlockAirPacketHandler.getInstance()::handleData));
+
+            final IPayloadRegistrar interactEntityRegistrar = event.registrar(Constants.MOD_ID)
+                    .versioned(NeoForgeVersion.getSpec())
+                    .optional();
+            interactEntityRegistrar.play(C2SInteractEntityPacket.ID, C2SInteractEntityPacket::new, handler -> handler
+                    .server(C2SInteractEntityPacketHandler.getInstance()::handleData)
+                    .client(C2SInteractEntityPacketHandler.getInstance()::handleData));
+
             final IPayloadRegistrar teleportRegistrar = event.registrar(Constants.MOD_ID)
                     .versioned(NeoForgeVersion.getSpec())
                     .optional();
-            teleportRegistrar.play(TeleportationData.ID, TeleportationData::new, handler -> handler
-                    .server(ServerTeleportationPayloadHandler.getInstance()::handleData));
+            teleportRegistrar.play(C2STeleportationPacket.ID, C2STeleportationPacket::new, handler -> handler
+                    .server(C2STeleportationPacketHandler.getInstance()::handleData)
+                    .client(C2STeleportationPacketHandler.getInstance()::handleData));
+
             final IPayloadRegistrar teleportNBTRegistrar = event.registrar(Constants.MOD_ID)
                     .versioned(NeoForgeVersion.getSpec())
                     .optional();
-            teleportNBTRegistrar.play(TeleportationNBTData.ID, TeleportationNBTData::new, handler -> handler
-                    .server(ServerTeleportationNBTPayloadHandler.getInstance()::handleData));
+            teleportNBTRegistrar.play(C2STeleportationNBTPacket.ID, C2STeleportationNBTPacket::new, handler -> handler
+                    .server(C2STeleportationNBTPacketHandler.getInstance()::handleData)
+                    .client(C2STeleportationNBTPacketHandler.getInstance()::handleData));
 
+            final IPayloadRegistrar blockBreakRegistrar = event.registrar(Constants.MOD_ID)
+                    .versioned(NeoForgeVersion.getSpec())
+                    .optional();
+            blockBreakRegistrar.play(S2CBlockBreakPacket.ID, S2CBlockBreakPacket::new, handler -> handler
+                    .client(S2CBlockBreakPacketHandler.getInstance()::handleData)
+                    .server(S2CBlockBreakPacketHandler.getInstance()::handleData));
         }
     }
-
 
 }

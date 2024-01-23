@@ -11,20 +11,20 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.network.CustomPayloadEvent;
 
-public class VeinMinerBreakPacket {
+public class C2SVeinMinerBreakPacket {
     private final ItemStack stack;
     private final BlockPos pos;
     private final boolean isCreative;
     private final boolean replaceSeeds;
 
-    public VeinMinerBreakPacket(ItemStack s, BlockPos p, boolean isC, boolean isR) {
+    public C2SVeinMinerBreakPacket(ItemStack s, BlockPos p, boolean isC, boolean isR) {
         stack = s;
         pos = p;
         isCreative = isC;
         replaceSeeds = isR;
     }
 
-    public VeinMinerBreakPacket(FriendlyByteBuf buffer) {
+    public C2SVeinMinerBreakPacket(FriendlyByteBuf buffer) {
         stack = buffer.readItem();
         pos = buffer.readBlockPos();
         isCreative = buffer.readBoolean();

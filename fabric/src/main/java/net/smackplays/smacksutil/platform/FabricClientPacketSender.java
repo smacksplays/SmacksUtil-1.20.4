@@ -2,6 +2,7 @@ package net.smackplays.smacksutil.platform;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
@@ -55,7 +56,7 @@ public class FabricClientPacketSender implements IClientPacketSender {
     }
 
     @Override
-    public void sendToServerTeleportPacket(ResourceKey<Level> levelKey, ItemStack stack, Vec3 pos, float xRot, float yRot) {
+    public void sendToServerTeleportPacket(ResourceKey<Level> levelKey, Vec3 pos, float xRot, float yRot) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeResourceKey(levelKey);
         packet.writeVec3(pos);

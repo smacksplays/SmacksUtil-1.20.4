@@ -3,6 +3,7 @@ package net.smackplays.smacksutil.menus;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.smackplays.smacksutil.SmacksUtil;
+import net.smackplays.smacksutil.inventories.EnchantmentToolInventory;
 import net.smackplays.smacksutil.inventories.IEnchantmentToolInventory;
 
 public class EnchantingToolMenu extends AbstractEnchantingToolMenu {
@@ -12,6 +13,6 @@ public class EnchantingToolMenu extends AbstractEnchantingToolMenu {
     }
 
     public static EnchantingToolMenu create(int syncId, Inventory playerInventory) {
-        return new EnchantingToolMenu(syncId, playerInventory, IEnchantmentToolInventory.ofSize(1));
+        return new EnchantingToolMenu(syncId, playerInventory, new EnchantmentToolInventory(playerInventory.getSelected()));
     }
 }

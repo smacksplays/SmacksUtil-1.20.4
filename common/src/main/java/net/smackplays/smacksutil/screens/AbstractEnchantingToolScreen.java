@@ -215,6 +215,7 @@ public class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> 
                         map.remove(enchantment, enchantment.getMaxLevel());
                         EnchantmentHelper.setEnchantments(map, stack);
                     }
+
                     Services.C2S_PACKET_SENDER.sendToServerEnchantPacket(stack);
                     return true;
                 }

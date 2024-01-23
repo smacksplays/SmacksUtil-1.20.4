@@ -1,5 +1,6 @@
 package net.smackplays.smacksutil.platform.services;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +18,7 @@ public interface IClientPacketSender {
 
     void sendToServerSetBlockAirPacket(BlockPos pos);
 
-    void sendToServerTeleportPacket(ResourceKey<Level> levelKey, ItemStack stack, Vec3 pos, float xRot, float yRot);
+    void sendToServerTeleportPacket(ResourceKey<Level> levelKey, Vec3 pos, float xRot, float yRot);
 
     void sendToServerTeleportNBTPacket(ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove);
 

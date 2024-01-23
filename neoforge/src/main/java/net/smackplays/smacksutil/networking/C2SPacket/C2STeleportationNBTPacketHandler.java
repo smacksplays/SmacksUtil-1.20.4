@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.networking;
+package net.smackplays.smacksutil.networking.C2SPacket;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -7,15 +7,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class ServerTeleportationNBTPayloadHandler {
-    private static final ServerTeleportationNBTPayloadHandler INSTANCE = new ServerTeleportationNBTPayloadHandler();
+public class C2STeleportationNBTPacketHandler {
+    private static final C2STeleportationNBTPacketHandler INSTANCE = new C2STeleportationNBTPacketHandler();
 
-    public static ServerTeleportationNBTPayloadHandler getInstance() {
+    public static C2STeleportationNBTPacketHandler getInstance() {
         return INSTANCE;
     }
 
     @SuppressWarnings("unused")
-    public void handleData(final TeleportationNBTData data, final PlayPayloadContext context) {
+    public void handleData(final C2STeleportationNBTPacket data, final PlayPayloadContext context) {
         // Do something with the data, on the network thread
         ItemStack stack = data.stack();
         Vec3 pos = data.pos();

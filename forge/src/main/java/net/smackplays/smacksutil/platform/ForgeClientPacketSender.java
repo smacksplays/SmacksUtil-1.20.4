@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ForgeClientPacketSender implements IClientPacketSender {
     @Override
     public void sendToServerVeinMinerBreakPacket(ItemStack mainHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds) {
-        PacketHandler.sendToServer(new VeinMinerBreakPacket(mainHandStack, pos, isCreative, replaceSeeds));
+        PacketHandler.sendToServer(new C2SVeinMinerBreakPacket(mainHandStack, pos, isCreative, replaceSeeds));
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ForgeClientPacketSender implements IClientPacketSender {
     }
 
     @Override
-    public void sendToServerTeleportPacket(ResourceKey<Level> levelKey, ItemStack stack, Vec3 pos, float xRot, float yRot) {
+    public void sendToServerTeleportPacket(ResourceKey<Level> levelKey, Vec3 pos, float xRot, float yRot) {
         PacketHandler.sendToServer(new C2STeleportationPacket(levelKey, pos, xRot, yRot));
     }
 

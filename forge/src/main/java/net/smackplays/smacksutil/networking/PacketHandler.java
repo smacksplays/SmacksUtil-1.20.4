@@ -9,7 +9,6 @@ import net.minecraftforge.network.SimpleChannel;
 import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.networking.C2SPacket.*;
 import net.smackplays.smacksutil.networking.S2CPacket.PlayerBlockBreakPacket;
-import net.smackplays.smacksutil.platform.Services;
 
 @SuppressWarnings("unused")
 public class PacketHandler {
@@ -63,10 +62,10 @@ public class PacketHandler {
                 .consumerMainThread(C2SInteractEntityPacket::handle)
                 .add();
 
-        INSTANCE.messageBuilder(VeinMinerBreakPacket.class, NetworkDirection.PLAY_TO_SERVER)
-                .encoder(VeinMinerBreakPacket::encode)
-                .decoder(VeinMinerBreakPacket::new)
-                .consumerMainThread(VeinMinerBreakPacket::handle)
+        INSTANCE.messageBuilder(C2SVeinMinerBreakPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SVeinMinerBreakPacket::encode)
+                .decoder(C2SVeinMinerBreakPacket::new)
+                .consumerMainThread(C2SVeinMinerBreakPacket::handle)
                 .add();
 
         INSTANCE.messageBuilder(PlayerBlockBreakPacket.class, NetworkDirection.PLAY_TO_CLIENT)
