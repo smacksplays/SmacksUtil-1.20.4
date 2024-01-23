@@ -10,6 +10,15 @@ public class BackpackInventory implements IBackpackInventory {
     private final ItemStack stack;
     private final NonNullList<ItemStack> items = NonNullList.withSize(9 * 6 + 4, ItemStack.EMPTY);
 
+    public BackpackInventory(){
+        this.stack = ItemStack.EMPTY;
+        CompoundTag tag = stack.getTagElement("backpack");
+
+        if (tag != null) {
+            loadAllItems(tag, items);
+        }
+    }
+
     public BackpackInventory(ItemStack stack) {
         this.stack = stack;
         CompoundTag tag = stack.getTagElement("backpack");

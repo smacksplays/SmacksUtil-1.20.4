@@ -13,10 +13,10 @@ import net.smackplays.smacksutil.inventories.IBackpackInventory;
 import net.smackplays.smacksutil.slots.BackpackSlot;
 import net.smackplays.smacksutil.slots.BackpackUpgradeSlot;
 import net.smackplays.smacksutil.slots.InvSlot;
+import net.smackplays.smacksutil.util.SortComparator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class AbstractBackpackMenu extends AbstractContainerMenu {
@@ -68,7 +68,7 @@ public class AbstractBackpackMenu extends AbstractContainerMenu {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if (index < this.rows * this.cols + 4) {
-                if (this.moveItemStackTo(itemStack2, this.rows * this.cols, this.slots.size(), true, 64)) {
+                if (this.moveItemStackTo(itemStack2, this.rows * this.cols + 4, this.slots.size(), true, 64)) {
                     return ItemStack.EMPTY;
                 }
             } else if (this.moveItemStackTo(itemStack2, 4, this.rows * this.cols + 4, false, inventory.getMaxStackSize())) {
@@ -81,25 +81,26 @@ public class AbstractBackpackMenu extends AbstractContainerMenu {
                 slot.setChanged();
             }
         }
+        if (getCarried().isEmpty()) return ItemStack.EMPTY;
         return itemStack;
     }
 
-    protected boolean moveItemStackTo(ItemStack stack, int min, int max, boolean bl, int maxStackSize) {
+    protected boolean moveItemStackTo(ItemStack stack, int min, int max, boolean backwards, int maxStackSize) {
         boolean bl1 = false;
-        int $$5 = min;
-        if (bl) {
-            $$5 = max - 1;
+        int counter = min;
+        if (backwards) {
+            counter = max - 1;
         }
 
         if (stack.isStackable()) {
-            while(!stack.isEmpty() && (bl ? $$5 >= min : $$5 < max)) {
-                Slot slot = this.slots.get($$5);
+            while(!stack.isEmpty() && (backwards ? counter >= min : counter < max)) {
+                Slot slot = this.slots.get(counter);
                 ItemStack stack1 = slot.getItem();
                 if (!stack1.isEmpty() && ItemStack.isSameItemSameTags(stack, stack1)) {
-                    int $$8 = stack1.getCount() + stack.getCount();
-                    if ($$8 <= maxStackSize) {
+                    int combinedCount = stack1.getCount() + stack.getCount();
+                    if (combinedCount <= maxStackSize) {
                         stack.setCount(0);
-                        stack1.setCount($$8);
+                        stack1.setCount(combinedCount);
                         slot.setChanged();
                         bl1 = true;
                     } else if (stack1.getCount() < maxStackSize) {
@@ -110,40 +111,40 @@ public class AbstractBackpackMenu extends AbstractContainerMenu {
                     }
                 }
 
-                if (bl) {
-                    --$$5;
+                if (backwards) {
+                    --counter;
                 } else {
-                    ++$$5;
+                    ++counter;
                 }
             }
         }
 
         if (!stack.isEmpty()) {
-            if (bl) {
-                $$5 = max - 1;
+            if (backwards) {
+                counter = max - 1;
             } else {
-                $$5 = min;
+                counter = min;
             }
 
-            while(bl ? $$5 >= min : $$5 < max) {
-                Slot $$9 = this.slots.get($$5);
-                ItemStack $$10 = $$9.getItem();
-                if ($$10.isEmpty() && $$9.mayPlace(stack)) {
-                    if (stack.getCount() > $$9.getMaxStackSize()) {
-                        $$9.setByPlayer(stack.split($$9.getMaxStackSize()));
+            while(backwards ? counter >= min : counter < max) {
+                Slot slot = this.slots.get(counter);
+                ItemStack stack1 = slot.getItem();
+                if (stack1.isEmpty() && slot.mayPlace(stack)) {
+                    if (stack.getCount() > slot.getMaxStackSize()) {
+                        slot.setByPlayer(stack.split(slot.getMaxStackSize()));
                     } else {
-                        $$9.setByPlayer(stack.split(stack.getCount()));
+                        slot.setByPlayer(stack.split(stack.getCount()));
                     }
 
-                    $$9.setChanged();
+                    slot.setChanged();
                     bl1 = true;
                     break;
                 }
 
-                if (bl) {
-                    --$$5;
+                if (backwards) {
+                    --counter;
                 } else {
-                    ++$$5;
+                    ++counter;
                 }
             }
         }
@@ -156,14 +157,14 @@ public class AbstractBackpackMenu extends AbstractContainerMenu {
         NonNullList<ItemStack> items = impInv.getItems();
         List<ItemStack> temp = items.subList(4, rows * cols + 4);
 
-        int maxStacksize = this.inventory.getMaxStackSize();
+        int maxStackSize = this.inventory.getMaxStackSize();
 
         for (int i = 0; i < temp.size(); i++){
             for(int j = 0; j < temp.size(); j++){
                 if (i != j){
                     ItemStack stack1 = temp.get(i);
                     ItemStack stack2 = temp.get(j);
-                    if (ItemStack.isSameItemSameTags(stack1, stack2) && stack1.getCount() + stack2.getCount() <= maxStacksize){
+                    if (ItemStack.isSameItemSameTags(stack1, stack2) && stack1.getCount() + stack2.getCount() <= maxStackSize){
                         stack1.setCount(stack1.getCount() + stack2.getCount());
                         temp.set(i, stack1);
                         temp.set(j, Items.AIR.getDefaultInstance());
@@ -172,25 +173,10 @@ public class AbstractBackpackMenu extends AbstractContainerMenu {
             }
         }
 
-        temp.sort(Comparator.comparing(this::getStringForSort));
+        temp.sort(new SortComparator());
         for (int i = 0; i < temp.size(); i++) {
             items.set(i + 4, temp.get(i));
             this.slots.get(i).set(impInv.getItem(i));
         }
-    }
-
-    private String getStringForSort(ItemStack stack) {
-        String s;
-        int maxStacksize = this.inventory.getMaxStackSize();
-        if (stack.isEmpty()) {
-            return "zzz" + stack.getItem().getDescriptionId() + stack.getCount();
-        } else if (stack.hasCustomHoverName()) {
-            s = stack.getHoverName().getString() + stack.getCount();
-        } else if (stack.getCount() == maxStacksize){
-            s = stack.getItem().getDescriptionId() + "00" + stack.getCount();
-        }else {
-            s = stack.getItem().getDescriptionId() + stack.getCount();
-        }
-        return s;
     }
 }

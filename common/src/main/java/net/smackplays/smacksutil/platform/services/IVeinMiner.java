@@ -2,20 +2,14 @@ package net.smackplays.smacksutil.platform.services;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -26,9 +20,19 @@ import net.smackplays.smacksutil.veinminer.modes.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.smackplays.smacksutil.Constants.C_VEINMINER_UPDATE_RATE;
+
 public abstract class IVeinMiner {
     public static int MAX_RADIUS = 6;
-    public static ArrayList<BlockPos> toBreak;
+    public long lastUpdate = System.currentTimeMillis();
+
+    public static ArrayList<BlockPos> old_toBreak = new ArrayList<>();
+
+    public static ArrayList<BlockPos> toBreak = new ArrayList<>();
+    public BlockPos old_lastBlockPos = new BlockPos(0,0,0);
+    public BlockPos lastBlockPos = new BlockPos(0,0,0);
+    public static boolean isCreative = false;
+    public static boolean replaceSeeds = false;
     public static VeinMode mode;
     public static int radius = 2;
     public static final VeinMode ShapelessMode = new Shapeless();
@@ -93,40 +97,26 @@ public abstract class IVeinMiner {
             matching = (ArrayList<BlockPos>) VegetationMode.getBlocks(worldIn, playerIn, sourcePosIn, 10, isExactMatch).clone();
         } else if (sourceBlockState.is(ModTags.Blocks.TREE_BLOCKS)) {
             matching = (ArrayList<BlockPos>) TreeMode.getBlocks(worldIn, playerIn, sourcePosIn, 10, isExactMatch).clone();
-        } else if (mode.equals(ShapelessMode)) {
-            matching = (ArrayList<BlockPos>) ShapelessMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
-        } else if (mode.equals(ShapelessVerticalMode) && Services.CONFIG.isEnabledShapelessVerticalMode()) {
-            matching = (ArrayList<BlockPos>) ShapelessVerticalMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
-        } else if (mode.equals(TunnelMode) && Services.CONFIG.isEnabledTunnelMode()) {
-            matching = (ArrayList<BlockPos>) TunnelMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
-        } else if (mode.equals(MineshaftMode) && Services.CONFIG.isEnabledMineshaftMode()) {
-            matching = (ArrayList<BlockPos>) MineshaftMode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
         } else {
-            matching = new ArrayList<>();
+            matching = (ArrayList<BlockPos>) mode.getBlocks(worldIn, playerIn, sourcePosIn, radius, isExactMatch).clone();
         }
 
         return matching;
     }
 
-    @SuppressWarnings("unchecked")
     public void veinMiner(Level world, Player player, BlockPos sourcePos) {
         if (isMining) return;
         isMining = true;
-        boolean isCreative = false;
-        BlockState sourceBlockState = world.getBlockState(sourcePos);
-        boolean replaceSeeds = sourceBlockState.is(ModTags.Blocks.CROP_BLOCKS);
+        if (sourcePos.equals(old_lastBlockPos)) toBreak = old_toBreak;
+
         ItemStack mainHandStack = player.getMainHandItem();
         Item mainHand = player.getMainHandItem().getItem();
         boolean mainHandIsTool = TieredItem.class.isAssignableFrom(mainHand.getClass());
-        if (player.isCreative()) isCreative = true;
-
-        toBreak = (ArrayList<BlockPos>) getBlocks(world, player, sourcePos).clone();
 
         int maxDMG = mainHandStack.getMaxDamage();
 
         for (BlockPos curr : toBreak) {
             BlockState currBlockState = world.getBlockState(curr);
-            Block currBlock = world.getBlockState(curr).getBlock();
 
             if (mainHandIsTool && mainHandStack.getDamageValue() == maxDMG - 1) {
                 isMining = false;
@@ -136,17 +126,8 @@ public abstract class IVeinMiner {
 
             boolean canHarvest = (player.hasCorrectToolForDrops(currBlockState) || player.isCreative());
             if (canHarvest) {
-                //world.destroyBlock(curr, !isCreative);
-                world.setBlockAndUpdate(curr, Blocks.AIR.defaultBlockState());
-                if (!isCreative) {
-                    BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(curr) : null;
-                    Block.dropResources(currBlockState, world, curr, currBlockEntity, null, ItemStack.EMPTY);
-                    if (mainHandStack.isDamageableItem()) {
-                        mainHandStack.hurt(1, player.getRandom(), (ServerPlayer) player);
-                    }
-                }
-                if (replaceSeeds) {
-                    world.setBlockAndUpdate(curr, currBlock.defaultBlockState());
+                if (Services.C2S_PACKET_SENDER != null) {
+                    Services.C2S_PACKET_SENDER.sendToServerVeinMinerBreakPacket(mainHandStack, curr, isCreative, replaceSeeds);
                 }
             }
         }
@@ -164,13 +145,8 @@ public abstract class IVeinMiner {
         renderPreview = !renderPreview;
     }
 
-    public boolean getRenderPreview() {
+    public boolean isRenderPreview() {
         return renderPreview;
-    }
-
-    public boolean isToBreakEmpty() {
-        if (toBreak == null) return true;
-        return toBreak.isEmpty();
     }
 
     public VoxelShape combine(Level world, BlockPos pos, List<BlockPos> toRender) {
@@ -185,14 +161,6 @@ public abstract class IVeinMiner {
         return shape;
     }
 
-    public boolean isDrawing() {
-        return isDrawing;
-    }
-
-    public boolean isMining() {
-        return isMining;
-    }
-
     public void toggleExactMatch() {
         isExactMatch = !isExactMatch;
     }
@@ -203,49 +171,51 @@ public abstract class IVeinMiner {
 
     public VeinMode getMode(Level world, BlockPos pos) {
         BlockState sourceBlockState = world.getBlockState(pos);
-        if (sourceBlockState.is(ModTags.Blocks.CROP_BLOCKS)) {
-            return CropsMode;
-        } else if (sourceBlockState.is(ModTags.Blocks.ORE_BLOCKS)) {
-            return OresMode;
-        } else if (sourceBlockState.is(ModTags.Blocks.VEGETATION_BLOCKS)) {
-            return VegetationMode;
-        } else if (sourceBlockState.is(ModTags.Blocks.TREE_BLOCKS)) {
-            return TreeMode;
-        } else if (mode.equals(ShapelessMode)) {
-            return ShapelessMode;
-        } else if (mode.equals(ShapelessVerticalMode) && Services.CONFIG.isEnabledShapelessVerticalMode()) {
-            return ShapelessVerticalMode;
-        } else if (mode.equals(TunnelMode) && Services.CONFIG.isEnabledTunnelMode()) {
-            return TunnelMode;
-        } else if (mode.equals(MineshaftMode) && Services.CONFIG.isEnabledMineshaftMode()) {
-            return MineshaftMode;
+        if (Services.CONFIG != null){
+            if (sourceBlockState.is(ModTags.Blocks.CROP_BLOCKS)) {
+                return CropsMode;
+            } else if (sourceBlockState.is(ModTags.Blocks.ORE_BLOCKS)) {
+                return OresMode;
+            } else if (sourceBlockState.is(ModTags.Blocks.VEGETATION_BLOCKS)) {
+                return VegetationMode;
+            } else if (sourceBlockState.is(ModTags.Blocks.TREE_BLOCKS)) {
+                return TreeMode;
+            } else if (mode.equals(ShapelessMode)) {
+                return ShapelessMode;
+            } else if (mode.equals(ShapelessVerticalMode) && Services.CONFIG.isEnabledShapelessVerticalMode()) {
+                return ShapelessVerticalMode;
+            } else if (mode.equals(TunnelMode) && Services.CONFIG.isEnabledTunnelMode()) {
+                return TunnelMode;
+            } else if (mode.equals(MineshaftMode) && Services.CONFIG.isEnabledMineshaftMode()) {
+                return MineshaftMode;
+            }
         }
         return mode;
     }
 
-    public void scroll(double vertical) {
-        Player player = Minecraft.getInstance().player;
-        Screen scr = Minecraft.getInstance().screen;
+    public void scroll(double vertical, Player player) {
 
-        ShapelessMode.MAX_RADIUS = Services.CONFIG.getMaxShapelessRadius();
-        if (Services.CONFIG.isEnabledShapelessVerticalMode() && !modeList.contains(ShapelessVerticalMode)) {
-            modeList.add(ShapelessVerticalMode);
-        } else if (!Services.CONFIG.isEnabledShapelessVerticalMode()) {
-            modeList.remove(ShapelessVerticalMode);
-        }
-        ShapelessVerticalMode.MAX_RADIUS = Services.CONFIG.getMaxShapelessVerticalRadius();
-        if (Services.CONFIG.isEnabledTunnelMode() && !modeList.contains(TunnelMode)) {
-            modeList.add(TunnelMode);
-        } else if (!Services.CONFIG.isEnabledTunnelMode()) {
-            modeList.remove(TunnelMode);
-        }
-        if (Services.CONFIG.isEnabledMineshaftMode() && !modeList.contains(MineshaftMode)) {
-            modeList.add(MineshaftMode);
-        } else if (!Services.CONFIG.isEnabledMineshaftMode()) {
-            modeList.remove(MineshaftMode);
-        }
+        if (Services.CONFIG != null) {
+            ShapelessMode.MAX_RADIUS = Services.CONFIG.getMaxShapelessRadius();
+            if (Services.CONFIG.isEnabledShapelessVerticalMode() && !modeList.contains(ShapelessVerticalMode)) {
+                modeList.add(ShapelessVerticalMode);
+            } else if (!Services.CONFIG.isEnabledShapelessVerticalMode()) {
+                modeList.remove(ShapelessVerticalMode);
+            }
+            ShapelessVerticalMode.MAX_RADIUS = Services.CONFIG.getMaxShapelessVerticalRadius();
+            if (Services.CONFIG.isEnabledTunnelMode() && !modeList.contains(TunnelMode)) {
+                modeList.add(TunnelMode);
+            } else if (!Services.CONFIG.isEnabledTunnelMode()) {
+                modeList.remove(TunnelMode);
+            }
+            if (Services.CONFIG.isEnabledMineshaftMode() && !modeList.contains(MineshaftMode)) {
+                modeList.add(MineshaftMode);
+            } else if (!Services.CONFIG.isEnabledMineshaftMode()) {
+                modeList.remove(MineshaftMode);
+            }
 
-        if (player != null && scr == null && IKeyHandler.veinKey.isDown()) {
+        }
+        if (player != null && IKeyHandler.veinKey.isDown()) {
             if (player.isCrouching()) {
                 currMode += (int) vertical;
                 player.getInventory().selected = player.getInventory().selected + (int) vertical;
@@ -265,5 +235,27 @@ public abstract class IVeinMiner {
 
     public int getRadius() {
         return radius;
+    }
+
+    public boolean canRender(Level world, BlockPos pos){
+        return Services.VEIN_MINER.getMode(world, pos).doRender(Services.VEIN_MINER.getRadius());
+    }
+
+    public boolean isAcceptUpdate(BlockPos pos) {
+        if (!lastBlockPos.equals(pos)) return true;
+        if (isMining) return false;
+        return System.currentTimeMillis() - lastUpdate > C_VEINMINER_UPDATE_RATE;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void updateBlocks(Level world, Player player, BlockPos sourcePos){
+        old_toBreak = (ArrayList<BlockPos>) toBreak.clone();
+        old_lastBlockPos = lastBlockPos;
+        lastBlockPos = sourcePos;
+        lastUpdate = System.currentTimeMillis();
+        isCreative = player.isCreative();
+        BlockState sourceBlockState = world.getBlockState(sourcePos);
+        replaceSeeds = sourceBlockState.is(ModTags.Blocks.CROP_BLOCKS);
+        toBreak = (ArrayList<BlockPos>) getBlocks(world, player, sourcePos).clone();
     }
 }

@@ -39,11 +39,11 @@ public class BackpackSlot extends Slot {
 
     @Override
     public int getMaxStackSize() {
-        return Math.min(64 * 2 * 2 * 2 * 2, this.container.getMaxStackSize());
+        return Math.min(64 * 8 * 8 * 8 * 8, this.container.getMaxStackSize());
     }
 
     @Override
     public int getMaxStackSize(@NotNull ItemStack stack) {
-        return Math.min(64 * 2 * 2 * 2 * 2, this.container.getMaxStackSize());
+        return Math.min(64 * 8 * 8 * 8 * 8, this.container.getMaxStackSize());
     }
 }

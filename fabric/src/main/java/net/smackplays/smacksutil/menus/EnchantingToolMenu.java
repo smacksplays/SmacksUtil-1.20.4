@@ -4,7 +4,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.smackplays.smacksutil.SmacksUtil;
-import net.smackplays.smacksutil.inventories.IEnchantmentToolInventory;
+import net.smackplays.smacksutil.inventories.EnchantmentToolInventory;
 
 public class EnchantingToolMenu extends AbstractEnchantingToolMenu {
 
@@ -14,6 +14,6 @@ public class EnchantingToolMenu extends AbstractEnchantingToolMenu {
 
     @SuppressWarnings("unused")
     public static EnchantingToolMenu create(int syncId, Inventory playerInventory, FriendlyByteBuf buf) {
-        return new EnchantingToolMenu(syncId, playerInventory, IEnchantmentToolInventory.ofSize(1));
+        return new EnchantingToolMenu(syncId, playerInventory, new EnchantmentToolInventory(playerInventory.getSelected()));
     }
 }

@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.smackplays.smacksutil.menus.AbstractTeleportationTabletMenu;
+import net.smackplays.smacksutil.platform.Services;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +31,7 @@ import java.util.Map;
 
 import static net.smackplays.smacksutil.Constants.*;
 
-public abstract class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTabletMenu> extends AbstractContainerScreen<T> {
+public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTabletMenu> extends AbstractContainerScreen<T> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, C_TELEPORTATION_TABLET_SCREEN_LOCATION);
     private static final ResourceLocation ENCHANTING_SLOT_HIGHLIGHTED_SPRITE =
             new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_HIGHLIGHTED_SPRITE_LOCATION);
@@ -52,7 +53,7 @@ public abstract class AbstractTeleportationTabletScreen<T extends AbstractTelepo
     public EditBox editBoxZ;
     public EditBox editBoxName;
     public Button removeButtonWidget;
-    public boolean isRemove = true;
+    public boolean isRemove = false;
     private final List<Label> labelList = new ArrayList<>();
 
     public AbstractTeleportationTabletScreen(T handler, Inventory inventory, Component title) {
@@ -164,7 +165,6 @@ public abstract class AbstractTeleportationTabletScreen<T extends AbstractTelepo
     }
 
     private void onButtonWidgetPressed(){
-
         ItemStack stack = this.menu.playerInventory.player.getInventory().getSelected();
         if (editBoxX.getValue().isBlank() || editBoxY.getValue().isBlank() || editBoxZ.getValue().isBlank() || editBoxName.getValue().isBlank()) return;
         if (NumberUtils.isParsable(editBoxX.getValue())
@@ -180,15 +180,16 @@ public abstract class AbstractTeleportationTabletScreen<T extends AbstractTelepo
             Level level = this.menu.playerInventory.player.level();
             String dim = level.dimensionTypeId().location().getPath();
 
-            ResourceKey<Level> levelKey = level.dimension();
-            sendNBTTeleportPacket(levelKey, stack, pos, xRot, yRot, name, dim);
+            if (Services.C2S_PACKET_SENDER != null) {
+                Services.C2S_PACKET_SENDER.sendToServerTeleportNBTPacket(stack, pos, xRot, yRot, name, dim, false);
+            }
         }
     }
 
     private void onToggleRemove(){
         this.isRemove = !this.isRemove;
-        String text = this.isRemove ? "" : "Remove";
-        int color = this.isRemove ? GREEN : RED;
+        String text = this.isRemove ? "Remove" : "";
+        int color = this.isRemove ? RED : GREEN;
         removeButtonWidget.setMessage(Component.literal(text).withColor(color));
     }
 
@@ -258,7 +259,13 @@ public abstract class AbstractTeleportationTabletScreen<T extends AbstractTelepo
                     boolean b4 = y + 33 + 19 * i >= mouseY;
                     if (b1 && b2 && b3 && b4) {
                         String name = keyList.get(i);
-                        sendTeleportPacket(posMap.get(name).levelKey, stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot, name, posMap.get(name).dim, !isRemove);
+                        if (Services.C2S_PACKET_SENDER != null){
+                            if (isRemove){
+                                Services.C2S_PACKET_SENDER.sendToServerTeleportNBTPacket(stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot, name, posMap.get(name).dim, isRemove);
+                            } else {
+                                Services.C2S_PACKET_SENDER.sendToServerTeleportPacket(posMap.get(name).levelKey, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot);
+                            }
+                        }
                         return true;
                     }
                 }
@@ -297,8 +304,6 @@ public abstract class AbstractTeleportationTabletScreen<T extends AbstractTelepo
         }
         return super.mouseScrolled(mouseX, mouseY, $$2, scroll_delta);
     }
-    abstract void sendNBTTeleportPacket(ResourceKey<?> levelKey, ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim);
-    abstract void sendTeleportPacket(ResourceKey<Level> levelKey, ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove);
 
     public boolean insideScrollbar(int x, int y, double mouseX, double mouseY) {
         boolean b1 = x + 136 < mouseX;

@@ -18,6 +18,8 @@ public abstract class IKeyHandler {
     public static KeyMapping fastPlaceKey;
     public static KeyMapping exactMatchKey;
 
+    public static boolean veinKeyDown;
+
     public static void veinPreviewConsume() {
         if (veinPreviewKey.consumeClick()) {
             Services.VEIN_MINER.togglePreview();
@@ -52,6 +54,10 @@ public abstract class IKeyHandler {
                         .literal("Exact Match: " + str).withColor(color), true);
             }
         }
+    }
+
+    public boolean isVeinKeyDown(){
+        return veinKey.isDown();
     }
 
     public void register() {

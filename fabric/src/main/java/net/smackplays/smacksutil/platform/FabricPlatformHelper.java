@@ -1,9 +1,10 @@
 package net.smackplays.smacksutil.platform;
 
+import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.Item;
-import net.smackplays.smacksutil.ModClient;
+import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.platform.services.IPlatformHelper;
 
 public class FabricPlatformHelper implements IPlatformHelper {
@@ -27,16 +28,22 @@ public class FabricPlatformHelper implements IPlatformHelper {
 
     @Override
     public Attribute getBackpackUpgradeMultiplierAttribute() {
-        return ModClient.BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE;
+        return SmacksUtil.BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE;
     }
 
     @Override
     public Item getLightWandItem() {
-        return ModClient.LIGHT_WAND_ITEM;
+        return SmacksUtil.LIGHT_WAND_ITEM;
     }
 
     @Override
     public Item getAutoWandItem() {
-        return ModClient.AUTO_LIGHT_WAND_ITEM;
+        return SmacksUtil.AUTO_LIGHT_WAND_ITEM;
+    }
+
+    @Override
+    public boolean isClient(){
+        EnvType t = FabricLoader.getInstance().getEnvironmentType();
+        return t.name().equals("CLIENT");
     }
 }
