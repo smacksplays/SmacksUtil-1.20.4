@@ -13,9 +13,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.smackplays.smacksutil.inventories.BackpackInventory;
 import net.smackplays.smacksutil.menus.AbstractBackpackMenu;
 import net.smackplays.smacksutil.platform.Services;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static net.smackplays.smacksutil.Constants.C_BACKPACK_SCREEN_LOCATION;
 import static net.smackplays.smacksutil.Constants.MOD_ID;
@@ -47,15 +51,18 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
         renderBackground(context, mouseX, mouseY, delta);
 
         ItemStack backpack = this.menu.playerInventory.getSelected();
+        BackpackInventory inv = (BackpackInventory) this.menu.inventory;
         CompoundTag tag = backpack.getOrCreateTagElement("backpack");
         ListTag listTag = tag.getList("Items", 10);
-        for(int i = 0; i < listTag.size(); ++i) {
+        Map<Integer, ItemStack> corrList = new HashMap<>();
+        for ( int i = 0; i < listTag.size(); i++){
             CompoundTag cTag = listTag.getCompound(i);
             int slot = cTag.getByte("Slot") & 255;
-            if (slot < this.menu.slots.size()) {
-                ItemStack s = stackof(cTag);
-                this.menu.setItem(slot, 0, s);
-            }
+            corrList.putIfAbsent(slot, stackOf(cTag));
+        }
+        inv.loadAllItems(tag, inv.getItems());
+        for (int i = 4; i < inv.getItems().size(); i++){
+            inv.setItem(i, corrList.getOrDefault(i, ItemStack.EMPTY));
         }
 
         BackpackGuiGraphics c = new BackpackGuiGraphics(context, this.minecraft, this.menu.playerInventory);
@@ -65,8 +72,9 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
 
     @Override
     protected void renderLabels(GuiGraphics context, int mouseX, int mouseY) {
-        context.drawString(this.font, this.title, this.titleLabelX - 76, this.titleLabelY - 28, 0x404040, false);
+        context.drawString(this.font, this.title, this.titleLabelX - 76, this.titleLabelY - 27, 0x404040, false);
         context.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX - 10, this.inventoryLabelY + 29, 0x404040, false);
+        context.drawString(this.font, Component.literal("Max: " + this.menu.inventory.getMaxStackSize()), this.titleLabelX + 8, this.titleLabelY - 27, 0x00c224, false);
     }
 
     @Override
@@ -93,7 +101,7 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
                 || mouseY > (double) (height + backgroundHeight) / 2 + 10;
     }
 
-    private ItemStack stackof(CompoundTag tag){
+    private ItemStack stackOf(CompoundTag tag){
         Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(tag.getString("id")));
         ItemStack stack = new ItemStack(item);
         stack.setCount((int) tag.getFloat("Count"));

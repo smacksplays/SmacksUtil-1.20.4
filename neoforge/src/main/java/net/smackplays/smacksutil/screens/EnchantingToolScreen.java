@@ -14,7 +14,6 @@ public class EnchantingToolScreen extends AbstractEnchantingToolScreen<Enchantin
         super(handler, inventory, title);
     }
 
-    @Override
     public void sendPacket(ItemStack stack) {
         EnchantData enchantData = new EnchantData(stack);
         if (this.minecraft != null) {

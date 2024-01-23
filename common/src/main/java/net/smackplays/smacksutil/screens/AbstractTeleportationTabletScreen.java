@@ -53,7 +53,7 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
     public EditBox editBoxZ;
     public EditBox editBoxName;
     public Button removeButtonWidget;
-    public boolean isRemove = true;
+    public boolean isRemove = false;
     private final List<Label> labelList = new ArrayList<>();
 
     public AbstractTeleportationTabletScreen(T handler, Inventory inventory, Component title) {
@@ -186,8 +186,8 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
 
     private void onToggleRemove(){
         this.isRemove = !this.isRemove;
-        String text = this.isRemove ? "" : "Remove";
-        int color = this.isRemove ? GREEN : RED;
+        String text = this.isRemove ? "Remove" : "";
+        int color = this.isRemove ? RED : GREEN;
         removeButtonWidget.setMessage(Component.literal(text).withColor(color));
     }
 
@@ -257,7 +257,7 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
                     boolean b4 = y + 33 + 19 * i >= mouseY;
                     if (b1 && b2 && b3 && b4) {
                         String name = keyList.get(i);
-                        if (!isRemove){
+                        if (isRemove){
                             Services.C2S_PACKET_SENDER.sendToServerTeleportNBTPacket(stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot, name, posMap.get(name).dim, isRemove);
                         } else {
                             Services.C2S_PACKET_SENDER.sendToServerTeleportPacket(posMap.get(name).levelKey, stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot);

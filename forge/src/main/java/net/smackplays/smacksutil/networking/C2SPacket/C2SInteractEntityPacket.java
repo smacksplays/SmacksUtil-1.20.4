@@ -15,18 +15,18 @@ import net.smackplays.smacksutil.items.MobCatcherItem;
 import java.util.List;
 import java.util.UUID;
 
-public class InteractEntityPacket {
+public class C2SInteractEntityPacket {
     private final ItemStack stack;
     private final UUID entityUUID;
     private final boolean isMainHnad;
 
-    public InteractEntityPacket(ItemStack s, UUID u, boolean m) {
+    public C2SInteractEntityPacket(ItemStack s, UUID u, boolean m) {
         stack = s;
         entityUUID = u;
         isMainHnad = m;
     }
 
-    public InteractEntityPacket(FriendlyByteBuf buffer) {
+    public C2SInteractEntityPacket(FriendlyByteBuf buffer) {
         stack = buffer.readItem();
         entityUUID = buffer.readUUID();
         isMainHnad = buffer.readBoolean();

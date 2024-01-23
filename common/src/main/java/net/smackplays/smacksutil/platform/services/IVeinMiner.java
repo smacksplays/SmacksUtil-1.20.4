@@ -245,6 +245,10 @@ public abstract class IVeinMiner {
         return radius;
     }
 
+    public boolean canRender(Level world, BlockPos pos){
+        return Services.VEIN_MINER.getMode(world, pos).doRender(Services.VEIN_MINER.getRadius());
+    }
+
     public boolean isAcceptUpdate(BlockPos pos) {
         if (!lastBlockPos.equals(pos)) return true;
         if (isMining) return false;

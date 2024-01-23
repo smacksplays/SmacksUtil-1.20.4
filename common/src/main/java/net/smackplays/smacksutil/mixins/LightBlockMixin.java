@@ -32,13 +32,14 @@ public class LightBlockMixin {
 
     @Inject(at = @At("HEAD"), method = "use", cancellable = true)
     private void use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult, CallbackInfoReturnable<InteractionResult> cir) {
-        if (level.isClientSide) return;
-        if (player.getItemInHand(interactionHand).is(Services.PLATFORM.getLightWandItem())
-                || player.getItemInHand(interactionHand).is(Services.PLATFORM.getAutoWandItem())) {
-            if (level.getBlockState(blockPos).is(Blocks.LIGHT)) {
-                Services.C2S_PACKET_SENDER.sendToServerSetBlockAirPacket(blockPos);
+        if (level.isClientSide){
+            if (player.getItemInHand(interactionHand).is(Services.PLATFORM.getLightWandItem())
+                    || player.getItemInHand(interactionHand).is(Services.PLATFORM.getAutoWandItem())) {
+                if (level.getBlockState(blockPos).is(Blocks.LIGHT)) {
+                    Services.C2S_PACKET_SENDER.sendToServerSetBlockAirPacket(blockPos);
+                    cir.setReturnValue(InteractionResult.SUCCESS);
+                }
             }
-            cir.setReturnValue(InteractionResult.CONSUME);
         }
     }
 }

@@ -16,9 +16,9 @@ import static net.smackplays.smacksutil.SmacksUtil.*;
 
 public class FabricClientPacketSender implements IClientPacketSender {
     @Override
-    public void sendToServerVeinMinerBreakPacket(ItemStack meinHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds) {
+    public void sendToServerVeinMinerBreakPacket(ItemStack mainHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds) {
         FriendlyByteBuf packet = PacketByteBufs.create();
-        packet.writeItem(meinHandStack);
+        packet.writeItem(mainHandStack);
         packet.writeBlockPos(pos);
         packet.writeBoolean(isCreative);
         packet.writeBoolean(replaceSeeds);

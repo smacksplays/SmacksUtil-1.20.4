@@ -23,22 +23,10 @@ public abstract class OutlineRender {
             if (Services.VEIN_MINER.isAcceptUpdate(pos)){
                 Services.VEIN_MINER.updateBlocks(entity.level(), (Player) entity, pos);
             }
-            if (Services.VEIN_MINER.isRenderPreview()){
+            if (Services.VEIN_MINER.isRenderPreview() && Services.VEIN_MINER.canRender(entity.level(), pos)){
                 Services.VEIN_MINER.drawOutline(matrices, cameraX, cameraY,
                         cameraZ, pos, entity.level(), (Player) entity);
             }
         }
-        /*
-        if (Services.VEIN_MINER.isRenderPreview() && entity.isAlwaysTicking()) {
-            if (!IKeyHandler.veinKey.isDown()) return;
-            Services.VEIN_MINER.setMode();
-            if (!Services.VEIN_MINER.getMode(entity.level(), pos).doRender(Services.VEIN_MINER.getRadius()))
-                return;
-            Services.VEIN_MINER.drawOutline(matrices, cameraX, cameraY,
-                    cameraZ, pos, entity.level(), (Player) entity);
-            if (!Services.VEIN_MINER.isToBreakEmpty()) {
-                ci.cancel();
-            }
-        }*/
     }
 }

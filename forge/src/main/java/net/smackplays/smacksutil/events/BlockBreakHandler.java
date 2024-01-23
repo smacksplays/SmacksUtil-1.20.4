@@ -11,7 +11,7 @@ import net.smackplays.smacksutil.platform.Services;
 @SuppressWarnings("unused")
 public class BlockBreakHandler {
 
-    @Mod.EventBusSubscriber(modid = Constants.MOD_ID, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = Constants.MOD_ID)
     public static class ClientForgeEvents {
 
         @SubscribeEvent

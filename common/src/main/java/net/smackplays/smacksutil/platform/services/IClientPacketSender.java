@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.UUID;
 
 public interface IClientPacketSender {
-    void sendToServerVeinMinerBreakPacket(ItemStack meinHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds);
+    void sendToServerVeinMinerBreakPacket(ItemStack mainHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds);
 
     void sendToServerEnchantPacket(ItemStack stack);
 

@@ -3,13 +3,20 @@ package net.smackplays.smacksutil.screens;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class BackpackGuiGraphics extends GuiGraphics {
     private final Minecraft minecraft;
@@ -61,10 +68,5 @@ public class BackpackGuiGraphics extends GuiGraphics {
             corrCount = corr + "M";
         }
         return corrCount;
-    }
-
-    @Override
-    public void renderItem(ItemStack stack, int $$1, int $$2, int $$3) {
-        super.renderItem(stack, $$1, $$2, $$3);
     }
 }

@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.smackplays.smacksutil.platform.services.IVeinMiner;
 import net.smackplays.smacksutil.util.CustomRenderLayer;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
@@ -24,13 +25,15 @@ public class ForgeVeinMiner extends IVeinMiner {
                             Level world, Player player) {
         if (isDrawing) return;
         isDrawing = true;
-        toBreak = (ArrayList<BlockPos>) Services.VEIN_MINER.getBlocks(world, player, pos).clone();
+        setMode();
+        ArrayList<BlockPos> toRender = (ArrayList<BlockPos>) toBreak.clone();
+        //toBreak = (ArrayList<BlockPos>) Services.VEIN_MINER.getBlocks(world, player, pos).clone();
         int maxRenderBlocks = Services.CONFIG.getMaxRenderBlocks();
-        if (toBreak.size() > maxRenderBlocks) {
-            toBreak = new ArrayList<>(toBreak.subList(0, maxRenderBlocks));
+        if (toRender.size() > maxRenderBlocks) {
+            toRender = new ArrayList<>(toRender.subList(0, maxRenderBlocks));
         }
 
-        VoxelShape shape = combine(world, pos, (ArrayList<BlockPos>) toBreak.clone());
+        VoxelShape shape = combine(world, pos, (ArrayList<BlockPos>) toRender.clone());
 
         VertexConsumer vertex = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(CustomRenderLayer.LINES);
 

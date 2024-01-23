@@ -13,37 +13,37 @@ import java.util.UUID;
 
 public class ForgeClientPacketSender implements IClientPacketSender {
     @Override
-    public void sendToServerVeinMinerBreakPacket(ItemStack meinHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds) {
-
+    public void sendToServerVeinMinerBreakPacket(ItemStack mainHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds) {
+        PacketHandler.sendToServer(new VeinMinerBreakPacket(mainHandStack, pos, isCreative, replaceSeeds));
     }
 
     @Override
     public void sendToServerEnchantPacket(ItemStack stack) {
-        PacketHandler.sendToServer(new SEnchantPacket(stack));
+        PacketHandler.sendToServer(new C2SEnchantPacket(stack));
     }
 
     @Override
     public void sendToServerSortPacket(ItemStack stack) {
-        PacketHandler.sendToServer(new SSortPacket(stack));
+        PacketHandler.sendToServer(new C2SSortPacket(stack));
     }
 
     @Override
     public void sendToServerSetBlockAirPacket(BlockPos pos) {
-        PacketHandler.sendToServer(new SetBlockAirPacket(pos));
+        PacketHandler.sendToServer(new C2SSetBlockAirPacket(pos));
     }
 
     @Override
     public void sendToServerTeleportPacket(ResourceKey<Level> levelKey, ItemStack stack, Vec3 pos, float xRot, float yRot) {
-        PacketHandler.sendToServer(new TeleportationPacket(levelKey, pos, xRot, yRot));
+        PacketHandler.sendToServer(new C2STeleportationPacket(levelKey, pos, xRot, yRot));
     }
 
     @Override
     public void sendToServerTeleportNBTPacket(ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove) {
-        PacketHandler.sendToServer(new TeleportationNBTPacket(stack, pos, xRot, yRot, name, dim, remove));
+        PacketHandler.sendToServer(new C2STeleportationNBTPacket(stack, pos, xRot, yRot, name, dim, remove));
     }
 
     @Override
     public void sendToServerInteractEntityPacket(ItemStack stack, UUID entityUUID, boolean hand) {
-        PacketHandler.sendToServer(new InteractEntityPacket(stack, entityUUID, hand));
+        PacketHandler.sendToServer(new C2SInteractEntityPacket(stack, entityUUID, hand));
     }
 }

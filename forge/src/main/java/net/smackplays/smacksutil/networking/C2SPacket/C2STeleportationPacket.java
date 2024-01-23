@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.networking;
+package net.smackplays.smacksutil.networking.C2SPacket;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
@@ -12,20 +12,20 @@ import net.minecraftforge.event.network.CustomPayloadEvent;
 
 import java.util.Set;
 
-public class TeleportationPacket {
+public class C2STeleportationPacket {
     private final ResourceKey<Level> levelKey;
     private final Vec3 pos;
     private final float xRot;
     private final float yRot;
 
-    public TeleportationPacket(ResourceKey<Level> levelKey, Vec3 pos, float xRot, float yRot) {
+    public C2STeleportationPacket(ResourceKey<Level> levelKey, Vec3 pos, float xRot, float yRot) {
         this.levelKey = levelKey;
         this.pos = pos;
         this.xRot = xRot;
         this.yRot = yRot;
     }
 
-    public TeleportationPacket(FriendlyByteBuf buffer) {
+    public C2STeleportationPacket(FriendlyByteBuf buffer) {
         var tempKey = buffer.readRegistryKey();
         levelKey = ResourceKey.create(Registries.DIMENSION, tempKey.location());
         pos = buffer.readVec3();

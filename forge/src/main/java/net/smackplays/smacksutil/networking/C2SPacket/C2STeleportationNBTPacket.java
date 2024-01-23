@@ -1,4 +1,4 @@
-package net.smackplays.smacksutil.networking;
+package net.smackplays.smacksutil.networking.C2SPacket;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -10,7 +10,7 @@ import net.minecraftforge.event.network.CustomPayloadEvent;
 
 import java.nio.charset.StandardCharsets;
 
-public class TeleportationNBTPacket {
+public class C2STeleportationNBTPacket {
     private final ItemStack stack;
     private final Vec3 pos;
     private final float xRot;
@@ -19,7 +19,7 @@ public class TeleportationNBTPacket {
     private final String dim;
     private final boolean remove;
 
-    public TeleportationNBTPacket(ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove) {
+    public C2STeleportationNBTPacket(ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove) {
         this.stack = stack;
         this.pos = pos;
         this.xRot = xRot;
@@ -29,7 +29,7 @@ public class TeleportationNBTPacket {
         this.remove = remove;
     }
 
-    public TeleportationNBTPacket(FriendlyByteBuf buffer) {
+    public C2STeleportationNBTPacket(FriendlyByteBuf buffer) {
         stack = buffer.readItem();
         pos = buffer.readVec3();
         xRot = buffer.readFloat();
