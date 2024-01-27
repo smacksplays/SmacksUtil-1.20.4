@@ -28,11 +28,6 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public Attribute getBackpackUpgradeMultiplierAttribute() {
-        return SmacksUtil.BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE.get();
-    }
-
-    @Override
     public Item getLightWandItem() {
         return SmacksUtil.LIGHT_WAND_ITEM.get();
     }
@@ -40,6 +35,21 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public Item getAutoWandItem() {
         return SmacksUtil.AUTO_LIGHT_WAND_ITEM.get();
+    }
+
+    @Override
+    public Item getUpgrade1Item() {
+        return SmacksUtil.BACKPACK_UPGRADE_TIER1_ITEM.get();
+    }
+
+    @Override
+    public Item getUpgrade2Item() {
+        return SmacksUtil.BACKPACK_UPGRADE_TIER2_ITEM.get();
+    }
+
+    @Override
+    public Item getUpgrade3Item() {
+        return SmacksUtil.BACKPACK_UPGRADE_TIER3_ITEM.get();
     }
 
     @Override

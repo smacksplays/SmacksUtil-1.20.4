@@ -127,9 +127,14 @@ public interface IBackpackInventory extends WorldlyContainer {
         for (int i = 0; i < 4; i++){
             ItemStack upgrade = upgrades.get(i);
             if (!upgrade.isEmpty()){
-                List<AttributeModifier> modifiers = upgrade.getAttributeModifiers(EquipmentSlot.MAINHAND)
-                        .get(Services.PLATFORM.getBackpackUpgradeMultiplierAttribute()).stream().toList();
-                baseStackSize *= (int) modifiers.get(0).getAmount();
+                Item upgradeItem = upgrade.getItem();
+                if (upgradeItem.equals(Services.PLATFORM.getUpgrade1Item())) {
+                    baseStackSize *= 2;
+                } else if (upgradeItem.equals(Services.PLATFORM.getUpgrade2Item())) {
+                    baseStackSize *= 8;
+                } else if (upgradeItem.equals(Services.PLATFORM.getUpgrade3Item())){
+                    baseStackSize *= 16;
+                }
             }
         }
         return baseStackSize;

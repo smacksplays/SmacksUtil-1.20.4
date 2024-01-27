@@ -12,27 +12,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.UUID;
 
 public class BackpackUpgradeItem extends Item {
-    private final float stackSizeMultiplier;
-    private final Multimap<Attribute, AttributeModifier> defaultModifiers;
-    protected static final UUID BASE_MULTIPLIER_UUDI = UUID.fromString("CB3F55D3-645C-4F38-B497-9C13A33DB5CF");
     public BackpackUpgradeItem(Properties props, int multiplier) {
         super(props);
-        this.stackSizeMultiplier = multiplier;
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> map = ImmutableMultimap.builder();
-        map.put(Services.PLATFORM.getBackpackUpgradeMultiplierAttribute(),
-                new AttributeModifier(BASE_MULTIPLIER_UUDI, "Backpack modifier", this.stackSizeMultiplier, AttributeModifier.Operation.ADDITION));
-        this.defaultModifiers = map.build();
     }
-    public BackpackUpgradeItem(int multiplier){
+    public BackpackUpgradeItem(){
         super(new Item.Properties().stacksTo(1));
-        this.stackSizeMultiplier = multiplier;
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> map = ImmutableMultimap.builder();
-        map.put(Services.PLATFORM.getBackpackUpgradeMultiplierAttribute(),
-                new AttributeModifier(BASE_MULTIPLIER_UUDI, "Backpack modifier", this.stackSizeMultiplier, AttributeModifier.Operation.ADDITION));
-        this.defaultModifiers = map.build();
-    }
-    @Override
-    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(@NotNull EquipmentSlot slot) {
-        return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slot);
     }
 }

@@ -2,8 +2,6 @@ package net.smackplays.smacksutil;
 
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.cauldron.CauldronInteraction;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.DyeableLeatherItem;
@@ -18,9 +16,11 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -32,10 +32,12 @@ import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
 import net.smackplays.smacksutil.networking.PacketHandler;
+import net.smackplays.smacksutil.platform.Services;
 import net.smackplays.smacksutil.screens.AbstractBackpackScreen;
 import net.smackplays.smacksutil.screens.AbstractEnchantingToolScreen;
 import net.smackplays.smacksutil.screens.AbstractLargeBackpackScreen;
 import net.smackplays.smacksutil.screens.AbstractTeleportationTabletScreen;
+import top.theillusivec4.curios.api.SlotTypeMessage;
 
 import static net.smackplays.smacksutil.Constants.*;
 
@@ -45,16 +47,11 @@ import static net.smackplays.smacksutil.Constants.*;
 public class SmacksUtil {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MOD_ID);
-    public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(ForgeRegistries.ATTRIBUTES, MOD_ID);
-    public static final RegistryObject<Attribute> BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE
-            = ATTRIBUTES.register("generic.upgrade_multiplier", ()
-            -> new RangedAttribute("attribute.name.generic.upgrade_multiplier", 1, 1, 8));
-
     public static final RegistryObject<Item> BACKPACK_ITEM = ITEMS.register(C_BACKPACK_ITEM, BackpackItem::new);
     public static final RegistryObject<Item> LARGE_BACKPACK_ITEM = ITEMS.register(C_LARGE_BACKPACK_ITEM, LargeBackpackItem::new);
-    public static final RegistryObject<Item> BACKPACK_UPGRADE_TIER1_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER1_ITEM, () -> new BackpackUpgradeItem(2));
-    public static final RegistryObject<Item> BACKPACK_UPGRADE_TIER2_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER2_ITEM, () -> new BackpackUpgradeItem(4));
-    public static final RegistryObject<Item> BACKPACK_UPGRADE_TIER3_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER3_ITEM, () -> new BackpackUpgradeItem(8));
+    public static final RegistryObject<Item> BACKPACK_UPGRADE_TIER1_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER1_ITEM, BackpackUpgradeItem::new);
+    public static final RegistryObject<Item> BACKPACK_UPGRADE_TIER2_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER2_ITEM, BackpackUpgradeItem::new);
+    public static final RegistryObject<Item> BACKPACK_UPGRADE_TIER3_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER3_ITEM, BackpackUpgradeItem::new);
     public static final RegistryObject<Item> LIGHT_WAND_ITEM = ITEMS.register(C_LIGHT_WAND_ITEM, LightWandItem::new);
     public static final RegistryObject<Item> AUTO_LIGHT_WAND_ITEM = ITEMS.register(C_AUTO_LIGHT_WAND_ITEM, AutoLightWandItem::new);
     public static final RegistryObject<Item> MAGNET_ITEM = ITEMS.register(C_MAGNET_ITEM, MagnetItem::new);
@@ -78,9 +75,8 @@ public class SmacksUtil {
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        modEventBus.addListener(this::interModEnqueue);
         modEventBus.addListener(this::commonSetup);
-
-        ATTRIBUTES.register(modEventBus);
 
         MENUS.register(modEventBus);
 
@@ -89,6 +85,14 @@ public class SmacksUtil {
         MinecraftForge.EVENT_BUS.register(this);
 
         modEventBus.addListener(this::addCreative);
+    }
+
+    public void interModEnqueue(InterModEnqueueEvent e){
+        if (Services.PLATFORM.isModLoaded("curios")){
+            InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("charm").size(1).build());
+            InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("back").size(1).build());
+            InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("hands").size(1).build());
+        }
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {

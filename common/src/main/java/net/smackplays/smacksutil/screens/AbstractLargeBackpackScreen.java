@@ -1,6 +1,7 @@
 package net.smackplays.smacksutil.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -11,15 +12,20 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.inventories.LargeBackpackInventory;
 import net.smackplays.smacksutil.menus.AbstractLargeBackpackMenu;
 import net.smackplays.smacksutil.platform.Services;
+import net.smackplays.smacksutil.slots.BackpackSlot;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static net.smackplays.smacksutil.Constants.C_LARGE_BACKPACK_SCREEN_LOCATION;
 import static net.smackplays.smacksutil.Constants.MOD_ID;
@@ -72,10 +78,23 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
     }
 
     @Override
+    protected void renderTooltip(GuiGraphics context, int mouseX, int mouseY) {
+        if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem() && this.hoveredSlot instanceof BackpackSlot) {
+            ItemStack hoveredStack = this.hoveredSlot.getItem();
+            List<Component> list = this.getTooltipFromContainerItem(hoveredStack);
+            list.add(1, Component.literal("Count: " + hoveredStack.getCount() + "/" + this.menu.inventory.getMaxStackSize())
+                    .withColor(Constants.DARK_GRAY));
+            Optional<TooltipComponent> optional = hoveredStack.getTooltipImage();
+            context.renderTooltip(this.font, list, optional, mouseX, mouseY);
+        } else if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem()){
+            super.renderTooltip(context, mouseX, mouseY);
+        }
+    }
+
+    @Override
     protected void renderLabels(GuiGraphics context, int mouseX, int mouseY) {
         context.drawString(this.font, this.title, this.titleLabelX - 130, this.titleLabelY - 54, 0x404040, false);
         context.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX - 36, this.inventoryLabelY + 53, 0x404040, false);
-        context.drawString(this.font, Component.literal("Max: " + this.menu.inventory.getMaxStackSize()), this.titleLabelX + 25, this.titleLabelY - 54, 0x00c224, false);
     }
 
     @Override

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "smacksutil:magnet_item",
+    "smacksutil:advanced_magnet_item"
+  ]
+}

@@ -117,6 +117,8 @@ public class AbstractBackpackMenu extends AbstractContainerMenu {
                     ++counter;
                 }
             }
+        } else {
+
         }
 
         if (!stack.isEmpty()) {
@@ -132,13 +134,18 @@ public class AbstractBackpackMenu extends AbstractContainerMenu {
                 if (stack1.isEmpty() && slot.mayPlace(stack)) {
                     if (stack.getCount() > slot.getMaxStackSize()) {
                         slot.setByPlayer(stack.split(slot.getMaxStackSize()));
-                    } else {
+                    } else if (stack.getCount() > 1 && !stack.isStackable()) {
+                        slot.setByPlayer(stack.split(1));
+                    }else {
                         slot.setByPlayer(stack.split(stack.getCount()));
                     }
 
                     slot.setChanged();
                     bl1 = true;
                     break;
+                } else if (ItemStack.isSameItemSameTags(stack, stack1) && slot instanceof BackpackSlot){
+                    stack1.grow(stack.getCount());
+                    stack.setCount(0);
                 }
 
                 if (backwards) {

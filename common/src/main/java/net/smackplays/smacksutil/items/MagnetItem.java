@@ -11,9 +11,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -92,5 +94,11 @@ public class MagnetItem extends Item {
     @Override
     public boolean isFoil(@NotNull ItemStack stack) {
         return isEnable_magnet(stack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> componentList, TooltipFlag flag) {
+        CompoundTag tag = stack.getOrCreateTag();
+        componentList.add(1, Component.literal("Enabled: " + tag.getBoolean("enabled")));
     }
 }

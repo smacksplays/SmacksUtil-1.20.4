@@ -37,9 +37,11 @@ public interface IPlatformHelper {
         return isDevelopmentEnvironment() ? "development" : "production";
     }
 
-    Attribute getBackpackUpgradeMultiplierAttribute();
     Item getLightWandItem();
     Item getAutoWandItem();
+    Item getUpgrade1Item();
+    Item getUpgrade2Item();
+    Item getUpgrade3Item();
 
     boolean isClient();
 }

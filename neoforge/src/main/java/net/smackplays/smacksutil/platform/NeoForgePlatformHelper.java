@@ -28,11 +28,6 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
-    public Attribute getBackpackUpgradeMultiplierAttribute() {
-        return SmacksUtil.BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE.get();
-    }
-
-    @Override
     public Item getLightWandItem() {
         if (SmacksUtil.LIGHT_WAND_ITEM.isBound()) {
             return SmacksUtil.LIGHT_WAND_ITEM.get();
@@ -44,6 +39,30 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     public Item getAutoWandItem() {
         if (SmacksUtil.AUTO_LIGHT_WAND_ITEM.isBound()) {
             return SmacksUtil.AUTO_LIGHT_WAND_ITEM.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Item getUpgrade1Item() {
+        if (SmacksUtil.BACKPACK_UPGRADE_TIER1_ITEM.isBound()) {
+            return SmacksUtil.BACKPACK_UPGRADE_TIER1_ITEM.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Item getUpgrade2Item() {
+        if (SmacksUtil.BACKPACK_UPGRADE_TIER2_ITEM.isBound()) {
+            return SmacksUtil.BACKPACK_UPGRADE_TIER2_ITEM.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Item getUpgrade3Item() {
+        if (SmacksUtil.BACKPACK_UPGRADE_TIER3_ITEM.isBound()) {
+            return SmacksUtil.BACKPACK_UPGRADE_TIER3_ITEM.get();
         }
         return null;
     }

@@ -67,10 +67,10 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
             ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
             if (index < this.rows * this.cols + 4) {
-                if (this.moveItemStackTo(itemStack2, this.rows * this.cols + 4, this.slots.size(), true, 64)) {
+                if (this.moveItemStack(itemStack2, this.rows * this.cols + 4, this.slots.size(), true, 64)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (this.moveItemStackTo(itemStack2, 4, this.rows * this.cols + 4, false, inventory.getMaxStackSize())) {
+            } else if (this.moveItemStack(itemStack2, 4, this.rows * this.cols + 4, false, inventory.getMaxStackSize())) {
                 return ItemStack.EMPTY;
             }
 
@@ -80,25 +80,26 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
                 slot.setChanged();
             }
         }
+        if (getCarried().isEmpty()) return ItemStack.EMPTY;
         return itemStack;
     }
 
-    protected boolean moveItemStackTo(ItemStack stack, int min, int max, boolean bl, int maxStackSize) {
+    protected boolean moveItemStack(ItemStack stack, int min, int max, boolean backwards, int maxStackSize) {
         boolean bl1 = false;
-        int $$5 = min;
-        if (bl) {
-            $$5 = max - 1;
+        int counter = min;
+        if (backwards) {
+            counter = max - 1;
         }
 
         if (stack.isStackable()) {
-            while(!stack.isEmpty() && (bl ? $$5 >= min : $$5 < max)) {
-                Slot slot = this.slots.get($$5);
+            while(!stack.isEmpty() && (backwards ? counter >= min : counter < max)) {
+                Slot slot = this.slots.get(counter);
                 ItemStack stack1 = slot.getItem();
                 if (!stack1.isEmpty() && ItemStack.isSameItemSameTags(stack, stack1)) {
-                    int $$8 = stack1.getCount() + stack.getCount();
-                    if ($$8 <= maxStackSize) {
+                    int combinedCount = stack1.getCount() + stack.getCount();
+                    if (combinedCount <= maxStackSize) {
                         stack.setCount(0);
-                        stack1.setCount($$8);
+                        stack1.setCount(combinedCount);
                         slot.setChanged();
                         bl1 = true;
                     } else if (stack1.getCount() < maxStackSize) {
@@ -109,40 +110,47 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
                     }
                 }
 
-                if (bl) {
-                    --$$5;
+                if (backwards) {
+                    --counter;
                 } else {
-                    ++$$5;
+                    ++counter;
                 }
             }
+        } else {
+
         }
 
         if (!stack.isEmpty()) {
-            if (bl) {
-                $$5 = max - 1;
+            if (backwards) {
+                counter = max - 1;
             } else {
-                $$5 = min;
+                counter = min;
             }
 
-            while(bl ? $$5 >= min : $$5 < max) {
-                Slot $$9 = this.slots.get($$5);
-                ItemStack $$10 = $$9.getItem();
-                if ($$10.isEmpty() && $$9.mayPlace(stack)) {
-                    if (stack.getCount() > $$9.getMaxStackSize()) {
-                        $$9.setByPlayer(stack.split($$9.getMaxStackSize()));
-                    } else {
-                        $$9.setByPlayer(stack.split(stack.getCount()));
+            while(backwards ? counter >= min : counter < max) {
+                Slot slot = this.slots.get(counter);
+                ItemStack stack1 = slot.getItem();
+                if (stack1.isEmpty() && slot.mayPlace(stack)) {
+                    if (stack.getCount() > slot.getMaxStackSize()) {
+                        slot.setByPlayer(stack.split(slot.getMaxStackSize()));
+                    } else if (stack.getCount() > 1 && !stack.isStackable()) {
+                        slot.setByPlayer(stack.split(1));
+                    }else {
+                        slot.setByPlayer(stack.split(stack.getCount()));
                     }
 
-                    $$9.setChanged();
+                    slot.setChanged();
                     bl1 = true;
                     break;
+                } else if (ItemStack.isSameItemSameTags(stack, stack1) && slot instanceof BackpackSlot){
+                    stack1.grow(stack.getCount());
+                    stack.setCount(0);
                 }
 
-                if (bl) {
-                    --$$5;
+                if (backwards) {
+                    --counter;
                 } else {
-                    ++$$5;
+                    ++counter;
                 }
             }
         }

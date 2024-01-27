@@ -6,6 +6,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.inventories.BackpackInventory;
 import net.smackplays.smacksutil.inventories.IBackpackInventory;
@@ -23,10 +24,18 @@ public class BackpackUpgradeSlot extends Slot {
     @Override
     public boolean mayPickup(@NotNull Player player) {
         ItemStack stack = getItem();
-        List<AttributeModifier> modifiers = stack.getAttributeModifiers(EquipmentSlot.MAINHAND)
-                .get(Services.PLATFORM.getBackpackUpgradeMultiplierAttribute()).stream().toList();
-        if (!modifiers.isEmpty()){
-            int offset = (int) modifiers.get(0).getAmount();
+
+        int offset = 1;
+        Item upgradeItem = stack.getItem();
+        if (upgradeItem.equals(Services.PLATFORM.getUpgrade1Item())) {
+            offset *= 2;
+        } else if (upgradeItem.equals(Services.PLATFORM.getUpgrade2Item())) {
+            offset *= 8;
+        } else if (upgradeItem.equals(Services.PLATFORM.getUpgrade3Item())){
+            offset *= 16;
+        }
+
+        if (offset != 1){
             if (container instanceof BackpackInventory inv){
                 return inv.checkRemoveUpgrade(inv.getMaxStackSize() / offset);
             }

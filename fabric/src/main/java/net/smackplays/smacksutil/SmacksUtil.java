@@ -1,5 +1,6 @@
 package net.smackplays.smacksutil;
 
+import dev.emi.trinkets.TrinketsClient;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -43,6 +44,8 @@ import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
+import net.smackplays.smacksutil.platform.Services;
+import net.smackplays.smacksutil.trinkets.Trinkets;
 
 import java.util.List;
 import java.util.Set;
@@ -52,12 +55,11 @@ import static net.smackplays.smacksutil.Constants.*;
 
 public class SmacksUtil implements ModInitializer {
 
-    public static final Attribute BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE = new RangedAttribute("attribute.name.generic.upgrade_multiplier", 1, 1, 8);
     public static final Item BACKPACK_ITEM = new BackpackItem();
     public static final Item LARGE_BACKPACK_ITEM = new LargeBackpackItem();
-    public static final Item BACKPACK_UPGRADE_TIER1_ITEM = new BackpackUpgradeItem(2);
-    public static final Item BACKPACK_UPGRADE_TIER2_ITEM = new BackpackUpgradeItem(4);
-    public static final Item BACKPACK_UPGRADE_TIER3_ITEM = new BackpackUpgradeItem(8);
+    public static final Item BACKPACK_UPGRADE_TIER1_ITEM = new BackpackUpgradeItem();
+    public static final Item BACKPACK_UPGRADE_TIER2_ITEM = new BackpackUpgradeItem();
+    public static final Item BACKPACK_UPGRADE_TIER3_ITEM = new BackpackUpgradeItem();
     public static final Item LIGHT_WAND_ITEM = new LightWandItem();
     public static final Item AUTO_LIGHT_WAND_ITEM = new AutoLightWandItem();
     public static final Item MAGNET_ITEM = new MagnetItem();
@@ -97,7 +99,6 @@ public class SmacksUtil implements ModInitializer {
         registerItem(C_LARGE_BACKPACK_ITEM, LARGE_BACKPACK_ITEM);
         CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM, CauldronInteraction.SHULKER_BOX);
 
-        Registry.register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation(MOD_ID, "generic.upgrade_multiplier"), BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE);
         registerItem(C_BACKPACK_UPGRADE_TIER1_ITEM, BACKPACK_UPGRADE_TIER1_ITEM);
         registerItem(C_BACKPACK_UPGRADE_TIER2_ITEM, BACKPACK_UPGRADE_TIER2_ITEM);
         registerItem(C_BACKPACK_UPGRADE_TIER3_ITEM, BACKPACK_UPGRADE_TIER3_ITEM);
@@ -125,6 +126,10 @@ public class SmacksUtil implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(INTERACT_ENTITY_REQUEST_ID, this::handleInteractEntityRequest);
 
         ServerPlayNetworking.registerGlobalReceiver(VEINMINER_BREAK_REQUEST_ID, this::handleVeinMinerBreakRequest);
+
+        if (Services.PLATFORM.isModLoaded("trinkets")){
+            Trinkets.init();
+        }
 
     }
 
