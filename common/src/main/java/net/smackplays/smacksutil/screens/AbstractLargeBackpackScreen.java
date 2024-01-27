@@ -1,7 +1,6 @@
 package net.smackplays.smacksutil.screens;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -111,7 +110,7 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
     public void onButtonWidgetPressed() {
         ItemStack stack = this.menu.playerInventory.getSelected();
         if (Services.C2S_PACKET_SENDER != null) {
-            Services.C2S_PACKET_SENDER.sendToServerSortPacket(stack);
+            Services.C2S_PACKET_SENDER.BackpackSortPacket(stack);
         }
     }
 

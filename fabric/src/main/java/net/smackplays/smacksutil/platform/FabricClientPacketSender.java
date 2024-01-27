@@ -16,7 +16,7 @@ import static net.smackplays.smacksutil.SmacksUtil.*;
 
 public class FabricClientPacketSender implements IClientPacketSender {
     @Override
-    public void sendToServerVeinMinerBreakPacket(ItemStack mainHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds) {
+    public void VeinMinerBreakPacket(ItemStack mainHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeItem(mainHandStack);
         packet.writeBlockPos(pos);
@@ -28,7 +28,7 @@ public class FabricClientPacketSender implements IClientPacketSender {
     }
 
     @Override
-    public void sendToServerEnchantPacket(ItemStack stack) {
+    public void EnchantPacket(ItemStack stack) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeItem(stack);
         if (ClientPlayNetworking.canSend(ENCHANT_REQUEST_ID)){
@@ -37,16 +37,25 @@ public class FabricClientPacketSender implements IClientPacketSender {
     }
 
     @Override
-    public void sendToServerSortPacket(ItemStack stack) {
+    public void BackpackSortPacket(ItemStack stack) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeItem(stack);
-        if (ClientPlayNetworking.canSend(SORT_REQUEST_ID)){
-            ClientPlayNetworking.send(SORT_REQUEST_ID, packet);
+        if (ClientPlayNetworking.canSend(BACKPACK_SORT_REQUEST_ID)){
+            ClientPlayNetworking.send(BACKPACK_SORT_REQUEST_ID, packet);
         }
     }
 
     @Override
-    public void sendToServerSetBlockAirPacket(BlockPos pos) {
+    public void BackpackOpenPacket(int slot) {
+        FriendlyByteBuf packet = PacketByteBufs.create();
+        packet.writeInt(slot);
+        if (ClientPlayNetworking.canSend(BACKPACK_OPEN_REQUEST_ID)){
+            ClientPlayNetworking.send(BACKPACK_OPEN_REQUEST_ID, packet);
+        }
+    }
+
+    @Override
+    public void SetBlockAirPacket(BlockPos pos) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeBlockPos(pos);
         if (ClientPlayNetworking.canSend(SET_BLOCK_AIR_REQUEST_ID)){
@@ -55,7 +64,7 @@ public class FabricClientPacketSender implements IClientPacketSender {
     }
 
     @Override
-    public void sendToServerTeleportPacket(ResourceKey<Level> levelKey, Vec3 pos, float xRot, float yRot) {
+    public void TeleportPacket(ResourceKey<Level> levelKey, Vec3 pos, float xRot, float yRot) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeResourceKey(levelKey);
         packet.writeVec3(pos);
@@ -67,7 +76,7 @@ public class FabricClientPacketSender implements IClientPacketSender {
     }
 
     @Override
-    public void sendToServerTeleportNBTPacket(ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove) {
+    public void TeleportNBTPacket(ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeItem(stack);
         packet.writeVec3(pos);
@@ -83,7 +92,7 @@ public class FabricClientPacketSender implements IClientPacketSender {
 
     // hand true => main hand, false => off_hand
     @Override
-    public void sendToServerInteractEntityPacket(ItemStack stack, UUID entityUUID, boolean hand) {
+    public void InteractEntityPacket(ItemStack stack, UUID entityUUID, boolean hand) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeItem(stack);
         packet.writeUUID(entityUUID);

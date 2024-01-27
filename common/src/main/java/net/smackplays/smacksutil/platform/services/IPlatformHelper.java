@@ -37,6 +37,10 @@ public interface IPlatformHelper {
         return isDevelopmentEnvironment() ? "development" : "production";
     }
 
+    Item getBackackItem();
+    Item getLargeBackackItem();
+    Item getMagnetItem();
+    Item getAdvancedMagnetItem();
     Item getLightWandItem();
     Item getAutoWandItem();
     Item getUpgrade1Item();

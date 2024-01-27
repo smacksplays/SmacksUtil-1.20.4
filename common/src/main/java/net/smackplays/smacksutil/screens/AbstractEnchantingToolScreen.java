@@ -217,7 +217,7 @@ public class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> 
                     }
 
                     if (Services.C2S_PACKET_SENDER != null) {
-                        Services.C2S_PACKET_SENDER.sendToServerEnchantPacket(stack);
+                        Services.C2S_PACKET_SENDER.EnchantPacket(stack);
                     }
                     return true;
                 }

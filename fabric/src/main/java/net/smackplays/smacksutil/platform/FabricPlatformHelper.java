@@ -27,6 +27,26 @@ public class FabricPlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public Item getBackackItem() {
+        return SmacksUtil.BACKPACK_ITEM;
+    }
+
+    @Override
+    public Item getLargeBackackItem() {
+        return SmacksUtil.LARGE_BACKPACK_ITEM;
+    }
+
+    @Override
+    public Item getMagnetItem() {
+        return SmacksUtil.MAGNET_ITEM;
+    }
+
+    @Override
+    public Item getAdvancedMagnetItem() {
+        return SmacksUtil.ADVANCED_MAGNET_ITEM;
+    }
+
+    @Override
     public Item getLightWandItem() {
         return SmacksUtil.LIGHT_WAND_ITEM;
     }

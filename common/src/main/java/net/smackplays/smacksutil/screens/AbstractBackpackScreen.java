@@ -109,7 +109,7 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
     public void onButtonWidgetPressed() {
         ItemStack stack = this.menu.playerInventory.getSelected();
         if (Services.C2S_PACKET_SENDER != null) {
-            Services.C2S_PACKET_SENDER.sendToServerSortPacket(stack);
+            Services.C2S_PACKET_SENDER.BackpackSortPacket(stack);
         }
     }
 

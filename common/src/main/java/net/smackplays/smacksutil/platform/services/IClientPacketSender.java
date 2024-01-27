@@ -9,17 +9,19 @@ import net.minecraft.world.phys.Vec3;
 import java.util.UUID;
 
 public interface IClientPacketSender {
-    void sendToServerVeinMinerBreakPacket(ItemStack mainHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds);
+    void VeinMinerBreakPacket(ItemStack mainHandStack, BlockPos pos, boolean isCreative, boolean replaceSeeds);
 
-    void sendToServerEnchantPacket(ItemStack stack);
+    void EnchantPacket(ItemStack stack);
 
-    void sendToServerSortPacket(ItemStack stack);
+    void BackpackSortPacket(ItemStack stack);
 
-    void sendToServerSetBlockAirPacket(BlockPos pos);
+    void BackpackOpenPacket(int slot);
 
-    void sendToServerTeleportPacket(ResourceKey<Level> levelKey, Vec3 pos, float xRot, float yRot);
+    void SetBlockAirPacket(BlockPos pos);
 
-    void sendToServerTeleportNBTPacket(ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove);
+    void TeleportPacket(ResourceKey<Level> levelKey, Vec3 pos, float xRot, float yRot);
 
-    void sendToServerInteractEntityPacket(ItemStack stack, UUID entityUUID, boolean hand);
+    void TeleportNBTPacket(ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove);
+
+    void InteractEntityPacket(ItemStack stack, UUID entityUUID, boolean hand);
 }

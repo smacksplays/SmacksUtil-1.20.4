@@ -21,7 +21,8 @@ public class Constants {
     public static final String C_LARGE_BACKPACK_MENU = "large_backpack_menu";
     public static final String C_BACKPACK_SCREEN_LOCATION = "textures/gui/container/backpack_screen.png";
     public static final String C_LARGE_BACKPACK_SCREEN_LOCATION = "textures/gui/container/large_backpack_screen.png";
-    public static final String C_SORT_REQUEST = "sort-request";
+    public static final String C_BACKPACK_SORT_REQUEST = "backpack-sort-request";
+    public static final String C_BACKPACK_OPEN_REQUEST = "backpack-open-request";
     // --------------------------------- BACKPACK UPGRADES
     public static final String C_BACKPACK_UPGRADE_TIER1_ITEM = "backpack_upgrade_tier1_item";
     public static final String C_BACKPACK_UPGRADE_TIER2_ITEM = "backpack_upgrade_tier2_item";
@@ -58,4 +59,13 @@ public class Constants {
     public static final String C_VEINMINER_BREAK_REQUEST = "veinminer-break-request";
     public static final String C_VEINMINER_SERVER_BLOCK_BREAK_REQUEST = "veinminer-server-block-break-request";
     public static final String C_VEINMINER_SERVER_BACKPACK_SORT_REQUEST = "veinminer-server-backpack-sort-request";
+    // --------------------------------- KeyMappings
+    public static final String KEY_CATEGORY_SMACKSUTIL = "key.category.smacksutil";
+    public static final String KEY_SMACKSUTIL_VEINACTIVATE = "key.smacksutil.veinactivate";
+    public static final String KEY_SMACKSUTIL_VEINPREVIEW = "key.smacksutil.veinpreview";
+    public static final String KEY_SMACKSUTIL_FASTPLACE = "key.smacksutil.fastplace";
+    public static final String KEY_SMACKSUTIL_EXACTMATCH = "key.smacksutil.exactmatch";
+    public static final String KEY_SMACKSUTIL_OPEN_BACKPACK = "key.smacksutil.open_backpack";
+    public static final String KEY_SMACKSUTIL_TOGGLE_MAGNET = "key.smacksutil.toggle_magnet";
+    public static final String KEY_SMACKSUTIL_TOGGLE_LIGHT_WAND = "key.smacksutil.toggle_light_wand";
 }
