@@ -3,7 +3,7 @@ package net.smackplays.smacksutil.networking.C2SPacket;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import net.smackplays.smacksutil.items.*;
+import net.smackplays.smacksutil.items.AutoLightWandItem;
 import top.theillusivec4.curios.api.CuriosApi;
 
 public class C2SToggleLightWandItemPacketHandler {

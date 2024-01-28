@@ -2,21 +2,14 @@ package net.smackplays.smacksutil.platform.services;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.Constants;
-import net.smackplays.smacksutil.items.AdvancedMagnetItem;
-import net.smackplays.smacksutil.items.AutoLightWandItem;
-import net.smackplays.smacksutil.items.LightWandItem;
-import net.smackplays.smacksutil.items.MagnetItem;
 import net.smackplays.smacksutil.platform.Services;
-
 import org.lwjgl.glfw.GLFW;
 
 import static net.smackplays.smacksutil.Constants.*;
@@ -52,14 +45,14 @@ public interface IKeyHandler {
             int color = Services.VEIN_MINER.renderPreview ? Constants.GREEN : Constants.RED;
             player.displayClientMessage(Component
                     .literal("Veinminer Preview: " + str).withColor(color), true);
-            if (Services.CONFIG.isEnabledKeyPressSound()){
+            if (Services.CONFIG != null && Services.CONFIG.isEnabledKeyPressSound()){
                 player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
             }
         }
     }
 
     default void fastPlaceConsume(KeyMapping key, Player player) {
-        if (key.consumeClick()) {
+        if (key.consumeClick() && Services.CONFIG != null) {
             Services.CONFIG.setEnabledFastPlace(!Services.CONFIG.isEnabledFastPlace());
             String str = Services.CONFIG.isEnabledFastPlace() ? "Active" : "Inactive";
             int color = Services.CONFIG.isEnabledFastPlace() ? Constants.GREEN : Constants.RED;
@@ -78,7 +71,7 @@ public interface IKeyHandler {
             int color = Services.VEIN_MINER.isExactMatch() ? Constants.GREEN : Constants.RED;
             player.displayClientMessage(Component
                     .literal("Exact Match: " + str).withColor(color), true);
-            if (Services.CONFIG.isEnabledKeyPressSound()){
+            if (Services.CONFIG != null && Services.CONFIG.isEnabledKeyPressSound()){
                 player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
             }
         }
@@ -89,9 +82,9 @@ public interface IKeyHandler {
             NonNullList<Slot> slots = player.inventoryMenu.slots;
             for (int i = slots.size() - 1; i >= 0; i--){
                 ItemStack stack = slots.get(i).getItem();
-                if (stack.is(Services.PLATFORM.getAdvancedMagnetItem()) || stack.is(Services.PLATFORM.getMagnetItem())){
+                if ((stack.is(Services.PLATFORM.getAdvancedMagnetItem()) || stack.is(Services.PLATFORM.getMagnetItem())) && Services.C2S_PACKET_SENDER != null){
                     Services.C2S_PACKET_SENDER.ToggleMagnetItemPacket(i);
-                    if (Services.CONFIG.isEnabledKeyPressSound()){
+                    if (Services.CONFIG != null && Services.CONFIG.isEnabledKeyPressSound()){
                         player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
                     }
                     return;
@@ -105,9 +98,9 @@ public interface IKeyHandler {
             NonNullList<Slot> slots = player.inventoryMenu.slots;
             for (int i = slots.size() - 1; i >= 0; i--){
                 ItemStack stack = slots.get(i).getItem();
-                if (stack.is(Services.PLATFORM.getAutoWandItem())){
+                if (stack.is(Services.PLATFORM.getAutoWandItem()) && Services.C2S_PACKET_SENDER != null){
                     Services.C2S_PACKET_SENDER.ToggleLightWandItemPacket(i);
-                    if (Services.CONFIG.isEnabledKeyPressSound()){
+                    if (Services.CONFIG != null && Services.CONFIG.isEnabledKeyPressSound()){
                         player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
                     }
                     return;

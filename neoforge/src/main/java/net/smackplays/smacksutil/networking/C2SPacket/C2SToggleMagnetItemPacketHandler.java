@@ -3,7 +3,6 @@ package net.smackplays.smacksutil.networking.C2SPacket;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import net.smackplays.smacksutil.items.AbstractBackpackItem;
 import net.smackplays.smacksutil.items.AdvancedMagnetItem;
 import net.smackplays.smacksutil.items.MagnetItem;
 import top.theillusivec4.curios.api.CuriosApi;

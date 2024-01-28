@@ -2,19 +2,13 @@ package net.smackplays.smacksutil.slots;
 
 
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.inventories.BackpackInventory;
 import net.smackplays.smacksutil.inventories.IBackpackInventory;
 import net.smackplays.smacksutil.items.BackpackUpgradeItem;
-import net.smackplays.smacksutil.platform.Services;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class BackpackUpgradeSlot extends Slot {
     public BackpackUpgradeSlot(Container inventory, int index, int x, int y) {

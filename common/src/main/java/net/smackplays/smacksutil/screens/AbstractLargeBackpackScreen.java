@@ -15,7 +15,6 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.Constants;
-import net.smackplays.smacksutil.inventories.BackpackInventory;
 import net.smackplays.smacksutil.inventories.LargeBackpackInventory;
 import net.smackplays.smacksutil.menus.AbstractLargeBackpackMenu;
 import net.smackplays.smacksutil.platform.Services;
@@ -78,7 +77,7 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
     }
 
     @Override
-    protected void renderTooltip(GuiGraphics context, int mouseX, int mouseY) {
+    protected void renderTooltip(@NotNull GuiGraphics context, int mouseX, int mouseY) {
         if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem() && this.hoveredSlot instanceof BackpackSlot) {
             ItemStack hoveredStack = this.hoveredSlot.getItem();
             List<Component> list = this.getTooltipFromContainerItem(hoveredStack);

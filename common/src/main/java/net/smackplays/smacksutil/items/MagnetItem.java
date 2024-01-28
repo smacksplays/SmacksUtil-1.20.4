@@ -2,7 +2,6 @@ package net.smackplays.smacksutil.items;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -91,7 +90,7 @@ public class MagnetItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> componentList, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> componentList, @NotNull TooltipFlag flag) {
         CompoundTag tag = stack.getOrCreateTag();
         componentList.add(1, Component.literal("Enabled: " + tag.getBoolean("enabled")));
     }

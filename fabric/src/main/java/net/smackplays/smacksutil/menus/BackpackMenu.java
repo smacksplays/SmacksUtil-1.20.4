@@ -9,7 +9,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.inventories.BackpackInventory;
-import net.smackplays.smacksutil.platform.Services;
 import org.jetbrains.annotations.Nullable;
 
 public class BackpackMenu extends AbstractBackpackMenu {

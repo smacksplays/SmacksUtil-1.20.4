@@ -12,15 +12,10 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.smackplays.smacksutil.Constants;
-import net.smackplays.smacksutil.items.AdvancedMagnetItem;
-import net.smackplays.smacksutil.items.AutoLightWandItem;
-import net.smackplays.smacksutil.items.MagnetItem;
 import net.smackplays.smacksutil.platform.services.IKeyHandler;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
-import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
-import java.util.Iterator;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -42,7 +37,7 @@ public class NeoForgeKeyHandler implements IKeyHandler {
                 List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "charm");
                 if (!results.isEmpty()){
                     ItemStack stack = results.get(0).stack();
-                    if (stack.is(Services.PLATFORM.getMagnetItem()) || stack.is(Services.PLATFORM.getAdvancedMagnetItem())){
+                    if ((stack.is(Services.PLATFORM.getMagnetItem()) || stack.is(Services.PLATFORM.getAdvancedMagnetItem())) && Services.C2S_PACKET_SENDER != null){
                         Services.C2S_PACKET_SENDER.ToggleMagnetItemPacket(-1);
                         return;
                     }
@@ -51,7 +46,7 @@ public class NeoForgeKeyHandler implements IKeyHandler {
             NonNullList<Slot> slots = player.inventoryMenu.slots;
             for (int i = slots.size() - 1; i >= 0; i--){
                 ItemStack stack = slots.get(i).getItem();
-                if (stack.is(Services.PLATFORM.getAdvancedMagnetItem()) || stack.is(Services.PLATFORM.getMagnetItem())){
+                if ((stack.is(Services.PLATFORM.getAdvancedMagnetItem()) || stack.is(Services.PLATFORM.getMagnetItem()))  && Services.C2S_PACKET_SENDER != null){
                     Services.C2S_PACKET_SENDER.ToggleLightWandItemPacket(i);
                     return;
                 }
@@ -66,7 +61,7 @@ public class NeoForgeKeyHandler implements IKeyHandler {
                 List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "hands");
                 if (!results.isEmpty()){
                     ItemStack stack = results.get(0).stack();
-                    if (stack.is(Services.PLATFORM.getAutoWandItem())){
+                    if (stack.is(Services.PLATFORM.getAutoWandItem()) && Services.C2S_PACKET_SENDER != null){
                         Services.C2S_PACKET_SENDER.ToggleLightWandItemPacket(-1);
                         return;
                     }
@@ -75,7 +70,7 @@ public class NeoForgeKeyHandler implements IKeyHandler {
             NonNullList<Slot> slots = player.inventoryMenu.slots;
             for (int i = slots.size() - 1; i >= 0; i--){
                 ItemStack stack = slots.get(i).getItem();
-                if (stack.is(Services.PLATFORM.getAutoWandItem())){
+                if (stack.is(Services.PLATFORM.getAutoWandItem()) && Services.C2S_PACKET_SENDER != null){
                     Services.C2S_PACKET_SENDER.ToggleLightWandItemPacket(i);
                     return;
                 }
@@ -90,7 +85,7 @@ public class NeoForgeKeyHandler implements IKeyHandler {
                 List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "back");
                 if (!results.isEmpty()){
                     ItemStack stack = results.get(0).stack();
-                    if (stack.is(Services.PLATFORM.getLargeBackackItem()) || stack.is(Services.PLATFORM.getBackackItem())){
+                    if ((stack.is(Services.PLATFORM.getLargeBackackItem()) || stack.is(Services.PLATFORM.getBackackItem())) && Services.C2S_PACKET_SENDER != null){
                         Services.C2S_PACKET_SENDER.BackpackOpenPacket(-1);
                         return;
                     }
@@ -99,7 +94,7 @@ public class NeoForgeKeyHandler implements IKeyHandler {
             NonNullList<Slot> slots = player.inventoryMenu.slots;
             for (int i = slots.size() - 1; i >= 0; i--){
                 ItemStack stack = slots.get(i).getItem();
-                if (stack.is(Services.PLATFORM.getLargeBackackItem()) || stack.is(Services.PLATFORM.getBackackItem())){
+                if ((stack.is(Services.PLATFORM.getLargeBackackItem()) || stack.is(Services.PLATFORM.getBackackItem())) && Services.C2S_PACKET_SENDER != null){
                     Services.C2S_PACKET_SENDER.BackpackOpenPacket(i);
                     return;
                 }
