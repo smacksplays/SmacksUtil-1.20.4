@@ -78,7 +78,6 @@ public class MagnetItem extends Item {
 
     public void notifyPlayer(Player player, String msg, int color){
         player.displayClientMessage(Component.literal("Magnet: " + msg).withColor(color), true);
-        player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
     }
 
     @Override

@@ -73,6 +73,8 @@ public class SmacksUtil implements ModInitializer {
     public static final ResourceLocation INTERACT_ENTITY_REQUEST_ID = new ResourceLocation(MOD_ID, C_INTERACT_ENTITY_REQUEST);
     public static final ResourceLocation VEINMINER_BREAK_REQUEST_ID = new ResourceLocation(MOD_ID, C_VEINMINER_BREAK_REQUEST);
     public static final ResourceLocation BACKPACK_OPEN_REQUEST_ID = new ResourceLocation(MOD_ID, C_BACKPACK_OPEN_REQUEST);
+    public static final ResourceLocation TOGGLE_MAGNET_REQUEST_ID = new ResourceLocation(MOD_ID, C_TOGGLE_MAGNET_ITEM_REQUEST);
+    public static final ResourceLocation TOGGLE_LIGHT_WAND_REQUEST_ID = new ResourceLocation(MOD_ID, C_TOGGLE_LIGHT_WAND_REQUEST);
     public static final ResourceLocation VEINMINER_SERVER_BLOCK_BREAK_REQUEST_ID = new ResourceLocation(MOD_ID, C_VEINMINER_SERVER_BLOCK_BREAK_REQUEST);
     public static final MenuType<BackpackMenu> BACKPACK_MENU = new ExtendedScreenHandlerType<>(BackpackMenu::createGeneric9x6);
     public static final MenuType<LargeBackpackMenu> LARGE_BACKPACK_MENU = new ExtendedScreenHandlerType<>(LargeBackpackMenu::createGeneric13x9);
@@ -126,6 +128,10 @@ public class SmacksUtil implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(INTERACT_ENTITY_REQUEST_ID, this::handleInteractEntityRequest);
 
         ServerPlayNetworking.registerGlobalReceiver(VEINMINER_BREAK_REQUEST_ID, this::handleVeinMinerBreakRequest);
+
+        ServerPlayNetworking.registerGlobalReceiver(TOGGLE_MAGNET_REQUEST_ID, this::handleToggleMagnetRequest);
+
+        ServerPlayNetworking.registerGlobalReceiver(TOGGLE_LIGHT_WAND_REQUEST_ID, this::handleToggleLightWandRequest);
 
         if (Services.PLATFORM.isModLoaded("trinkets")){
             Trinkets.init();
@@ -297,6 +303,28 @@ public class SmacksUtil implements ModInitializer {
             }
             if (replaceSeeds) {
                 world.setBlockAndUpdate(curr, currBlockState.getBlock().defaultBlockState());
+            }
+        });
+    }
+
+    private void handleToggleMagnetRequest(MinecraftServer server, ServerPlayer player,
+                                           ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender){
+        server.execute(() -> {
+            int slot = buf.readInt();
+            ItemStack stack = player.inventoryMenu.slots.get(slot).getItem();
+            if (stack.getItem() instanceof MagnetItem item) {
+                item.toggle(stack, player);
+            }
+        });
+    }
+
+    private void handleToggleLightWandRequest(MinecraftServer server, ServerPlayer player,
+                                           ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender){
+        server.execute(() -> {
+            int slot = buf.readInt();
+            ItemStack stack = player.inventoryMenu.slots.get(slot).getItem();
+            if (stack.getItem() instanceof AutoLightWandItem item) {
+                item.toggle(stack, player);
             }
         });
     }

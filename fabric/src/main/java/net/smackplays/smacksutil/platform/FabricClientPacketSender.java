@@ -56,12 +56,20 @@ public class FabricClientPacketSender implements IClientPacketSender {
 
     @Override
     public void ToggleMagnetItemPacket(int slot) {
-
+        FriendlyByteBuf packet = PacketByteBufs.create();
+        packet.writeInt(slot);
+        if (ClientPlayNetworking.canSend(TOGGLE_MAGNET_REQUEST_ID)){
+            ClientPlayNetworking.send(TOGGLE_MAGNET_REQUEST_ID, packet);
+        }
     }
 
     @Override
     public void ToggleLightWandItemPacket(int slot) {
-
+        FriendlyByteBuf packet = PacketByteBufs.create();
+        packet.writeInt(slot);
+        if (ClientPlayNetworking.canSend(TOGGLE_LIGHT_WAND_REQUEST_ID)){
+            ClientPlayNetworking.send(TOGGLE_LIGHT_WAND_REQUEST_ID, packet);
+        }
     }
 
     @Override

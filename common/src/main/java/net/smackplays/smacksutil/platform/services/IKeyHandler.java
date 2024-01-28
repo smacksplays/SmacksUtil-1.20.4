@@ -89,13 +89,11 @@ public interface IKeyHandler {
             NonNullList<Slot> slots = player.inventoryMenu.slots;
             for (int i = slots.size() - 1; i >= 0; i--){
                 ItemStack stack = slots.get(i).getItem();
-                if (stack.is(Services.PLATFORM.getAdvancedMagnetItem())){
-                    AdvancedMagnetItem item = (AdvancedMagnetItem) Services.PLATFORM.getAdvancedMagnetItem();
-                    item.toggle(stack, player);
-                    return;
-                } else if (stack.is(Services.PLATFORM.getMagnetItem())){
-                    MagnetItem item = (MagnetItem) Services.PLATFORM.getMagnetItem();
-                    item.toggle(stack, player);
+                if (stack.is(Services.PLATFORM.getAdvancedMagnetItem()) || stack.is(Services.PLATFORM.getMagnetItem())){
+                    Services.C2S_PACKET_SENDER.ToggleMagnetItemPacket(i);
+                    if (Services.CONFIG.isEnabledKeyPressSound()){
+                        player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
+                    }
                     return;
                 }
             }
@@ -108,8 +106,10 @@ public interface IKeyHandler {
             for (int i = slots.size() - 1; i >= 0; i--){
                 ItemStack stack = slots.get(i).getItem();
                 if (stack.is(Services.PLATFORM.getAutoWandItem())){
-                    AutoLightWandItem item = (AutoLightWandItem) Services.PLATFORM.getAutoWandItem();
-                    item.toggle(stack, player);
+                    Services.C2S_PACKET_SENDER.ToggleLightWandItemPacket(i);
+                    if (Services.CONFIG.isEnabledKeyPressSound()){
+                        player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
+                    }
                     return;
                 }
             }

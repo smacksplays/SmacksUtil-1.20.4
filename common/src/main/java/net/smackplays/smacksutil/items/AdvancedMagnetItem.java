@@ -24,7 +24,6 @@ public class AdvancedMagnetItem extends MagnetItem {
     @Override
     public void notifyPlayer(Player player, String msg, int color){
         player.displayClientMessage(Component.literal("Advanced Magnet: " + msg).withColor(color), true);
-        player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
     }
 
     @Override

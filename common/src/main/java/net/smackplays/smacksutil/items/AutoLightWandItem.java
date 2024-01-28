@@ -89,8 +89,7 @@ public class AutoLightWandItem extends LightWandItem {
     }
 
     public void notifyPlayer(Player player, String msg, int color){
-        player.displayClientMessage(Component.literal("Magnet: " + msg).withColor(color), true);
-        player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
+        player.displayClientMessage(Component.literal("Auto Light Wand: " + msg).withColor(color), true);
     }
 
     @Override
