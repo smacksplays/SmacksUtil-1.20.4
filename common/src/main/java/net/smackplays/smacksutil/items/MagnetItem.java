@@ -11,9 +11,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -21,7 +23,6 @@ public class MagnetItem extends Item {
 
     private static final int GREEN = 65280;
     private static final int RED = 16711680;
-    public boolean enable_magnet;
 
     public MagnetItem(Properties props) {
         super(props);
@@ -36,18 +37,7 @@ public class MagnetItem extends Item {
         ItemStack stack = player.getItemInHand(interactionHand);
         if (world.isClientSide) return InteractionResultHolder.success(stack);
         if (!player.isCrouching()) {
-            CompoundTag tag = stack.getTag();
-            if (tag == null) {
-                stack.getOrCreateTag();
-                tag = stack.getTag();
-            }
-            setEnable_magnet(tag.getBoolean("enabled"));
-            stack.getOrCreateTag().putBoolean("enabled", !isEnable_magnet(stack));
-            boolean auto_wand = isEnable_magnet(stack);
-            String str = auto_wand ? "Active" : "Inactive";
-            int color = auto_wand ? GREEN : RED;
-            player.displayClientMessage(Component
-                    .literal("Magnet: " + str).withColor(color), true);
+            toggle(stack, player);
             return InteractionResultHolder.success(stack);
         }
         return super.use(world, player, interactionHand);
@@ -55,9 +45,14 @@ public class MagnetItem extends Item {
 
     @Override
     public void inventoryTick(@NotNull ItemStack stack, Level world, @NotNull Entity entity, int $$3, boolean $$4) {
-        if (world.isClientSide) return;
-        if (!isEnable_magnet(stack)) return;
-        AABB area = new AABB(entity.position().add(-5, -5, -5), entity.position().add(5, 5, 5));
+        if (!world.isClientSide && stack.getOrCreateTag().getBoolean("enabled")){
+            attract(entity, world, getRange());
+        }
+        super.inventoryTick(stack, world, entity, $$3, $$4);
+    }
+
+    public void attract(Entity entity, Level world, int range){
+        AABB area = new AABB(entity.position().add(-range, -range, -range), entity.position().add(range, range, range));
         Player player = (Player) entity;
         List<ItemEntity> entities = world.getEntitiesOfClass(ItemEntity.class, area);
         for (ItemEntity e : entities) {
@@ -70,18 +65,18 @@ public class MagnetItem extends Item {
             player.takeXpDelay = 0;
             e.playerTouch(player);
         }
-
-        super.inventoryTick(stack, world, entity, $$3, $$4);
     }
 
-    public boolean isEnable_magnet(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTag();
-        enable_magnet = tag.getBoolean("enabled");
-        return enable_magnet;
+    public void toggle(ItemStack stack, Player player){
+        boolean state = stack.getOrCreateTag().getBoolean("enabled");
+        stack.getOrCreateTag().putBoolean("enabled", !state);
+        String msg = !state ? "Active" : "Inactive";
+        int color = !state ? GREEN : RED;
+        notifyPlayer(player, msg, color);
     }
 
-    public void setEnable_magnet(boolean enable_magnet) {
-        this.enable_magnet = enable_magnet;
+    public void notifyPlayer(Player player, String msg, int color){
+        player.displayClientMessage(Component.literal("Magnet: " + msg).withColor(color), true);
     }
 
     @Override
@@ -91,6 +86,16 @@ public class MagnetItem extends Item {
 
     @Override
     public boolean isFoil(@NotNull ItemStack stack) {
-        return isEnable_magnet(stack);
+        return stack.getOrCreateTag().getBoolean("enabled");
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> componentList, @NotNull TooltipFlag flag) {
+        CompoundTag tag = stack.getOrCreateTag();
+        componentList.add(1, Component.literal("Enabled: " + tag.getBoolean("enabled")));
+    }
+
+    public int getRange(){
+        return 5;
     }
 }

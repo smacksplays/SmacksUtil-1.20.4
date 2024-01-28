@@ -14,6 +14,7 @@ import net.smackplays.smacksutil.inventories.LargeBackpackInventory;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unused")
 public class LargeBackpackItem extends AbstractBackpackItem {
 
     public LargeBackpackItem() {

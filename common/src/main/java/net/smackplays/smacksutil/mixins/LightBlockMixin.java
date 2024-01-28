@@ -37,7 +37,7 @@ public class LightBlockMixin {
                     || player.getItemInHand(interactionHand).is(Services.PLATFORM.getAutoWandItem())) {
                 if (level.getBlockState(blockPos).is(Blocks.LIGHT)) {
                     if (Services.C2S_PACKET_SENDER != null) {
-                        Services.C2S_PACKET_SENDER.sendToServerSetBlockAirPacket(blockPos);
+                        Services.C2S_PACKET_SENDER.SetBlockAirPacket(blockPos);
                         cir.setReturnValue(InteractionResult.SUCCESS);
                     }
                 }

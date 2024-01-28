@@ -20,6 +20,7 @@ public class CustomRenderLayer extends RenderType {
                     .setCullState(NO_CULL)
                     .createCompositeState(false));
 
+    @SuppressWarnings("unused")
     public CustomRenderLayer(String name, VertexFormat vertexFormat, VertexFormat.Mode drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
         super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction);
     }

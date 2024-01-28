@@ -46,4 +46,5 @@ public class LightWandItem extends Item {
     public boolean isEnchantable(@NotNull ItemStack stack) {
         return false;
     }
+
 }

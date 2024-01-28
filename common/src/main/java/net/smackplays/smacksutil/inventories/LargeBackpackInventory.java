@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class LargeBackpackInventory implements IBackpackInventory {
-    private final ItemStack stack;
+    public final ItemStack stack;
     private final NonNullList<ItemStack> items = NonNullList.withSize(13 * 9 + 4, ItemStack.EMPTY);
 
     public LargeBackpackInventory(ItemStack stack) {

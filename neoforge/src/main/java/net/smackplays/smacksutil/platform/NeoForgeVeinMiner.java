@@ -24,8 +24,11 @@ public class NeoForgeVeinMiner extends IVeinMiner {
                             Level world, Player player) {
         if (isDrawing) return;
         isDrawing = true;
-        toBreak = (ArrayList<BlockPos>) Services.VEIN_MINER.getBlocks(world, player, pos).clone();
-        int maxRenderBlocks = Services.CONFIG.getMaxRenderBlocks();
+        //toBreak = (ArrayList<BlockPos>) Services.VEIN_MINER.getBlocks(world, player, pos).clone();
+        int maxRenderBlocks = 150;
+        if (Services.CONFIG != null){
+            maxRenderBlocks = Services.CONFIG.getMaxRenderBlocks();
+        }
         if (toBreak.size() > maxRenderBlocks) {
             toBreak = new ArrayList<>(toBreak.subList(0, maxRenderBlocks));
         }

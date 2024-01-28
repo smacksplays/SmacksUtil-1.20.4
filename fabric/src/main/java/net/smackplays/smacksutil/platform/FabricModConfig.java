@@ -56,6 +56,9 @@ public class FabricModConfig implements IModConfig, ConfigData {
     @ConfigEntry.Gui.Tooltip()
     @Comment("Enable Fast Placing.")
     public boolean enabledFastPlace = IModConfig.enabledFastPlace;
+    @ConfigEntry.Gui.Tooltip()
+    @Comment("Play a sound when a key was pressed.")
+    public boolean enabledKeyPressSound = IModConfig.enabledKeyPressSound;
 
     @Override
     public int getMaxRenderBlocks() {
@@ -195,6 +198,16 @@ public class FabricModConfig implements IModConfig, ConfigData {
     @Override
     public void setEnabledFastPlace(boolean toSet) {
         INSTANCE.enabledFastPlace = toSet;
+    }
+
+    @Override
+    public boolean isEnabledKeyPressSound() {
+        return INSTANCE.enabledKeyPressSound;
+    }
+
+    @Override
+    public void setEnabledKeyPressSound(boolean toSet) {
+        INSTANCE.enabledKeyPressSound = toSet;
     }
 
 

@@ -7,8 +7,8 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.SimpleChannel;
 import net.smackplays.smacksutil.Constants;
-import net.smackplays.smacksutil.networking.C2SPacket.*;
-import net.smackplays.smacksutil.networking.S2CPacket.PlayerBlockBreakPacket;
+import net.smackplays.smacksutil.networking.c2spacket.*;
+import net.smackplays.smacksutil.networking.s2cpacket.S2CPlayerBlockBreakPacket;
 
 @SuppressWarnings("unused")
 public class PacketHandler {
@@ -20,10 +20,16 @@ public class PacketHandler {
             .simpleChannel();
 
     public static void register() {
-        INSTANCE.messageBuilder(C2SSortPacket.class, NetworkDirection.PLAY_TO_SERVER)
-                .encoder(C2SSortPacket::encode)
-                .decoder(C2SSortPacket::new)
-                .consumerMainThread(C2SSortPacket::handle)
+        INSTANCE.messageBuilder(C2SBackpackSortPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SBackpackSortPacket::encode)
+                .decoder(C2SBackpackSortPacket::new)
+                .consumerMainThread(C2SBackpackSortPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(C2SBackpackOpenPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SBackpackOpenPacket::encode)
+                .decoder(C2SBackpackOpenPacket::new)
+                .consumerMainThread(C2SBackpackOpenPacket::handle)
                 .add();
 
         INSTANCE.messageBuilder(C2SSetBlockAirPacket.class, NetworkDirection.PLAY_TO_SERVER)
@@ -68,10 +74,22 @@ public class PacketHandler {
                 .consumerMainThread(C2SVeinMinerBreakPacket::handle)
                 .add();
 
-        INSTANCE.messageBuilder(PlayerBlockBreakPacket.class, NetworkDirection.PLAY_TO_CLIENT)
-                .encoder(PlayerBlockBreakPacket::encode)
-                .decoder(PlayerBlockBreakPacket::new)
-                .consumerMainThread(PlayerBlockBreakPacket::handle)
+        INSTANCE.messageBuilder(C2SToggleMagnetItemPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SToggleMagnetItemPacket::encode)
+                .decoder(C2SToggleMagnetItemPacket::new)
+                .consumerMainThread(C2SToggleMagnetItemPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(C2SToggleLightWandItemPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SToggleLightWandItemPacket::encode)
+                .decoder(C2SToggleLightWandItemPacket::new)
+                .consumerMainThread(C2SToggleLightWandItemPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(S2CPlayerBlockBreakPacket.class, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(S2CPlayerBlockBreakPacket::encode)
+                .decoder(S2CPlayerBlockBreakPacket::new)
+                .consumerMainThread(S2CPlayerBlockBreakPacket::handle)
                 .add();
     }
 

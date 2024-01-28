@@ -1,3 +1,38 @@
+//file:noinspection DependencyNotationArgument
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
+//file:noinspection GrUnresolvedAccess
 plugins {
     id 'idea'
     id 'maven-publish'
@@ -41,6 +76,8 @@ dependencies {
     implementation "net.neoforged:neoforge:${neoforge_version}"
     compileOnly project(":common")
     implementation "me.shedaniel.cloth:cloth-config-neoforge:13.0.121"
+    runtimeOnly "top.theillusivec4.curios:curios-neoforge:7.1.0+1.20.4"
+    compileOnly "top.theillusivec4.curios:curios-neoforge:7.1.0+1.20.4:api"
 }
 
 // NeoGradle compiles the game, but we don't want to add our common code to the game's code

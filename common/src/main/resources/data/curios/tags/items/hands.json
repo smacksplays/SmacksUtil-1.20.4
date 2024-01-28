@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "smacksutil:light_wand_item",
+    "smacksutil:auto_light_wand_item"
+  ]
+}

@@ -29,11 +29,12 @@ public class FabricVeinMiner extends IVeinMiner {
         if (Services.CONFIG != null) {
             maxRenderBlocks = Services.CONFIG.getMaxRenderBlocks();
         }
-        if (toBreak.size() > maxRenderBlocks) {
-            toBreak = new ArrayList<>(toBreak.subList(0, maxRenderBlocks));
+        ArrayList<BlockPos> toRender = (ArrayList<BlockPos>) toBreak.clone();
+        if (toRender.size() > maxRenderBlocks) {
+            toRender = new ArrayList<>(toRender.subList(0, maxRenderBlocks));
         }
 
-        VoxelShape shape = combine(world, pos, (ArrayList<BlockPos>) toBreak.clone());
+        VoxelShape shape = combine(world, pos, toRender);
 
         VertexConsumer vertex = Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(CustomRenderLayer.LINES);
 
