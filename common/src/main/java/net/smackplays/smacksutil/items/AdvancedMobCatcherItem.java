@@ -61,6 +61,7 @@ public class AdvancedMobCatcherItem extends Item {
         return InteractionResult.SUCCESS;
     }
 
+    @SuppressWarnings("unused")
     public boolean pickupLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity livingEntity, @NotNull InteractionHand interactionHand) {
         Level world = player.level();
         ItemStack mainHandStack = player.getItemInHand(interactionHand);
@@ -74,8 +75,6 @@ public class AdvancedMobCatcherItem extends Item {
         if (list != null && isBelowMax(mainHandStack) && !world.isClientSide && interactionHand.equals(InteractionHand.MAIN_HAND)) {
             CompoundTag entityTag = new CompoundTag();
             livingEntity.save(entityTag);
-            if (entityTag.isEmpty()) {
-            }
             livingEntity.addAdditionalSaveData(entityTag);
             if (!list.contains(entityTag)) {
                 list.add(entityTag);

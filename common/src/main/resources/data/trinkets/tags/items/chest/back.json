@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "smacksutil:backpack_item",
+    "smacksutil:large_backpack_item"
+  ]
+}

@@ -15,6 +15,7 @@ public interface IModConfig {
     boolean enabledTreesMode = true;
     boolean enabledFastEat = false;
     boolean enabledFastPlace = false;
+    boolean enabledKeyPressSound = true;
 
     void init();
 
@@ -73,4 +74,8 @@ public interface IModConfig {
     boolean isEnabledFastPlace();
 
     void setEnabledFastPlace(boolean toSet);
+
+    boolean isEnabledKeyPressSound();
+
+    void setEnabledKeyPressSound(boolean toSet);
 }

@@ -80,6 +80,7 @@ public abstract class IVeinMiner {
         });
     }
 
+    @SuppressWarnings("unused")
     abstract public void drawOutline(PoseStack pose, double cameraX, double cameraY, double cameraZ, BlockPos pos,
                                      Level world, Player player);
 
@@ -127,7 +128,7 @@ public abstract class IVeinMiner {
             boolean canHarvest = (player.hasCorrectToolForDrops(currBlockState) || player.isCreative());
             if (canHarvest) {
                 if (Services.C2S_PACKET_SENDER != null) {
-                    Services.C2S_PACKET_SENDER.sendToServerVeinMinerBreakPacket(mainHandStack, curr, isCreative, replaceSeeds);
+                    Services.C2S_PACKET_SENDER.VeinMinerBreakPacket(mainHandStack, curr, isCreative, replaceSeeds);
                 }
             }
         }
@@ -215,7 +216,7 @@ public abstract class IVeinMiner {
             }
 
         }
-        if (player != null && IKeyHandler.veinKey.isDown()) {
+        if (player != null && Services.KEY_HANDLER.isVeinKeyDown()) {
             if (player.isCrouching()) {
                 currMode += (int) vertical;
                 player.getInventory().selected = player.getInventory().selected + (int) vertical;

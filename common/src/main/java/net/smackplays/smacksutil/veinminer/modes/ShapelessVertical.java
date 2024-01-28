@@ -85,6 +85,9 @@ public class ShapelessVertical extends VeinMode {
 
     @Override
     public boolean doRender(int radius) {
-        return radius <= Services.CONFIG.getMaxRenderShapelessVerticalRadius();
+        if (Services.CONFIG != null) {
+            return radius <= Services.CONFIG.getMaxRenderShapelessVerticalRadius();
+        }
+        return false;
     }
 }

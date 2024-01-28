@@ -181,7 +181,7 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
             String dim = level.dimensionTypeId().location().getPath();
 
             if (Services.C2S_PACKET_SENDER != null) {
-                Services.C2S_PACKET_SENDER.sendToServerTeleportNBTPacket(stack, pos, xRot, yRot, name, dim, false);
+                Services.C2S_PACKET_SENDER.TeleportNBTPacket(stack, pos, xRot, yRot, name, dim, false);
             }
         }
     }
@@ -261,9 +261,9 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
                         String name = keyList.get(i);
                         if (Services.C2S_PACKET_SENDER != null){
                             if (isRemove){
-                                Services.C2S_PACKET_SENDER.sendToServerTeleportNBTPacket(stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot, name, posMap.get(name).dim, isRemove);
+                                Services.C2S_PACKET_SENDER.TeleportNBTPacket(stack, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot, name, posMap.get(name).dim, isRemove);
                             } else {
-                                Services.C2S_PACKET_SENDER.sendToServerTeleportPacket(posMap.get(name).levelKey, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot);
+                                Services.C2S_PACKET_SENDER.TeleportPacket(posMap.get(name).levelKey, posMap.get(name).pos, posMap.get(name).xRot, posMap.get(name).yRot);
                             }
                         }
                         return true;
@@ -341,6 +341,7 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
         return b1 && b2 && b3 && b4;
     }
 
+    @SuppressWarnings("SameParameterValue")
     private record Label(Component component, int x, int y, int color, boolean shadow) {
     }
 

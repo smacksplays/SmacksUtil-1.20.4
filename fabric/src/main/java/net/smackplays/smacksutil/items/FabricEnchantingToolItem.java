@@ -13,6 +13,7 @@ import net.smackplays.smacksutil.inventories.EnchantmentToolInventory;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unused")
 public class FabricEnchantingToolItem extends AbstractEnchantingToolItem {
     public FabricEnchantingToolItem() {
         super();

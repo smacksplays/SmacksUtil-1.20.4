@@ -13,6 +13,7 @@ import net.smackplays.smacksutil.SmacksUtil;
 import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unused")
 public class TeleportationTablet extends AbstractTeleportationTablet{
     public TeleportationTablet() {
         super();

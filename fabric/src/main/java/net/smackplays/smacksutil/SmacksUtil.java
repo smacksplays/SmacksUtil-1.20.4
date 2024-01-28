@@ -23,8 +23,6 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -43,6 +41,8 @@ import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
+import net.smackplays.smacksutil.platform.Services;
+import net.smackplays.smacksutil.trinkets.Trinkets;
 
 import java.util.List;
 import java.util.Set;
@@ -50,14 +50,14 @@ import java.util.UUID;
 
 import static net.smackplays.smacksutil.Constants.*;
 
+@SuppressWarnings("unused")
 public class SmacksUtil implements ModInitializer {
 
-    public static final Attribute BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE = new RangedAttribute("attribute.name.generic.upgrade_multiplier", 1, 1, 8);
     public static final Item BACKPACK_ITEM = new BackpackItem();
     public static final Item LARGE_BACKPACK_ITEM = new LargeBackpackItem();
-    public static final Item BACKPACK_UPGRADE_TIER1_ITEM = new BackpackUpgradeItem(2);
-    public static final Item BACKPACK_UPGRADE_TIER2_ITEM = new BackpackUpgradeItem(4);
-    public static final Item BACKPACK_UPGRADE_TIER3_ITEM = new BackpackUpgradeItem(8);
+    public static final Item BACKPACK_UPGRADE_TIER1_ITEM = new BackpackUpgradeItem(4);
+    public static final Item BACKPACK_UPGRADE_TIER2_ITEM = new BackpackUpgradeItem(8);
+    public static final Item BACKPACK_UPGRADE_TIER3_ITEM = new BackpackUpgradeItem(16);
     public static final Item LIGHT_WAND_ITEM = new LightWandItem();
     public static final Item AUTO_LIGHT_WAND_ITEM = new AutoLightWandItem();
     public static final Item MAGNET_ITEM = new MagnetItem();
@@ -67,12 +67,15 @@ public class SmacksUtil implements ModInitializer {
     public static final Item ENCHANTING_TOOL_ITEM = new FabricEnchantingToolItem();
     public static final Item TELEPORTATION_TABLET_ITEM = new TeleportationTablet();
     public static final ResourceLocation ENCHANT_REQUEST_ID = new ResourceLocation(MOD_ID, C_ENCHANT_REQUEST);
-    public static final ResourceLocation SORT_REQUEST_ID = new ResourceLocation(MOD_ID, C_SORT_REQUEST);
+    public static final ResourceLocation BACKPACK_SORT_REQUEST_ID = new ResourceLocation(MOD_ID, C_BACKPACK_SORT_REQUEST);
     public static final ResourceLocation SET_BLOCK_AIR_REQUEST_ID = new ResourceLocation(MOD_ID, C_SET_BLOCK_AIR_REQUEST);
     public static final ResourceLocation TELEPORT_REQUEST_ID = new ResourceLocation(MOD_ID, C_TELEPORT_REQUEST);
     public static final ResourceLocation TELEPORT_NBT_REQUEST_ID = new ResourceLocation(MOD_ID, C_TELEPORT_NBT_REQUEST);
     public static final ResourceLocation INTERACT_ENTITY_REQUEST_ID = new ResourceLocation(MOD_ID, C_INTERACT_ENTITY_REQUEST);
     public static final ResourceLocation VEINMINER_BREAK_REQUEST_ID = new ResourceLocation(MOD_ID, C_VEINMINER_BREAK_REQUEST);
+    public static final ResourceLocation BACKPACK_OPEN_REQUEST_ID = new ResourceLocation(MOD_ID, C_BACKPACK_OPEN_REQUEST);
+    public static final ResourceLocation TOGGLE_MAGNET_REQUEST_ID = new ResourceLocation(MOD_ID, C_TOGGLE_MAGNET_ITEM_REQUEST);
+    public static final ResourceLocation TOGGLE_LIGHT_WAND_REQUEST_ID = new ResourceLocation(MOD_ID, C_TOGGLE_LIGHT_WAND_REQUEST);
     public static final ResourceLocation VEINMINER_SERVER_BLOCK_BREAK_REQUEST_ID = new ResourceLocation(MOD_ID, C_VEINMINER_SERVER_BLOCK_BREAK_REQUEST);
     public static final MenuType<BackpackMenu> BACKPACK_MENU = new ExtendedScreenHandlerType<>(BackpackMenu::createGeneric9x6);
     public static final MenuType<LargeBackpackMenu> LARGE_BACKPACK_MENU = new ExtendedScreenHandlerType<>(LargeBackpackMenu::createGeneric13x9);
@@ -97,7 +100,6 @@ public class SmacksUtil implements ModInitializer {
         registerItem(C_LARGE_BACKPACK_ITEM, LARGE_BACKPACK_ITEM);
         CauldronInteraction.WATER.map().putIfAbsent(LARGE_BACKPACK_ITEM, CauldronInteraction.SHULKER_BOX);
 
-        Registry.register(BuiltInRegistries.ATTRIBUTE, new ResourceLocation(MOD_ID, "generic.upgrade_multiplier"), BACKPACK_UPGRADE_MULTIPLIER_ATTRIBUTE);
         registerItem(C_BACKPACK_UPGRADE_TIER1_ITEM, BACKPACK_UPGRADE_TIER1_ITEM);
         registerItem(C_BACKPACK_UPGRADE_TIER2_ITEM, BACKPACK_UPGRADE_TIER2_ITEM);
         registerItem(C_BACKPACK_UPGRADE_TIER3_ITEM, BACKPACK_UPGRADE_TIER3_ITEM);
@@ -114,7 +116,9 @@ public class SmacksUtil implements ModInitializer {
 
         ServerPlayNetworking.registerGlobalReceiver(ENCHANT_REQUEST_ID, this::handleEnchantRequest);
 
-        ServerPlayNetworking.registerGlobalReceiver(SORT_REQUEST_ID, this::handleSortRequest);
+        ServerPlayNetworking.registerGlobalReceiver(BACKPACK_SORT_REQUEST_ID, this::handleBackpackSortRequest);
+
+        ServerPlayNetworking.registerGlobalReceiver(BACKPACK_OPEN_REQUEST_ID, this::handleBackpackOpenRequest);
 
         ServerPlayNetworking.registerGlobalReceiver(SET_BLOCK_AIR_REQUEST_ID, this::handleSetBlockAirRequest);
 
@@ -125,6 +129,14 @@ public class SmacksUtil implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(INTERACT_ENTITY_REQUEST_ID, this::handleInteractEntityRequest);
 
         ServerPlayNetworking.registerGlobalReceiver(VEINMINER_BREAK_REQUEST_ID, this::handleVeinMinerBreakRequest);
+
+        ServerPlayNetworking.registerGlobalReceiver(TOGGLE_MAGNET_REQUEST_ID, this::handleToggleMagnetRequest);
+
+        ServerPlayNetworking.registerGlobalReceiver(TOGGLE_LIGHT_WAND_REQUEST_ID, this::handleToggleLightWandRequest);
+
+        if (Services.PLATFORM.isModLoaded("trinkets")){
+            Trinkets.init();
+        }
 
     }
 
@@ -142,7 +154,7 @@ public class SmacksUtil implements ModInitializer {
         });
     }
 
-    private void handleSortRequest(MinecraftServer server, ServerPlayer player,
+    private void handleBackpackSortRequest(MinecraftServer server, ServerPlayer player,
                                    ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender){
         server.execute(() -> {
             AbstractContainerMenu screenHandler = player.containerMenu;
@@ -151,6 +163,17 @@ public class SmacksUtil implements ModInitializer {
                 lBackpackMenu.sort();
             } else if (stack.getItem() instanceof AbstractBackpackItem && screenHandler instanceof BackpackMenu backpackMenu) {
                 backpackMenu.sort();
+            }
+        });
+    }
+
+    private void handleBackpackOpenRequest(MinecraftServer server, ServerPlayer player,
+                                   ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender){
+        server.execute(() -> {
+            int slot = buf.readInt();
+            ItemStack stack = player.inventoryMenu.slots.get(slot).getItem();
+            if (stack.getItem() instanceof AbstractBackpackItem item) {
+                player.openMenu(item.createScreenHandlerFactory(stack));
             }
         });
     }
@@ -281,6 +304,28 @@ public class SmacksUtil implements ModInitializer {
             }
             if (replaceSeeds) {
                 world.setBlockAndUpdate(curr, currBlockState.getBlock().defaultBlockState());
+            }
+        });
+    }
+
+    private void handleToggleMagnetRequest(MinecraftServer server, ServerPlayer player,
+                                           ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender){
+        server.execute(() -> {
+            int slot = buf.readInt();
+            ItemStack stack = player.inventoryMenu.slots.get(slot).getItem();
+            if (stack.getItem() instanceof MagnetItem item) {
+                item.toggle(stack, player);
+            }
+        });
+    }
+
+    private void handleToggleLightWandRequest(MinecraftServer server, ServerPlayer player,
+                                           ServerGamePacketListenerImpl handler, FriendlyByteBuf buf, PacketSender responseSender){
+        server.execute(() -> {
+            int slot = buf.readInt();
+            ItemStack stack = player.inventoryMenu.slots.get(slot).getItem();
+            if (stack.getItem() instanceof AutoLightWandItem item) {
+                item.toggle(stack, player);
             }
         });
     }

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unused")
 public interface IEnchantmentToolInventory extends WorldlyContainer {
     static IEnchantmentToolInventory of(NonNullList<ItemStack> items) {
         return () -> items;

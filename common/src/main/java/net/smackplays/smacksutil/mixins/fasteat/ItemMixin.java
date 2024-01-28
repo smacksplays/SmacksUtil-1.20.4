@@ -13,7 +13,7 @@ public class ItemMixin {
 
     @Inject(at = @At("HEAD"), method = "getUseDuration", cancellable = true)
     private void getMaxUseTime(ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-        if (stack.getItem().isEdible() && Services.CONFIG.isEnabledFastEat()) {
+        if (stack.getItem().isEdible() && Services.CONFIG != null && Services.CONFIG.isEnabledFastEat()) {
             cir.setReturnValue(4);
         }
     }
