@@ -5,19 +5,21 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.network.CustomPayloadEvent;
 import net.smackplays.smacksutil.items.AbstractBackpackItem;
+import net.smackplays.smacksutil.items.AutoLightWandItem;
+import net.smackplays.smacksutil.items.LightWandItem;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 
 import java.util.List;
 
-public class C2SBackpackOpenPacket {
+public class C2SToggleLightWandItemPacket {
     private final int slot;
 
-    public C2SBackpackOpenPacket(int s) {
+    public C2SToggleLightWandItemPacket(int s) {
         slot = s;
     }
 
-    public C2SBackpackOpenPacket(FriendlyByteBuf buffer) {
+    public C2SToggleLightWandItemPacket(FriendlyByteBuf buffer) {
         slot = buffer.readInt();
     }
 
@@ -31,7 +33,7 @@ public class C2SBackpackOpenPacket {
             return;
         ItemStack stack = null;
         if (slot == -1){
-            List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "back");
+            List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "hands");
             if (!results.isEmpty()){
                 stack = results.get(0).stack();
             }
@@ -39,8 +41,8 @@ public class C2SBackpackOpenPacket {
             stack = player.containerMenu.slots.get(slot).getItem();
         }
 
-        if (stack != null && stack.getItem() instanceof AbstractBackpackItem item) {
-            player.openMenu(item.createScreenHandlerFactory(stack));
+        if (stack != null && stack.getItem() instanceof AutoLightWandItem item) {
+            item.toggle(stack, player);
         }
     }
 }

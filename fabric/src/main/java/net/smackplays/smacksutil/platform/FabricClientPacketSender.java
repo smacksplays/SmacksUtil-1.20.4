@@ -55,6 +55,16 @@ public class FabricClientPacketSender implements IClientPacketSender {
     }
 
     @Override
+    public void ToggleMagnetItemPacket(int slot) {
+
+    }
+
+    @Override
+    public void ToggleLightWandItemPacket(int slot) {
+
+    }
+
+    @Override
     public void SetBlockAirPacket(BlockPos pos) {
         FriendlyByteBuf packet = PacketByteBufs.create();
         packet.writeBlockPos(pos);

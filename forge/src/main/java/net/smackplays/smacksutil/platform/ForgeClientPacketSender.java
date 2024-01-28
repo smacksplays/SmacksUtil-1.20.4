@@ -33,6 +33,16 @@ public class ForgeClientPacketSender implements IClientPacketSender {
     }
 
     @Override
+    public void ToggleMagnetItemPacket(int slot) {
+        PacketHandler.sendToServer(new C2SToggleMagnetItemPacket(slot));
+    }
+
+    @Override
+    public void ToggleLightWandItemPacket(int slot) {
+        PacketHandler.sendToServer(new C2SToggleLightWandItemPacket(slot));
+    }
+
+    @Override
     public void SetBlockAirPacket(BlockPos pos) {
         PacketHandler.sendToServer(new C2SSetBlockAirPacket(pos));
     }

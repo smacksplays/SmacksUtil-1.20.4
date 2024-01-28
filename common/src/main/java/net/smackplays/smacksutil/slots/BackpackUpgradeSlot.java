@@ -24,17 +24,17 @@ public class BackpackUpgradeSlot extends Slot {
     @Override
     public boolean mayPickup(@NotNull Player player) {
         ItemStack stack = getItem();
-
         int offset = 1;
-        Item upgradeItem = stack.getItem();
-        if (upgradeItem.equals(Services.PLATFORM.getUpgrade1Item())) {
-            offset *= 2;
-        } else if (upgradeItem.equals(Services.PLATFORM.getUpgrade2Item())) {
-            offset *= 8;
-        } else if (upgradeItem.equals(Services.PLATFORM.getUpgrade3Item())){
-            offset *= 16;
+        ItemStack carried = player.containerMenu.getCarried();
+        int carriedMultiplier;
+        if (stack.getItem() instanceof BackpackUpgradeItem item){
+            offset = item.getMultiplier();
         }
-
+        if (carried.getItem() instanceof BackpackUpgradeItem item){
+            carriedMultiplier = item.getMultiplier();
+            if (offset < carriedMultiplier) return true;
+            offset /= carriedMultiplier;
+        }
         if (offset != 1){
             if (container instanceof BackpackInventory inv){
                 return inv.checkRemoveUpgrade(inv.getMaxStackSize() / offset);

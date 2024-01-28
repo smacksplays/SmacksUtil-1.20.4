@@ -35,7 +35,7 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
     private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, C_LARGE_BACKPACK_SCREEN_LOCATION);
     //A path to the gui texture. In this example we use the texture from the dispenser
     protected final int backgroundWidth = 268;
-    protected final int backgroundHeight = 275;
+    protected final int backgroundHeight = 274;
 
     public AbstractLargeBackpackScreen(T handler, Inventory inventory, Component title) {
         super(handler, inventory, title);

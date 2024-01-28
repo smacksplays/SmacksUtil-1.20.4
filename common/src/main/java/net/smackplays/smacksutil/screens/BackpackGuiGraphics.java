@@ -3,6 +3,7 @@ package net.smackplays.smacksutil.screens;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.font.FontSet;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
@@ -26,7 +27,7 @@ public class BackpackGuiGraphics extends GuiGraphics {
             if (stack.getCount() != 1 || yellowString != null) {
                 String countString = yellowString == null ? getCorrCountString(stack) : yellowString;
                 pose().translate(0.0F, 0.0F, 200.0F);
-                this.drawString(font, countString, offsetX + 19 - 2 - font.width(countString), offsetY + 6 + 3, 16777215, true);
+                this.drawString(font, countString, offsetX + 19 - 2 - font.width(countString), offsetY + 6 + 3, 16777215, false);
             }
 
             if (stack.isBarVisible()) {

@@ -11,12 +11,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class BackpackUpgradeItem extends Item {
-    private int multiplier;
+    private int multiplier = 1;
     public BackpackUpgradeItem(Properties props, int multiplier) {
         super(props);
     }
     public BackpackUpgradeItem(int multiplier){
         super(new Item.Properties().stacksTo(1));
+        this.multiplier = multiplier;
     }
 
     @Override
@@ -24,5 +25,9 @@ public class BackpackUpgradeItem extends Item {
         CompoundTag tag = stack.getOrCreateTag();
         componentList.add(1, Component.literal("Multiplier: " + multiplier));
         super.appendHoverText(stack, level, componentList, flag);
+    }
+
+    public int getMultiplier(){
+        return multiplier;
     }
 }

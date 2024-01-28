@@ -36,7 +36,7 @@ public class ForgeKeyHandler implements IKeyHandler {
     @Override
     public void toggleMagnetConsume(KeyMapping key, Player player) {
         if (Services.PLATFORM.isModLoaded("curios")){
-            Iterator<ICurioStacksHandler> slotsIterator = CuriosApi.getCuriosInventory(player).get().getUpdatingInventories().iterator();
+            Iterator<ICurioStacksHandler> slotsIterator = CuriosApi.getCuriosInventory(player).resolve().get().getUpdatingInventories().iterator();
             while (slotsIterator.hasNext()){
                 ItemStack stack = slotsIterator.next().getStacks().getStackInSlot(0);
                 if (stack.is(Services.PLATFORM.getMagnetItem())){
@@ -55,7 +55,7 @@ public class ForgeKeyHandler implements IKeyHandler {
     @Override
     public void toggleLightWandConsume(KeyMapping key, Player player) {
         if (Services.PLATFORM.isModLoaded("curios")){
-            Iterator<ICurioStacksHandler> slotsIterator = CuriosApi.getCuriosInventory(player).get().getUpdatingInventories().iterator();
+            Iterator<ICurioStacksHandler> slotsIterator = CuriosApi.getCuriosInventory(player).resolve().get().getUpdatingInventories().iterator();
             while (slotsIterator.hasNext()){
                 ItemStack stack = slotsIterator.next().getStacks().getStackInSlot(0);
                 if (stack.is(Services.PLATFORM.getAutoWandItem())){
