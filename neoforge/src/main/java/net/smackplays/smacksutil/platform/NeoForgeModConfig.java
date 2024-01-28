@@ -36,6 +36,7 @@ public class NeoForgeModConfig implements IModConfig, ConfigData {
     public boolean enabledTreesMode = IModConfig.enabledTreesMode;
     public boolean enabledFastEat = IModConfig.enabledFastEat;
     public boolean enabledFastPlace = IModConfig.enabledFastPlace;
+    public boolean enabledKeyPressSound = IModConfig.enabledKeyPressSound;
 
     public static ConfigBuilder create() {
         ConfigBuilder builder = ConfigBuilder.create().setTitle(Component.translatable("smacksutil.configsceren.title"));
@@ -166,6 +167,15 @@ public class NeoForgeModConfig implements IModConfig, ConfigData {
                 .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace.@Tooltip"))
                 .setDefaultValue(false)
                 .setSaveConsumer(Services.CONFIG::setEnabledFastPlace)
+                .build());
+
+        config.addEntry(entryBuilder
+                .startBooleanToggle(
+                        Component.translatable("text.autoconfig.smacksutil.option.enabledKeyPressSound")
+                        , Services.CONFIG.isEnabledKeyPressSound())
+                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace.@Tooltip"))
+                .setDefaultValue(false)
+                .setSaveConsumer(Services.CONFIG::setEnabledKeyPressSound)
                 .build());
         return builder;
     }
@@ -321,6 +331,17 @@ public class NeoForgeModConfig implements IModConfig, ConfigData {
     @Override
     public void setEnabledFastPlace(boolean toSet) {
         INSTANCE.enabledFastPlace = toSet;
+        MANAGER.save();
+    }
+
+    @Override
+    public boolean isEnabledKeyPressSound() {
+        return INSTANCE.enabledKeyPressSound;
+    }
+
+    @Override
+    public void setEnabledKeyPressSound(boolean toSet) {
+        INSTANCE.enabledKeyPressSound = toSet;
         MANAGER.save();
     }
 

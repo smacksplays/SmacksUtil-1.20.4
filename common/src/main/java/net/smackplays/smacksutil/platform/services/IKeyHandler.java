@@ -28,13 +28,13 @@ public interface IKeyHandler {
             GLFW.GLFW_KEY_X, KEY_CATEGORY_SMACKSUTIL);
     KeyMapping IVeinPreviewKey = new KeyMapping(
             KEY_SMACKSUTIL_VEINPREVIEW, InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_X, KEY_CATEGORY_SMACKSUTIL);
+            GLFW.GLFW_KEY_Z, KEY_CATEGORY_SMACKSUTIL);
     KeyMapping IFastPlaceKey = new KeyMapping(
             KEY_SMACKSUTIL_FASTPLACE, InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_Y, KEY_CATEGORY_SMACKSUTIL);
     KeyMapping IExactMatchKey = new KeyMapping(
             KEY_SMACKSUTIL_EXACTMATCH, InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_Z, KEY_CATEGORY_SMACKSUTIL);
+            GLFW.GLFW_KEY_PERIOD, KEY_CATEGORY_SMACKSUTIL);
     KeyMapping IOpenBackpackKey = new KeyMapping(
             KEY_SMACKSUTIL_OPEN_BACKPACK, InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_B, KEY_CATEGORY_SMACKSUTIL);
@@ -64,7 +64,7 @@ public interface IKeyHandler {
             String str = Services.CONFIG.isEnabledFastPlace() ? "Active" : "Inactive";
             int color = Services.CONFIG.isEnabledFastPlace() ? Constants.GREEN : Constants.RED;
             player.displayClientMessage(Component
-                    .literal("Veinminer Preview: " + str).withColor(color), true);
+                    .literal("Fast Place: " + str).withColor(color), true);
             if (Services.CONFIG.isEnabledKeyPressSound()){
                 player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
             }
@@ -77,7 +77,7 @@ public interface IKeyHandler {
             String str = Services.VEIN_MINER.isExactMatch() ? "Active" : "Inactive";
             int color = Services.VEIN_MINER.isExactMatch() ? Constants.GREEN : Constants.RED;
             player.displayClientMessage(Component
-                    .literal("Veinminer Preview: " + str).withColor(color), true);
+                    .literal("Exact Match: " + str).withColor(color), true);
             if (Services.CONFIG.isEnabledKeyPressSound()){
                 player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
             }

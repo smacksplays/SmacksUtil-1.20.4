@@ -30,9 +30,11 @@ public class Constants {
     // --------------------------------- LIGHT WANDS
     public static final String C_LIGHT_WAND_ITEM = "light_wand_item";
     public static final String C_AUTO_LIGHT_WAND_ITEM = "auto_light_wand_item";
+    public static final String C_TOGGLE_LIGHT_WAND_REQUEST = "toggle-light-wand-request";
     // --------------------------------- MAGNETS
     public static final String C_MAGNET_ITEM = "magnet_item";
     public static final String C_ADVANCED_MAGNET_ITEM = "advanced_magnet_item";
+    public static final String C_TOGGLE_MAGNET_ITEM_REQUEST = "toggle-magnet-item-request";
     // --------------------------------- MOB CATCHERS
     public static final String C_MOB_CATCHER_ITEM = "mob_catcher_item";
     public static final String C_ADVANCED_MOB_CATCHER_ITEM = "advanced_mob_catcher_item";

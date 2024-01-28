@@ -55,8 +55,8 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
     public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta) {
         renderBackground(context, mouseX, mouseY, delta);
 
-        ItemStack backpack = this.menu.playerInventory.getSelected();
         BackpackInventory inv = (BackpackInventory) this.menu.inventory;
+        ItemStack backpack = inv.stack;
         CompoundTag tag = backpack.getOrCreateTagElement("backpack");
         ListTag listTag = tag.getList("Items", 10);
         Map<Integer, ItemStack> corrList = new HashMap<>();
@@ -107,9 +107,9 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
     }
 
     public void onButtonWidgetPressed() {
-        ItemStack stack = this.menu.playerInventory.getSelected();
+        ItemStack backpack = ((BackpackInventory)this.menu.inventory).stack;
         if (Services.C2S_PACKET_SENDER != null) {
-            Services.C2S_PACKET_SENDER.BackpackSortPacket(stack);
+            Services.C2S_PACKET_SENDER.BackpackSortPacket(backpack);
         }
     }
 

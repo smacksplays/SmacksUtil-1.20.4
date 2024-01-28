@@ -1,6 +1,5 @@
 package net.smackplays.smacksutil.platform;
 
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.Item;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLLoader;
@@ -25,6 +24,38 @@ public class NeoForgePlatformHelper implements IPlatformHelper {
     public boolean isDevelopmentEnvironment() {
 
         return !FMLLoader.isProduction();
+    }
+
+    @Override
+    public Item getBackackItem() {
+        if (SmacksUtil.BACKPACK_ITEM.isBound()) {
+            return SmacksUtil.BACKPACK_ITEM.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Item getLargeBackackItem() {
+        if (SmacksUtil.LARGE_BACKPACK_ITEM.isBound()) {
+            return SmacksUtil.LARGE_BACKPACK_ITEM.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Item getMagnetItem() {
+        if (SmacksUtil.MAGNET_ITEM.isBound()) {
+            return SmacksUtil.MAGNET_ITEM.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Item getAdvancedMagnetItem() {
+        if (SmacksUtil.ADVANCED_MAGNET_ITEM.isBound()) {
+            return SmacksUtil.ADVANCED_MAGNET_ITEM.get();
+        }
+        return null;
     }
 
     @Override

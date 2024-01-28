@@ -20,10 +20,16 @@ public class PacketHandler {
             .simpleChannel();
 
     public static void register() {
-        INSTANCE.messageBuilder(C2SSortPacket.class, NetworkDirection.PLAY_TO_SERVER)
-                .encoder(C2SSortPacket::encode)
-                .decoder(C2SSortPacket::new)
-                .consumerMainThread(C2SSortPacket::handle)
+        INSTANCE.messageBuilder(C2SBackpackSortPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SBackpackSortPacket::encode)
+                .decoder(C2SBackpackSortPacket::new)
+                .consumerMainThread(C2SBackpackSortPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(C2SBackpackOpenPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SBackpackOpenPacket::encode)
+                .decoder(C2SBackpackOpenPacket::new)
+                .consumerMainThread(C2SBackpackOpenPacket::handle)
                 .add();
 
         INSTANCE.messageBuilder(C2SSetBlockAirPacket.class, NetworkDirection.PLAY_TO_SERVER)

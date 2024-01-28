@@ -130,6 +130,7 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
             while(backwards ? counter >= min : counter < max) {
                 Slot slot = this.slots.get(counter);
                 ItemStack stack1 = slot.getItem();
+                int combinedCount = stack1.getCount() + stack.getCount();
                 if (stack1.isEmpty() && slot.mayPlace(stack)) {
                     if (stack.getCount() > slot.getMaxStackSize()) {
                         slot.setByPlayer(stack.split(slot.getMaxStackSize()));
@@ -142,7 +143,7 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
                     slot.setChanged();
                     bl1 = true;
                     break;
-                } else if (ItemStack.isSameItemSameTags(stack, stack1) && slot instanceof BackpackSlot){
+                } else if (ItemStack.isSameItemSameTags(stack, stack1) && slot instanceof BackpackSlot && combinedCount < maxStackSize){
                     stack1.grow(stack.getCount());
                     stack.setCount(0);
                 }

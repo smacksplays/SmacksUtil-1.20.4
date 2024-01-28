@@ -15,6 +15,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.smackplays.smacksutil.Constants;
+import net.smackplays.smacksutil.inventories.BackpackInventory;
 import net.smackplays.smacksutil.inventories.LargeBackpackInventory;
 import net.smackplays.smacksutil.menus.AbstractLargeBackpackMenu;
 import net.smackplays.smacksutil.platform.Services;
@@ -55,8 +56,8 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
     public void render(@NotNull GuiGraphics context, int mouseX, int mouseY, float delta) {
         renderBackground(context, mouseX, mouseY, delta);
 
-        ItemStack backpack = this.menu.playerInventory.getSelected();
         LargeBackpackInventory inv = (LargeBackpackInventory) this.menu.inventory;
+        ItemStack backpack = inv.stack;
         CompoundTag tag = backpack.getOrCreateTagElement("large_backpack");
         ListTag listTag = tag.getList("Items", 10);
         Map<Integer, ItemStack> corrList = new HashMap<>();
@@ -108,9 +109,9 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
     }
 
     public void onButtonWidgetPressed() {
-        ItemStack stack = this.menu.playerInventory.getSelected();
+        ItemStack backpack = ((LargeBackpackInventory)this.menu.inventory).stack;
         if (Services.C2S_PACKET_SENDER != null) {
-            Services.C2S_PACKET_SENDER.BackpackSortPacket(stack);
+            Services.C2S_PACKET_SENDER.BackpackSortPacket(backpack);
         }
     }
 

@@ -30,8 +30,26 @@ public class NeoForgeClientPacketSender implements IClientPacketSender {
     @Override
     public void BackpackSortPacket(ItemStack stack) {
         Minecraft minecraft = Minecraft.getInstance();
-        Objects.requireNonNull(minecraft.getConnection()).send(new C2SSortPacket(stack));
+        Objects.requireNonNull(minecraft.getConnection()).send(new C2SBackpackSortPacket(stack));
         //PacketHandler.sendToServer(new C2SSortPacket(stack));
+    }
+
+    @Override
+    public void BackpackOpenPacket(int slot) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Objects.requireNonNull(minecraft.getConnection()).send(new C2SBackpackOpenPacket(slot));
+    }
+
+    @Override
+    public void ToggleMagnetItemPacket(int slot) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Objects.requireNonNull(minecraft.getConnection()).send(new C2SToggleMagnetItemPacket(slot));
+    }
+
+    @Override
+    public void ToggleLightWandItemPacket(int slot) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Objects.requireNonNull(minecraft.getConnection()).send(new C2SToggleLightWandItemPacket(slot));
     }
 
     @Override

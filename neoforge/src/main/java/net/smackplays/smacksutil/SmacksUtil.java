@@ -55,9 +55,9 @@ public class SmacksUtil {
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MOD_ID);
     public static final DeferredItem<Item> BACKPACK_ITEM = ITEMS.register(C_BACKPACK_ITEM, BackpackItem::new);
     public static final DeferredItem<Item> LARGE_BACKPACK_ITEM = ITEMS.register(C_LARGE_BACKPACK_ITEM, LargeBackpackItem::new);
-    public static final DeferredItem<Item> BACKPACK_UPGRADE_TIER1_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER1_ITEM, BackpackUpgradeItem::new);
-    public static final DeferredItem<Item> BACKPACK_UPGRADE_TIER2_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER2_ITEM, BackpackUpgradeItem::new);
-    public static final DeferredItem<Item> BACKPACK_UPGRADE_TIER3_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER3_ITEM, BackpackUpgradeItem::new);
+    public static final DeferredItem<Item> BACKPACK_UPGRADE_TIER1_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER1_ITEM, () -> new BackpackUpgradeItem(4));
+    public static final DeferredItem<Item> BACKPACK_UPGRADE_TIER2_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER2_ITEM, () -> new BackpackUpgradeItem(8));
+    public static final DeferredItem<Item> BACKPACK_UPGRADE_TIER3_ITEM = ITEMS.register(C_BACKPACK_UPGRADE_TIER3_ITEM, () -> new BackpackUpgradeItem(16));
     public static final DeferredItem<Item> LIGHT_WAND_ITEM = ITEMS.register(C_LIGHT_WAND_ITEM, () -> new LightWandItem());
     public static final DeferredItem<Item> AUTO_LIGHT_WAND_ITEM = ITEMS.register(C_AUTO_LIGHT_WAND_ITEM, AutoLightWandItem::new);
     public static final DeferredItem<Item> MAGNET_ITEM = ITEMS.register(C_MAGNET_ITEM, () -> new MagnetItem());
@@ -155,12 +155,33 @@ public class SmacksUtil {
     public static class PacketEvents {
         @SubscribeEvent
         public static void register(final RegisterPayloadHandlerEvent event) {
-            final IPayloadRegistrar sortRegistrar = event.registrar(Constants.MOD_ID)
+            final IPayloadRegistrar backpackSortRegistrar = event.registrar(Constants.MOD_ID)
                     .versioned(NeoForgeVersion.getSpec())
                     .optional();
-            sortRegistrar.play(C2SSortPacket.ID, C2SSortPacket::new, handler -> handler
-                    .server(C2SSortPacketHandler.getInstance()::handleData)
-                    .client(C2SSortPacketHandler.getInstance()::handleData));
+            backpackSortRegistrar.play(C2SBackpackSortPacket.ID, C2SBackpackSortPacket::new, handler -> handler
+                    .server(C2SBackpackSortPacketHandler.getInstance()::handleData)
+                    .client(C2SBackpackSortPacketHandler.getInstance()::handleData));
+
+            final IPayloadRegistrar backpackOpenRegistrar = event.registrar(Constants.MOD_ID)
+                    .versioned(NeoForgeVersion.getSpec())
+                    .optional();
+            backpackOpenRegistrar.play(C2SBackpackOpenPacket.ID, C2SBackpackOpenPacket::new, handler -> handler
+                    .server(C2SBackpackOpenPacketHandler.getInstance()::handleData)
+                    .client(C2SBackpackOpenPacketHandler.getInstance()::handleData));
+
+            final IPayloadRegistrar toggleMagnetItemRegistrar = event.registrar(Constants.MOD_ID)
+                    .versioned(NeoForgeVersion.getSpec())
+                    .optional();
+            toggleMagnetItemRegistrar.play(C2SToggleMagnetItemPacket.ID, C2SToggleMagnetItemPacket::new, handler -> handler
+                    .server(C2SToggleMagnetItemPacketHandler.getInstance()::handleData)
+                    .client(C2SToggleMagnetItemPacketHandler.getInstance()::handleData));
+
+            final IPayloadRegistrar toggleLightWandItemRegistrar = event.registrar(Constants.MOD_ID)
+                    .versioned(NeoForgeVersion.getSpec())
+                    .optional();
+            toggleLightWandItemRegistrar.play(C2SToggleLightWandItemPacket.ID, C2SToggleLightWandItemPacket::new, handler -> handler
+                    .server(C2SToggleLightWandItemPacketHandler.getInstance()::handleData)
+                    .client(C2SToggleLightWandItemPacketHandler.getInstance()::handleData));
 
             final IPayloadRegistrar enchantRegistrar = event.registrar(Constants.MOD_ID)
                     .versioned(NeoForgeVersion.getSpec())

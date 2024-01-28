@@ -17,6 +17,10 @@ public interface IClientPacketSender {
 
     void BackpackOpenPacket(int slot);
 
+    void ToggleMagnetItemPacket(int slot);
+
+    void ToggleLightWandItemPacket(int slot);
+
     void SetBlockAirPacket(BlockPos pos);
 
     void TeleportPacket(ResourceKey<Level> levelKey, Vec3 pos, float xRot, float yRot);

@@ -8,15 +8,15 @@ import net.smackplays.smacksutil.items.LargeBackpackItem;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 
-public class C2SSortPacketHandler {
-    private static final C2SSortPacketHandler INSTANCE = new C2SSortPacketHandler();
+public class C2SBackpackSortPacketHandler {
+    private static final C2SBackpackSortPacketHandler INSTANCE = new C2SBackpackSortPacketHandler();
 
-    public static C2SSortPacketHandler getInstance() {
+    public static C2SBackpackSortPacketHandler getInstance() {
         return INSTANCE;
     }
 
     @SuppressWarnings("unused")
-    public void handleData(final C2SSortPacket data, final PlayPayloadContext context) {
+    public void handleData(final C2SBackpackSortPacket data, final PlayPayloadContext context) {
         // Do something with the data, on the network thread
 
         // Do something with the data, on the main thread

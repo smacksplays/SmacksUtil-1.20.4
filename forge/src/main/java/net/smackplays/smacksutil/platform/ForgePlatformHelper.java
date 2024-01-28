@@ -1,6 +1,5 @@
 package net.smackplays.smacksutil.platform;
 
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
@@ -28,28 +27,75 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public Item getBackackItem() {
+        if (SmacksUtil.BACKPACK_ITEM.isPresent()){
+            return SmacksUtil.BACKPACK_ITEM.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Item getLargeBackackItem() {
+        if (SmacksUtil.LARGE_BACKPACK_ITEM.isPresent()){
+            return SmacksUtil.LARGE_BACKPACK_ITEM.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Item getMagnetItem() {
+        if (SmacksUtil.MAGNET_ITEM.isPresent()){
+            return SmacksUtil.MAGNET_ITEM.get();
+        }
+        return null;
+    }
+
+    @Override
+    public Item getAdvancedMagnetItem() {
+        if (SmacksUtil.ADVANCED_MAGNET_ITEM.isPresent()){
+            return SmacksUtil.ADVANCED_MAGNET_ITEM.get();
+        }
+        return null;
+    }
+
+    @Override
     public Item getLightWandItem() {
-        return SmacksUtil.LIGHT_WAND_ITEM.get();
+        if (SmacksUtil.LIGHT_WAND_ITEM.isPresent()){
+            return SmacksUtil.LIGHT_WAND_ITEM.get();
+        }
+        return null;
     }
 
     @Override
     public Item getAutoWandItem() {
-        return SmacksUtil.AUTO_LIGHT_WAND_ITEM.get();
+        if (SmacksUtil.AUTO_LIGHT_WAND_ITEM.isPresent()){
+            return SmacksUtil.AUTO_LIGHT_WAND_ITEM.get();
+        }
+        return null;
     }
 
     @Override
     public Item getUpgrade1Item() {
-        return SmacksUtil.BACKPACK_UPGRADE_TIER1_ITEM.get();
+        if (SmacksUtil.BACKPACK_UPGRADE_TIER1_ITEM.isPresent()){
+            return SmacksUtil.BACKPACK_UPGRADE_TIER1_ITEM.get();
+        }
+        return null;
     }
 
     @Override
     public Item getUpgrade2Item() {
-        return SmacksUtil.BACKPACK_UPGRADE_TIER2_ITEM.get();
+        if (SmacksUtil.BACKPACK_UPGRADE_TIER2_ITEM.isPresent()){
+            return SmacksUtil.BACKPACK_UPGRADE_TIER2_ITEM.get();
+        }
+        return null;
     }
 
     @Override
     public Item getUpgrade3Item() {
-        return SmacksUtil.BACKPACK_UPGRADE_TIER3_ITEM.get();
+        if (SmacksUtil.BACKPACK_UPGRADE_TIER3_ITEM.isPresent()){
+            return SmacksUtil.BACKPACK_UPGRADE_TIER3_ITEM.get();
+        }
+        return null;
     }
 
     @Override

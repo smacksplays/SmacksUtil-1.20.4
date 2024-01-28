@@ -24,7 +24,12 @@ public class ForgeClientPacketSender implements IClientPacketSender {
 
     @Override
     public void BackpackSortPacket(ItemStack stack) {
-        PacketHandler.sendToServer(new C2SSortPacket(stack));
+        PacketHandler.sendToServer(new C2SBackpackSortPacket(stack));
+    }
+
+    @Override
+    public void BackpackOpenPacket(int slot) {
+        PacketHandler.sendToServer(new C2SBackpackOpenPacket(slot));
     }
 
     @Override

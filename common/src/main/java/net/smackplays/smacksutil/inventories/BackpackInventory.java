@@ -3,11 +3,13 @@ package net.smackplays.smacksutil.inventories;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Container;
+import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class BackpackInventory implements IBackpackInventory {
-    private final ItemStack stack;
+    public final ItemStack stack;
     private final NonNullList<ItemStack> items = NonNullList.withSize(9 * 6 + 4, ItemStack.EMPTY);
 
     public BackpackInventory(){
