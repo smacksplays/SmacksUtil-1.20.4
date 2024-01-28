@@ -116,8 +116,6 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
                     ++counter;
                 }
             }
-        } else {
-
         }
 
         if (!stack.isEmpty()) {

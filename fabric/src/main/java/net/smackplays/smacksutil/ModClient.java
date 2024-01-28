@@ -21,6 +21,7 @@ import net.smackplays.smacksutil.screens.AbstractTeleportationTabletScreen;
 
 import static net.smackplays.smacksutil.SmacksUtil.*;
 
+@SuppressWarnings("unused")
 public class ModClient implements ClientModInitializer {
 
     @Override

@@ -14,6 +14,7 @@ import net.smackplays.smacksutil.inventories.BackpackInventory;
 import net.smackplays.smacksutil.menus.BackpackMenu;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unused")
 public class BackpackItem extends AbstractBackpackItem {
 
     public BackpackItem() {

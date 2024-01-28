@@ -40,143 +40,146 @@ public class NeoForgeModConfig implements IModConfig, ConfigData {
 
     public static ConfigBuilder create() {
         ConfigBuilder builder = ConfigBuilder.create().setTitle(Component.translatable("smacksutil.configsceren.title"));
-        builder.setGlobalized(true);
-        builder.setGlobalizedExpanded(false);
-        ConfigEntryBuilder entryBuilder = builder.entryBuilder();
-        ConfigCategory config = builder.getOrCreateCategory(Component.translatable("smacksutil.category.config"));
-        config.addEntry(entryBuilder
-                .startIntField(Component.translatable("text.autoconfig.smacksutil.option.maxRenderBlocks")
-                        , Services.CONFIG.getMaxRenderBlocks())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.maxRenderBlocks.@Tooltip"))
-                .setDefaultValue(150)
-                .setSaveConsumer(Services.CONFIG::setMaxRenderBlocks)
-                .build());
+        if (Services.CONFIG != null){
 
-        config.addEntry(entryBuilder
-                .startIntField(
-                        Component.translatable("text.autoconfig.smacksutil.option.maxShapelessRadius")
-                        , Services.CONFIG.getMaxShapelessRadius())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.maxShapelessRadius.@Tooltip"))
-                .setDefaultValue(6)
-                .setSaveConsumer(Services.CONFIG::setMaxShapelessRadius)
-                .build());
+            builder.setGlobalized(true);
+            builder.setGlobalizedExpanded(false);
+            ConfigEntryBuilder entryBuilder = builder.entryBuilder();
+            ConfigCategory config = builder.getOrCreateCategory(Component.translatable("smacksutil.category.config"));
+            config.addEntry(entryBuilder
+                    .startIntField(Component.translatable("text.autoconfig.smacksutil.option.maxRenderBlocks")
+                            , Services.CONFIG.getMaxRenderBlocks())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.maxRenderBlocks.@Tooltip"))
+                    .setDefaultValue(150)
+                    .setSaveConsumer(Services.CONFIG::setMaxRenderBlocks)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startIntField(
-                        Component.translatable("text.autoconfig.smacksutil.option.maxRenderShapelessRadius")
-                        , Services.CONFIG.getMaxRenderShapelessRadius())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.maxRenderShapelessRadius.@Tooltip"))
-                .setDefaultValue(3)
-                .setSaveConsumer(Services.CONFIG::setMaxRenderShapelessRadius)
-                .build());
+            config.addEntry(entryBuilder
+                    .startIntField(
+                            Component.translatable("text.autoconfig.smacksutil.option.maxShapelessRadius")
+                            , Services.CONFIG.getMaxShapelessRadius())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.maxShapelessRadius.@Tooltip"))
+                    .setDefaultValue(6)
+                    .setSaveConsumer(Services.CONFIG::setMaxShapelessRadius)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enabledShapelessVerticalMode")
-                        , Services.CONFIG.isEnabledShapelessVerticalMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledShapelessVerticalMode.@Tooltip"))
-                .setDefaultValue(true)
-                .setSaveConsumer(Services.CONFIG::setEnabledShapelessVerticalMode)
-                .build());
+            config.addEntry(entryBuilder
+                    .startIntField(
+                            Component.translatable("text.autoconfig.smacksutil.option.maxRenderShapelessRadius")
+                            , Services.CONFIG.getMaxRenderShapelessRadius())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.maxRenderShapelessRadius.@Tooltip"))
+                    .setDefaultValue(3)
+                    .setSaveConsumer(Services.CONFIG::setMaxRenderShapelessRadius)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startIntField(
-                        Component.translatable("text.autoconfig.smacksutil.option.maxShapelessVerticalRadius")
-                        , Services.CONFIG.getMaxShapelessVerticalRadius())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.maxShapelessVerticalRadius.@Tooltip"))
-                .setDefaultValue(6)
-                .setSaveConsumer(Services.CONFIG::setMaxShapelessVerticalRadius)
-                .build());
+            config.addEntry(entryBuilder
+                    .startBooleanToggle(
+                            Component.translatable("text.autoconfig.smacksutil.option.enabledShapelessVerticalMode")
+                            , Services.CONFIG.isEnabledShapelessVerticalMode())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledShapelessVerticalMode.@Tooltip"))
+                    .setDefaultValue(true)
+                    .setSaveConsumer(Services.CONFIG::setEnabledShapelessVerticalMode)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startIntField(
-                        Component.translatable("text.autoconfig.smacksutil.option.maxRenderShapelessVerticalRadius")
-                        , Services.CONFIG.getMaxRenderShapelessVerticalRadius())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.maxRenderShapelessVerticalRadius.@Tooltip"))
-                .setDefaultValue(3)
-                .setSaveConsumer(Services.CONFIG::setMaxRenderShapelessVerticalRadius)
-                .build());
+            config.addEntry(entryBuilder
+                    .startIntField(
+                            Component.translatable("text.autoconfig.smacksutil.option.maxShapelessVerticalRadius")
+                            , Services.CONFIG.getMaxShapelessVerticalRadius())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.maxShapelessVerticalRadius.@Tooltip"))
+                    .setDefaultValue(6)
+                    .setSaveConsumer(Services.CONFIG::setMaxShapelessVerticalRadius)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enabledTunnelMode")
-                        , Services.CONFIG.isEnabledTunnelMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledTunnelMode.@Tooltip"))
-                .setDefaultValue(true)
-                .setSaveConsumer(Services.CONFIG::setEnabledTunnelMode)
-                .build());
+            config.addEntry(entryBuilder
+                    .startIntField(
+                            Component.translatable("text.autoconfig.smacksutil.option.maxRenderShapelessVerticalRadius")
+                            , Services.CONFIG.getMaxRenderShapelessVerticalRadius())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.maxRenderShapelessVerticalRadius.@Tooltip"))
+                    .setDefaultValue(3)
+                    .setSaveConsumer(Services.CONFIG::setMaxRenderShapelessVerticalRadius)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enabledMineshaftMode")
-                        , Services.CONFIG.isEnabledMineshaftMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledMineshaftMode.@Tooltip"))
-                .setDefaultValue(true)
-                .setSaveConsumer(Services.CONFIG::setEnabledMineshaftMode)
-                .build());
+            config.addEntry(entryBuilder
+                    .startBooleanToggle(
+                            Component.translatable("text.autoconfig.smacksutil.option.enabledTunnelMode")
+                            , Services.CONFIG.isEnabledTunnelMode())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledTunnelMode.@Tooltip"))
+                    .setDefaultValue(true)
+                    .setSaveConsumer(Services.CONFIG::setEnabledTunnelMode)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enabledVegetationMode")
-                        , Services.CONFIG.isEnabledVegetationMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledVegetationMode.@Tooltip"))
-                .setDefaultValue(true)
-                .setSaveConsumer(Services.CONFIG::setEnabledVegetationMode)
-                .build());
+            config.addEntry(entryBuilder
+                    .startBooleanToggle(
+                            Component.translatable("text.autoconfig.smacksutil.option.enabledMineshaftMode")
+                            , Services.CONFIG.isEnabledMineshaftMode())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledMineshaftMode.@Tooltip"))
+                    .setDefaultValue(true)
+                    .setSaveConsumer(Services.CONFIG::setEnabledMineshaftMode)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enabledOresMode")
-                        , Services.CONFIG.isEnabledOresMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledOresMode.@Tooltip"))
-                .setDefaultValue(true)
-                .setSaveConsumer(Services.CONFIG::setEnabledOresMode)
-                .build());
+            config.addEntry(entryBuilder
+                    .startBooleanToggle(
+                            Component.translatable("text.autoconfig.smacksutil.option.enabledVegetationMode")
+                            , Services.CONFIG.isEnabledVegetationMode())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledVegetationMode.@Tooltip"))
+                    .setDefaultValue(true)
+                    .setSaveConsumer(Services.CONFIG::setEnabledVegetationMode)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enabledCropsMode")
-                        , Services.CONFIG.isEnabledCropsMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledCropsMode.@Tooltip"))
-                .setDefaultValue(true)
-                .setSaveConsumer(Services.CONFIG::setEnabledCropsMode)
-                .build());
+            config.addEntry(entryBuilder
+                    .startBooleanToggle(
+                            Component.translatable("text.autoconfig.smacksutil.option.enabledOresMode")
+                            , Services.CONFIG.isEnabledOresMode())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledOresMode.@Tooltip"))
+                    .setDefaultValue(true)
+                    .setSaveConsumer(Services.CONFIG::setEnabledOresMode)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enabledTreesMode")
-                        , Services.CONFIG.isEnabledTreesMode())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledTreesMode.@Tooltip"))
-                .setDefaultValue(true)
-                .setSaveConsumer(Services.CONFIG::setEnabledTreesMode)
-                .build());
+            config.addEntry(entryBuilder
+                    .startBooleanToggle(
+                            Component.translatable("text.autoconfig.smacksutil.option.enabledCropsMode")
+                            , Services.CONFIG.isEnabledCropsMode())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledCropsMode.@Tooltip"))
+                    .setDefaultValue(true)
+                    .setSaveConsumer(Services.CONFIG::setEnabledCropsMode)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enabledFastEat")
-                        , INSTANCE.isEnabledFastPlace())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastEat.@Tooltip"))
-                .setDefaultValue(false)
-                .setSaveConsumer(Services.CONFIG::setEnabledFastEat)
-                .build());
+            config.addEntry(entryBuilder
+                    .startBooleanToggle(
+                            Component.translatable("text.autoconfig.smacksutil.option.enabledTreesMode")
+                            , Services.CONFIG.isEnabledTreesMode())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledTreesMode.@Tooltip"))
+                    .setDefaultValue(true)
+                    .setSaveConsumer(Services.CONFIG::setEnabledTreesMode)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace")
-                        , Services.CONFIG.isEnabledFastPlace())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace.@Tooltip"))
-                .setDefaultValue(false)
-                .setSaveConsumer(Services.CONFIG::setEnabledFastPlace)
-                .build());
+            config.addEntry(entryBuilder
+                    .startBooleanToggle(
+                            Component.translatable("text.autoconfig.smacksutil.option.enabledFastEat")
+                            , INSTANCE.isEnabledFastPlace())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastEat.@Tooltip"))
+                    .setDefaultValue(false)
+                    .setSaveConsumer(Services.CONFIG::setEnabledFastEat)
+                    .build());
 
-        config.addEntry(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("text.autoconfig.smacksutil.option.enabledKeyPressSound")
-                        , Services.CONFIG.isEnabledKeyPressSound())
-                .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace.@Tooltip"))
-                .setDefaultValue(false)
-                .setSaveConsumer(Services.CONFIG::setEnabledKeyPressSound)
-                .build());
+            config.addEntry(entryBuilder
+                    .startBooleanToggle(
+                            Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace")
+                            , Services.CONFIG.isEnabledFastPlace())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace.@Tooltip"))
+                    .setDefaultValue(false)
+                    .setSaveConsumer(Services.CONFIG::setEnabledFastPlace)
+                    .build());
+
+            config.addEntry(entryBuilder
+                    .startBooleanToggle(
+                            Component.translatable("text.autoconfig.smacksutil.option.enabledKeyPressSound")
+                            , Services.CONFIG.isEnabledKeyPressSound())
+                    .setTooltip(Component.translatable("text.autoconfig.smacksutil.option.enabledFastPlace.@Tooltip"))
+                    .setDefaultValue(false)
+                    .setSaveConsumer(Services.CONFIG::setEnabledKeyPressSound)
+                    .build());
+        }
         return builder;
     }
 

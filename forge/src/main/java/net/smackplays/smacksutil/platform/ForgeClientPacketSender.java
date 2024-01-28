@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.smackplays.smacksutil.networking.C2SPacket.*;
+import net.smackplays.smacksutil.networking.c2spacket.*;
 import net.smackplays.smacksutil.networking.PacketHandler;
 import net.smackplays.smacksutil.platform.services.IClientPacketSender;
 

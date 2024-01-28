@@ -341,6 +341,7 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
         return b1 && b2 && b3 && b4;
     }
 
+    @SuppressWarnings("SameParameterValue")
     private record Label(Component component, int x, int y, int color, boolean shadow) {
     }
 

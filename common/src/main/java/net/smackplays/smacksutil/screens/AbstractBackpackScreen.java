@@ -76,7 +76,7 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
     }
 
     @Override
-    protected void renderTooltip(GuiGraphics context, int mouseX, int mouseY) {
+    protected void renderTooltip(@NotNull GuiGraphics context, int mouseX, int mouseY) {
         if (this.menu.getCarried().isEmpty() && this.hoveredSlot != null && this.hoveredSlot.hasItem() && this.hoveredSlot instanceof BackpackSlot) {
             ItemStack hoveredStack = this.hoveredSlot.getItem();
             List<Component> list = this.getTooltipFromContainerItem(hoveredStack);

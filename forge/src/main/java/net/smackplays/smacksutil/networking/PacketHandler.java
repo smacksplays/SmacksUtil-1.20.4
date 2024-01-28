@@ -7,8 +7,8 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.SimpleChannel;
 import net.smackplays.smacksutil.Constants;
-import net.smackplays.smacksutil.networking.C2SPacket.*;
-import net.smackplays.smacksutil.networking.S2CPacket.S2CPlayerBlockBreakPacket;
+import net.smackplays.smacksutil.networking.c2spacket.*;
+import net.smackplays.smacksutil.networking.s2cpacket.S2CPlayerBlockBreakPacket;
 
 @SuppressWarnings("unused")
 public class PacketHandler {

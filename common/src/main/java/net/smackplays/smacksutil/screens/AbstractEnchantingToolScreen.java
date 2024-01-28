@@ -247,6 +247,7 @@ public class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> 
         return super.mouseScrolled(mouseX, mouseY, $$2, scroll_delta);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private record Label(Component component, int x, int y, boolean shadow) {
     }
 }

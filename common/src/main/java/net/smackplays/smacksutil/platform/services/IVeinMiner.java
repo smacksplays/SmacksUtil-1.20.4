@@ -80,6 +80,7 @@ public abstract class IVeinMiner {
         });
     }
 
+    @SuppressWarnings("unused")
     abstract public void drawOutline(PoseStack pose, double cameraX, double cameraY, double cameraZ, BlockPos pos,
                                      Level world, Player player);
 

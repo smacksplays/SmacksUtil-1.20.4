@@ -42,7 +42,7 @@ import top.theillusivec4.curios.api.SlotTypeMessage;
 import static net.smackplays.smacksutil.Constants.*;
 
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "EmptyMethod"})
 @Mod(MOD_ID)
 public class SmacksUtil {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MOD_ID);

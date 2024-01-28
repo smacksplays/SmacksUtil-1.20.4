@@ -34,9 +34,9 @@ import net.smackplays.smacksutil.menus.BackpackMenu;
 import net.smackplays.smacksutil.menus.EnchantingToolMenu;
 import net.smackplays.smacksutil.menus.LargeBackpackMenu;
 import net.smackplays.smacksutil.menus.TeleportationTabletMenu;
-import net.smackplays.smacksutil.networking.C2SPacket.*;
-import net.smackplays.smacksutil.networking.S2CPacket.S2CBlockBreakPacket;
-import net.smackplays.smacksutil.networking.S2CPacket.S2CBlockBreakPacketHandler;
+import net.smackplays.smacksutil.networking.c2spacket.*;
+import net.smackplays.smacksutil.networking.s2cpacket.S2CBlockBreakPacket;
+import net.smackplays.smacksutil.networking.s2cpacket.S2CBlockBreakPacketHandler;
 import net.smackplays.smacksutil.platform.Services;
 import net.smackplays.smacksutil.screens.AbstractBackpackScreen;
 import net.smackplays.smacksutil.screens.AbstractEnchantingToolScreen;
@@ -48,7 +48,7 @@ import java.util.function.Supplier;
 
 import static net.smackplays.smacksutil.Constants.*;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "EmptyMethod"})
 @Mod(MOD_ID)
 public class SmacksUtil {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MOD_ID);

@@ -50,6 +50,7 @@ import java.util.UUID;
 
 import static net.smackplays.smacksutil.Constants.*;
 
+@SuppressWarnings("unused")
 public class SmacksUtil implements ModInitializer {
 
     public static final Item BACKPACK_ITEM = new BackpackItem();

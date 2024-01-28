@@ -48,5 +48,7 @@
   "text.autoconfig.smacksutil.option.enabledFastEat": "Fast Eat Enabled",
   "text.autoconfig.smacksutil.option.enabledFastEat.@Tooltip": "Allows the player to enable/disable Fast Eat.",
   "text.autoconfig.smacksutil.option.enabledFastPlace": "Fast Place Enabled",
-  "text.autoconfig.smacksutil.option.enabledFastPlace.@Tooltip": "Allows the player to enable/disable Fast Block place."
+  "text.autoconfig.smacksutil.option.enabledFastPlace.@Tooltip": "Allows the player to enable/disable Fast Block place.",
+  "text.autoconfig.smacksutil.option.enabledKeyPressSound": "Key Press Sounds Enabled",
+  "text.autoconfig.smacksutil.option.enabledKeyPressSound.@Tooltip": "Allows the player to enable/disable Key Press sounds."
 }

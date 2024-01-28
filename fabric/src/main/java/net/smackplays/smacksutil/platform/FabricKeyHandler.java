@@ -39,7 +39,7 @@ public class FabricKeyHandler implements IKeyHandler {
             NonNullList<Slot> slots = player.inventoryMenu.slots;
             for (int i = slots.size() - 1; i >= 0; i--){
                 ItemStack stack = slots.get(i).getItem();
-                if (stack.is(Services.PLATFORM.getLargeBackackItem()) || stack.is(Services.PLATFORM.getBackackItem())){
+                if ((stack.is(Services.PLATFORM.getLargeBackackItem()) || stack.is(Services.PLATFORM.getBackackItem())) && Services.C2S_PACKET_SENDER != null){
                     Services.C2S_PACKET_SENDER.BackpackOpenPacket(i);
                     return;
                 }
