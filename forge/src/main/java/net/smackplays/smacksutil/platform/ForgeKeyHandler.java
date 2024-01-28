@@ -17,9 +17,11 @@ import net.smackplays.smacksutil.items.AutoLightWandItem;
 import net.smackplays.smacksutil.items.MagnetItem;
 import net.smackplays.smacksutil.platform.services.IKeyHandler;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 
 import java.util.Iterator;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class ForgeKeyHandler implements IKeyHandler {
@@ -35,46 +37,59 @@ public class ForgeKeyHandler implements IKeyHandler {
 
     @Override
     public void toggleMagnetConsume(KeyMapping key, Player player) {
-        if (Services.PLATFORM.isModLoaded("curios")){
-            Iterator<ICurioStacksHandler> slotsIterator = CuriosApi.getCuriosInventory(player).resolve().get().getUpdatingInventories().iterator();
-            while (slotsIterator.hasNext()){
-                ItemStack stack = slotsIterator.next().getStacks().getStackInSlot(0);
-                if (stack.is(Services.PLATFORM.getMagnetItem())){
-                    MagnetItem item = (MagnetItem) stack.getItem();
-                    item.toggle(stack, player);
+        if (key.consumeClick()) {
+            if (Services.PLATFORM.isModLoaded("curios")){
+                List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "charm");
+                if (!results.isEmpty()){
+                    ItemStack stack = results.get(0).stack();
+                    if (stack.is(Services.PLATFORM.getMagnetItem()) || stack.is(Services.PLATFORM.getAdvancedMagnetItem())){
+                        Services.C2S_PACKET_SENDER.ToggleMagnetItemPacket(-1);
+                        return;
+                    }
+                }
+            }
+            NonNullList<Slot> slots = player.inventoryMenu.slots;
+            for (int i = slots.size() - 1; i >= 0; i--){
+                ItemStack stack = slots.get(i).getItem();
+                if (stack.is(Services.PLATFORM.getAdvancedMagnetItem()) || stack.is(Services.PLATFORM.getMagnetItem())){
+                    Services.C2S_PACKET_SENDER.ToggleLightWandItemPacket(i);
                     return;
-                } else if (stack.is(Services.PLATFORM.getAdvancedMagnetItem())){
-                    AdvancedMagnetItem item = (AdvancedMagnetItem) stack.getItem();
-                    item.toggle(stack, player);
                 }
             }
         }
-        IKeyHandler.super.toggleMagnetConsume(key, player);
     }
 
     @Override
     public void toggleLightWandConsume(KeyMapping key, Player player) {
-        if (Services.PLATFORM.isModLoaded("curios")){
-            Iterator<ICurioStacksHandler> slotsIterator = CuriosApi.getCuriosInventory(player).resolve().get().getUpdatingInventories().iterator();
-            while (slotsIterator.hasNext()){
-                ItemStack stack = slotsIterator.next().getStacks().getStackInSlot(0);
+        if (key.consumeClick()) {
+            if (Services.PLATFORM.isModLoaded("curios")){
+                List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "hands");
+                if (!results.isEmpty()){
+                    ItemStack stack = results.get(0).stack();
+                    if (stack.is(Services.PLATFORM.getAutoWandItem())){
+                        Services.C2S_PACKET_SENDER.ToggleLightWandItemPacket(-1);
+                        return;
+                    }
+                }
+            }
+            NonNullList<Slot> slots = player.inventoryMenu.slots;
+            for (int i = slots.size() - 1; i >= 0; i--){
+                ItemStack stack = slots.get(i).getItem();
                 if (stack.is(Services.PLATFORM.getAutoWandItem())){
-                    AutoLightWandItem item = (AutoLightWandItem) stack.getItem();
-                    item.toggle(stack, player);
+                    Services.C2S_PACKET_SENDER.ToggleLightWandItemPacket(i);
                     return;
                 }
             }
         }
-        IKeyHandler.super.toggleLightWandConsume(key, player);
     }
 
     @Override
     public void openBackpackConsume(KeyMapping key, Player player) {
         if (key.consumeClick()) {
             if (Services.PLATFORM.isModLoaded("curios")){
-                Iterator<ICurioStacksHandler> slotsIterator = CuriosApi.getCuriosInventory(player).resolve().get().getUpdatingInventories().iterator();
-                while (slotsIterator.hasNext()){
-                    ItemStack stack = slotsIterator.next().getStacks().getStackInSlot(0);
+                List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "back");
+                if (!results.isEmpty()){
+                    ItemStack stack = results.get(0).stack();
                     if (stack.is(Services.PLATFORM.getLargeBackackItem()) || stack.is(Services.PLATFORM.getBackackItem())){
                         Services.C2S_PACKET_SENDER.BackpackOpenPacket(-1);
                         return;
@@ -136,6 +151,10 @@ public class ForgeKeyHandler implements IKeyHandler {
             Services.KEY_HANDLER.openBackpackConsume(openBackpackKey, player);
             Services.KEY_HANDLER.toggleMagnetConsume(toggleMagnetKey, player);
             Services.KEY_HANDLER.toggleLightWandConsume(toggleLightWandKey, player);
+        }
+
+        @SubscribeEvent
+        public static void onKeyInput(InputEvent.MouseButton.Post event) {
             veinKeyDown = veinKey.isDown();
         }
     }

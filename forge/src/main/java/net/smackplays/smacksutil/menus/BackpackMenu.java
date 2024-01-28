@@ -26,7 +26,7 @@ public class BackpackMenu extends AbstractBackpackMenu {
         if (!backpack.is(SmacksUtil.BACKPACK_ITEM.get())){
             if (Services.PLATFORM.isModLoaded("curios")){
                 List<SlotResult> slotResults = CuriosApi.getCuriosHelper().findCurios(playerInventory.player, "back");
-                if (slotResults.size() > 0){
+                if (!slotResults.isEmpty()){
                     backpack = slotResults.get(0).stack();
                     return new BackpackMenu(SmacksUtil.BACKPACK_MENU.get(), syncId, playerInventory, new BackpackInventory(backpack));
                 }

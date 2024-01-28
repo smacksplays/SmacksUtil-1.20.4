@@ -6,14 +6,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.network.CustomPayloadEvent;
 import net.minecraftforge.fml.DistExecutor;
 
-public class PlayerBlockBreakPacket {
+public class S2CPlayerBlockBreakPacket {
     private final BlockPos pos;
 
-    public PlayerBlockBreakPacket(BlockPos p) {
+    public S2CPlayerBlockBreakPacket(BlockPos p) {
         pos = p;
     }
 
-    public PlayerBlockBreakPacket(FriendlyByteBuf buffer) {
+    public S2CPlayerBlockBreakPacket(FriendlyByteBuf buffer) {
         pos = buffer.readBlockPos();
     }
 
@@ -22,6 +22,6 @@ public class PlayerBlockBreakPacket {
     }
 
     public void handle(CustomPayloadEvent.Context context) {
-        context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> PlayerBlockBreakPacketHandler.handle(pos)));
+        context.enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> S2CPlayerBlockBreakPacketHandler.handle(pos)));
     }
 }

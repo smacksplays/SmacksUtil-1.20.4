@@ -8,7 +8,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.SimpleChannel;
 import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.networking.C2SPacket.*;
-import net.smackplays.smacksutil.networking.S2CPacket.PlayerBlockBreakPacket;
+import net.smackplays.smacksutil.networking.S2CPacket.S2CPlayerBlockBreakPacket;
 
 @SuppressWarnings("unused")
 public class PacketHandler {
@@ -74,10 +74,22 @@ public class PacketHandler {
                 .consumerMainThread(C2SVeinMinerBreakPacket::handle)
                 .add();
 
-        INSTANCE.messageBuilder(PlayerBlockBreakPacket.class, NetworkDirection.PLAY_TO_CLIENT)
-                .encoder(PlayerBlockBreakPacket::encode)
-                .decoder(PlayerBlockBreakPacket::new)
-                .consumerMainThread(PlayerBlockBreakPacket::handle)
+        INSTANCE.messageBuilder(C2SToggleMagnetItemPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SToggleMagnetItemPacket::encode)
+                .decoder(C2SToggleMagnetItemPacket::new)
+                .consumerMainThread(C2SToggleMagnetItemPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(C2SToggleLightWandItemPacket.class, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SToggleLightWandItemPacket::encode)
+                .decoder(C2SToggleLightWandItemPacket::new)
+                .consumerMainThread(C2SToggleLightWandItemPacket::handle)
+                .add();
+
+        INSTANCE.messageBuilder(S2CPlayerBlockBreakPacket.class, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(S2CPlayerBlockBreakPacket::encode)
+                .decoder(S2CPlayerBlockBreakPacket::new)
+                .consumerMainThread(S2CPlayerBlockBreakPacket::handle)
                 .add();
     }
 
