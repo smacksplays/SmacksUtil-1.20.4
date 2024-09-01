@@ -44,7 +44,7 @@ public abstract class AbstractEnchantingToolMenu extends AbstractContainerMenu {
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        ItemStack itemStack = ItemStack.EMPTY;
+        /*ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
         if (slot.hasItem() && (slot.getItem().isEnchantable() || slot.getItem().getOrCreateTag().contains("Enchantments"))) {
             ItemStack itemStack2 = slot.getItem();
@@ -63,6 +63,7 @@ public abstract class AbstractEnchantingToolMenu extends AbstractContainerMenu {
                 slot.setChanged();
             }
         }
-        return itemStack;
+        return itemStack;*/
+        return ItemStack.EMPTY;
     }
 }

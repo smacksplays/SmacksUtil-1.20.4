@@ -1,6 +1,7 @@
 package net.smackplays.smacksutil;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.smackplays.smacksutil.platform.Services;
 

@@ -16,24 +16,24 @@ import java.util.List;
 import java.util.UUID;
 
 public class C2SInteractEntityPacket {
-    private final ItemStack stack;
+    //private final ItemStack stack;
     private final UUID entityUUID;
     private final boolean isMainHnad;
 
     public C2SInteractEntityPacket(ItemStack s, UUID u, boolean m) {
-        stack = s;
+        //stack = s;
         entityUUID = u;
         isMainHnad = m;
     }
 
     public C2SInteractEntityPacket(FriendlyByteBuf buffer) {
-        stack = buffer.readItem();
+        //stack = buffer.readItem();
         entityUUID = buffer.readUUID();
         isMainHnad = buffer.readBoolean();
     }
 
     public void encode(FriendlyByteBuf buffer) {
-        buffer.writeItem(stack);
+        //buffer.writeItem(stack);
         buffer.writeUUID(entityUUID);
         buffer.writeBoolean(isMainHnad);
     }
@@ -53,7 +53,7 @@ public class C2SInteractEntityPacket {
         }
         if (livingEntity == null) return;
         InteractionHand hand = isMainHnad ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
-        if (stack.getItem() instanceof MobCatcherItem mobItem){
+        /*if (stack.getItem() instanceof MobCatcherItem mobItem){
             if (mobItem.pickupLivingEntity(stack, player, livingEntity, hand)){
                 livingEntity.remove(Entity.RemovalReason.KILLED);
             }
@@ -62,6 +62,6 @@ public class C2SInteractEntityPacket {
             if (mobItem.pickupLivingEntity(stack, player, livingEntity, hand)){
                 livingEntity.remove(Entity.RemovalReason.KILLED);
             }
-        }
+        }*/
     }
 }

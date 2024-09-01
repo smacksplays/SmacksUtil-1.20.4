@@ -65,18 +65,18 @@ public abstract class IVeinMiner {
             k /= n;
             l /= n;
             m /= n;
-            vertexConsumer.vertex(pose.pose(),
+            vertexConsumer.addVertex(pose.pose(),
                             (float) (minX + offsetX),
                             (float) (minY + offsetY),
                             (float) (minZ + offsetZ))
-                    .color(1.0F, 1.0F, 1.0F, 0.8F)
-                    .normal(pose.normal(), k, l, m).endVertex();
-            vertexConsumer.vertex(pose.pose(),
+                    .setColor(1.0F, 1.0F, 1.0F, 0.8F)
+                    .setNormal(pose, k, l, m);
+            vertexConsumer.addVertex(pose.pose(),
                             (float) (maxX + offsetX),
                             (float) (maxY + offsetY),
                             (float) (maxZ + offsetZ))
-                    .color(1.0F, 1.0F, 1.0F, 0.8F)
-                    .normal(pose.normal(), k, l, m).endVertex();
+                    .setColor(1.0F, 1.0F, 1.0F, 0.8F)
+                    .setNormal(pose, k, l, m);
         });
     }
 

@@ -2,6 +2,7 @@ package net.smackplays.smacksutil.inventories;
 
 
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -12,20 +13,20 @@ public class BackpackInventory implements IBackpackInventory {
 
     public BackpackInventory(){
         this.stack = ItemStack.EMPTY;
-        CompoundTag tag = stack.getTagElement("backpack");
+        //CompoundTag tag = stack.getTagElement("backpack");
 
-        if (tag != null) {
-            loadAllItems(tag, items);
-        }
+        //if (tag != null) {
+        //    loadAllItems(tag, items);
+        //}
     }
 
     public BackpackInventory(ItemStack stack) {
         this.stack = stack;
-        CompoundTag tag = stack.getTagElement("backpack");
+        //CompoundTag tag = stack.getTagElement("backpack");
 
-        if (tag != null) {
-            loadAllItems(tag, items);
-        }
+        //if (tag != null) {
+        //    loadAllItems(tag, items);
+        //}
     }
 
     @Override
@@ -35,8 +36,9 @@ public class BackpackInventory implements IBackpackInventory {
 
     @Override
     public void setChanged() {
-        CompoundTag tag = stack.getOrCreateTagElement("backpack");
-        saveAllItems(tag, items, true);
+        DataComponentMap map = stack.getComponents();
+        //CompoundTag tag = stack.getOrCreateTagElement("backpack");
+        //saveAllItems(tag, items, true);
     }
 
     @Override

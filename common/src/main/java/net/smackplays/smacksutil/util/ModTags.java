@@ -6,6 +6,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.smackplays.smacksutil.Constants;
 
+import java.util.Objects;
+
 public class ModTags {
     public static class Blocks {
         public static final TagKey<Block> CROP_BLOCKS =
@@ -26,7 +28,7 @@ public class ModTags {
                 createTag("veinminer_mining");
 
         private static TagKey<Block> createTag(String name) {
-            return TagKey.create(Registries.BLOCK, new ResourceLocation(Constants.MOD_ID, name));
+            return TagKey.create(Registries.BLOCK, Objects.requireNonNull(ResourceLocation.tryBuild(Constants.MOD_ID, name)));
         }
     }
 

@@ -4,7 +4,7 @@ package net.smackplays.smacksutil.items;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -14,7 +14,7 @@ import net.smackplays.smacksutil.inventories.BackpackInventory;
 import net.smackplays.smacksutil.menus.AbstractBackpackMenu;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class AbstractBackpackItem extends Item implements DyeableLeatherItem {
+public abstract class AbstractBackpackItem extends Item implements Equipable {
 
     public AbstractBackpackItem() {
         super(new Properties().stacksTo(1).rarity(Rarity.EPIC));

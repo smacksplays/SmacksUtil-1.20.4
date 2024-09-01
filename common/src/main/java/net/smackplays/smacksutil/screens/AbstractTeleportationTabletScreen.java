@@ -32,17 +32,18 @@ import java.util.Map;
 import static net.smackplays.smacksutil.Constants.*;
 
 public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTabletMenu> extends AbstractContainerScreen<T> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, C_TELEPORTATION_TABLET_SCREEN_LOCATION);
+    private static final ResourceLocation TEXTURE =
+            ResourceLocation.tryBuild(MOD_ID, C_TELEPORTATION_TABLET_SCREEN_LOCATION);
     private static final ResourceLocation ENCHANTING_SLOT_HIGHLIGHTED_SPRITE =
-            new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_HIGHLIGHTED_SPRITE_LOCATION);
+            ResourceLocation.tryBuild(MOD_ID, C_ENCHANTING_SLOT_HIGHLIGHTED_SPRITE_LOCATION);
     private static final ResourceLocation ENCHANTING_SLOT_SPRITE =
-            new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_SPRITE_LOCATION);
+            ResourceLocation.tryBuild(MOD_ID, C_ENCHANTING_SLOT_SPRITE_LOCATION);
     private static final ResourceLocation ENCHANTING_SLOT_DISABLED_SPRITE =
-            new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_DISABLED_SPRITE_LOCATION);
+            ResourceLocation.tryBuild(MOD_ID, C_ENCHANTING_SLOT_DISABLED_SPRITE_LOCATION);
     private static final ResourceLocation SCROLLER_SPRITE =
-            new ResourceLocation(C_SCROLLER_SPRITE_LOCATION);
+            ResourceLocation.tryBuild(MOD_ID, C_SCROLLER_SPRITE_LOCATION);
     private static final ResourceLocation SCROLLER_DISABLED_SPRITE =
-            new ResourceLocation(C_SCROLLER_DISABLED_SPRITE_LOCATION);
+            ResourceLocation.tryBuild(MOD_ID, C_SCROLLER_DISABLED_SPRITE_LOCATION);
     public boolean scrolling;
     private float scrollOffs;
     protected final int backgroundWidth = 157;
@@ -178,11 +179,11 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
             float xRot = this.menu.playerInventory.player.getXRot();
             float yRot = this.menu.playerInventory.player.getYRot();
             Level level = this.menu.playerInventory.player.level();
-            String dim = level.dimensionTypeId().location().getPath();
+            //String dim = level.dimensionTypeId().location().getPath();
 
-            if (Services.C2S_PACKET_SENDER != null) {
-                Services.C2S_PACKET_SENDER.TeleportNBTPacket(stack, pos, xRot, yRot, name, dim, false);
-            }
+            //if (Services.C2S_PACKET_SENDER != null) {
+           //     Services.C2S_PACKET_SENDER.TeleportNBTPacket(stack, pos, xRot, yRot, name, dim, false);
+            //}
         }
     }
 
@@ -195,7 +196,7 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
 
     private Map<String, TeleportationData> getTeleportationList(ItemStack stack){
         Map<String, TeleportationData> map = new HashMap<>();
-        CompoundTag tag = stack.getOrCreateTag();
+        /*CompoundTag tag = stack.getOrCreateTag();
         if (tag.contains("Positions")){
             ListTag listTag = (ListTag) tag.get("Positions");
             if (listTag != null){
@@ -219,7 +220,7 @@ public class AbstractTeleportationTabletScreen<T extends AbstractTeleportationTa
                     map.putIfAbsent(name, data);
                 }
             }
-        }
+        }*/
         return map;
     }
 

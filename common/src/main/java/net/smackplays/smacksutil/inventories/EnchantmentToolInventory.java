@@ -13,11 +13,11 @@ public class EnchantmentToolInventory implements IEnchantmentToolInventory {
 
     public EnchantmentToolInventory(ItemStack stack) {
         this.stack = stack;
-        CompoundTag tag = stack.getTagElement("enchantment_tool");
+        //CompoundTag tag = stack.getTagElement("enchantment_tool");
 
-        if (tag != null) {
-            ContainerHelper.loadAllItems(tag, items);
-        }
+        //if (tag != null) {
+        //    ContainerHelper.loadAllItems(tag, items);
+        //}
     }
 
     @Override
@@ -27,8 +27,8 @@ public class EnchantmentToolInventory implements IEnchantmentToolInventory {
 
     @Override
     public void setChanged() {
-        CompoundTag tag = stack.getOrCreateTagElement("enchantment_tool");
-        ContainerHelper.saveAllItems(tag, items);
+        //CompoundTag tag = stack.getOrCreateTagElement("enchantment_tool");
+        //ContainerHelper.saveAllItems(tag, items);
     }
 
     @Override

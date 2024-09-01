@@ -11,7 +11,7 @@ import net.minecraftforge.event.network.CustomPayloadEvent;
 import java.nio.charset.StandardCharsets;
 
 public class C2STeleportationNBTPacket {
-    private final ItemStack stack;
+    //private final ItemStack stack;
     private final Vec3 pos;
     private final float xRot;
     private final float yRot;
@@ -20,7 +20,7 @@ public class C2STeleportationNBTPacket {
     private final boolean remove;
 
     public C2STeleportationNBTPacket(ItemStack stack, Vec3 pos, float xRot, float yRot, String name, String dim, boolean remove) {
-        this.stack = stack;
+        //this.stack = stack;
         this.pos = pos;
         this.xRot = xRot;
         this.yRot = yRot;
@@ -30,7 +30,7 @@ public class C2STeleportationNBTPacket {
     }
 
     public C2STeleportationNBTPacket(FriendlyByteBuf buffer) {
-        stack = buffer.readItem();
+        //stack = buffer.readItem();
         pos = buffer.readVec3();
         xRot = buffer.readFloat();
         yRot = buffer.readFloat();
@@ -40,7 +40,7 @@ public class C2STeleportationNBTPacket {
     }
 
     public void encode(FriendlyByteBuf buffer) {
-        buffer.writeItem(stack);
+        //buffer.writeItem(stack);
         buffer.writeVec3(pos);
         buffer.writeFloat(xRot);
         buffer.writeFloat(yRot);
@@ -54,7 +54,7 @@ public class C2STeleportationNBTPacket {
         if (player == null)
             return;
 
-        CompoundTag tag = stack.getOrCreateTag();
+        /*CompoundTag tag = stack.getOrCreateTag();
         ListTag posTag = (ListTag)tag.get("Positions");
         if (posTag == null) {
             posTag = new ListTag();
@@ -88,6 +88,6 @@ public class C2STeleportationNBTPacket {
         tag.put("Positions", posTag);
         stack.setTag(tag);
         player.getInventory().setItem(player.getInventory().selected, stack);
-        player.inventoryMenu.broadcastChanges();
+        player.inventoryMenu.broadcastChanges();*/
     }
 }

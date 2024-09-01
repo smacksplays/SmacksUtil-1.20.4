@@ -43,7 +43,7 @@ public class AutoLightWandItem extends LightWandItem {
 
     @Override
     public void inventoryTick(@NotNull ItemStack stack, Level world, @NotNull Entity entity, int $$3, boolean $$4) {
-        if (!world.isClientSide && stack.getOrCreateTag().getBoolean("enabled")) {
+        /*if (!world.isClientSide && stack.getOrCreateTag().getBoolean("enabled")) {
             Player player = (Player) entity;
 
             BlockPos sourcePos = player.blockPosition();
@@ -69,31 +69,31 @@ public class AutoLightWandItem extends LightWandItem {
             if (!toDark.isEmpty()) {
                 world.setBlockAndUpdate(toDark.get(0), Blocks.LIGHT.defaultBlockState());
             }
-        }
+        }*/
         super.inventoryTick(stack, world, entity, $$3, $$4);
     }
 
     @Override
 
     public boolean isFoil(@NotNull ItemStack stack) {
-        return stack.getOrCreateTag().getBoolean("enabled");
+        //return stack.getOrCreateTag().getBoolean("enabled");
+        return false;
     }
 
     public void toggle(ItemStack stack, Player player) {
-        boolean state = stack.getOrCreateTag().getBoolean("enabled");
+        /*boolean state = stack.getOrCreateTag().getBoolean("enabled");
         stack.getOrCreateTag().putBoolean("enabled", !state);
         String msg = !state ? "Active" : "Inactive";
         int color = !state ? GREEN : RED;
-        notifyPlayer(player, msg, color);
+        notifyPlayer(player, msg, color);*/
     }
 
     public void notifyPlayer(Player player, String msg, int color){
         player.displayClientMessage(Component.literal("Auto Light Wand: " + msg).withColor(color), true);
     }
-
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> componentList, @NotNull TooltipFlag flag) {
-        CompoundTag tag = stack.getOrCreateTag();
-        componentList.add(1, Component.literal("Enabled: " + tag.getBoolean("enabled")));
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> componentList, @NotNull TooltipFlag flag) {
+        /*CompoundTag tag = stack.getOrCreateTag();
+        componentList.add(1, Component.literal("Enabled: " + tag.getBoolean("enabled")));*/
     }
 }

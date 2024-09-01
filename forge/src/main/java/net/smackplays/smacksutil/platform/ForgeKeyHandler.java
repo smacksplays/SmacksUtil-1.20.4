@@ -13,8 +13,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.smackplays.smacksutil.Constants;
 import net.smackplays.smacksutil.platform.services.IKeyHandler;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotResult;
+//import top.theillusivec4.curios.api.CuriosApi;
+//import top.theillusivec4.curios.api.SlotResult;
 
 import java.util.List;
 
@@ -34,14 +34,14 @@ public class ForgeKeyHandler implements IKeyHandler {
     public void toggleMagnetConsume(KeyMapping key, Player player) {
         if (key.consumeClick()) {
             if (Services.PLATFORM.isModLoaded("curios")){
-                List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "charm");
-                if (!results.isEmpty()){
-                    ItemStack stack = results.get(0).stack();
-                    if ((stack.is(Services.PLATFORM.getMagnetItem()) || stack.is(Services.PLATFORM.getAdvancedMagnetItem())) && Services.C2S_PACKET_SENDER != null){
-                        Services.C2S_PACKET_SENDER.ToggleMagnetItemPacket(-1);
-                        return;
-                    }
-                }
+                //List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "charm");
+               // if (!results.isEmpty()){
+               //     ItemStack stack = results.get(0).stack();
+                 //   if ((stack.is(Services.PLATFORM.getMagnetItem()) || stack.is(Services.PLATFORM.getAdvancedMagnetItem())) && Services.C2S_PACKET_SENDER != null){
+                 //       Services.C2S_PACKET_SENDER.ToggleMagnetItemPacket(-1);
+                 //       return;
+                 //   }
+                //}
             }
             NonNullList<Slot> slots = player.inventoryMenu.slots;
             for (int i = slots.size() - 1; i >= 0; i--){
@@ -58,14 +58,14 @@ public class ForgeKeyHandler implements IKeyHandler {
     public void toggleLightWandConsume(KeyMapping key, Player player) {
         if (key.consumeClick()) {
             if (Services.PLATFORM.isModLoaded("curios")){
-                List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "hands");
-                if (!results.isEmpty()){
-                    ItemStack stack = results.get(0).stack();
-                    if (stack.is(Services.PLATFORM.getAutoWandItem()) && Services.C2S_PACKET_SENDER != null){
-                        Services.C2S_PACKET_SENDER.ToggleLightWandItemPacket(-1);
-                        return;
-                    }
-                }
+                //List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "hands");
+                //if (!results.isEmpty()){
+                //    ItemStack stack = results.get(0).stack();
+                //    if (stack.is(Services.PLATFORM.getAutoWandItem()) && Services.C2S_PACKET_SENDER != null){
+                //        Services.C2S_PACKET_SENDER.ToggleLightWandItemPacket(-1);
+                //        return;
+                //    }
+                //}
             }
             NonNullList<Slot> slots = player.inventoryMenu.slots;
             for (int i = slots.size() - 1; i >= 0; i--){
@@ -82,14 +82,14 @@ public class ForgeKeyHandler implements IKeyHandler {
     public void openBackpackConsume(KeyMapping key, Player player) {
         if (key.consumeClick()) {
             if (Services.PLATFORM.isModLoaded("curios")){
-                List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "back");
-                if (!results.isEmpty()){
-                    ItemStack stack = results.get(0).stack();
-                    if ((stack.is(Services.PLATFORM.getLargeBackackItem()) || stack.is(Services.PLATFORM.getBackackItem())) && Services.C2S_PACKET_SENDER != null){
-                        Services.C2S_PACKET_SENDER.BackpackOpenPacket(-1);
-                        return;
-                    }
-                }
+                //List<SlotResult> results = CuriosApi.getCuriosHelper().findCurios(player, "back");
+                //if (!results.isEmpty()){
+                //    ItemStack stack = results.get(0).stack();
+                //    if ((stack.is(Services.PLATFORM.getLargeBackackItem()) || stack.is(Services.PLATFORM.getBackackItem())) && Services.C2S_PACKET_SENDER != null){
+                //        Services.C2S_PACKET_SENDER.BackpackOpenPacket(-1);
+                //        return;
+                //    }
+               // }
             }
             NonNullList<Slot> slots = player.inventoryMenu.slots;
             for (int i = slots.size() - 1; i >= 0; i--){

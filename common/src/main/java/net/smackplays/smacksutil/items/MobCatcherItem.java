@@ -32,7 +32,7 @@ public class MobCatcherItem extends Item {
 
     @Override
     public @NotNull InteractionResult useOn(UseOnContext context) {
-        Level world = context.getLevel();
+        /*Level world = context.getLevel();
         ItemStack stack = context.getItemInHand();
         CompoundTag tag = stack.getOrCreateTag();
         BlockPos clicked = context.getClickedPos();
@@ -49,13 +49,13 @@ public class MobCatcherItem extends Item {
             toCreate.setPos(context.getClickedPos().above().getCenter().add(0, -0.5, 0));
             world.addFreshEntity(toCreate);
             stack.setTag(new CompoundTag());
-        }
+        }*/
         return InteractionResult.SUCCESS;
     }
 
     @SuppressWarnings("unused")
     public boolean pickupLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity livingEntity, @NotNull InteractionHand interactionHand) {
-        Level world = player.level();
+        /*Level world = player.level();
         ItemStack mainHandStack = player.getItemInHand(interactionHand);
         if (!isHolding(mainHandStack) && !world.isClientSide && interactionHand.equals(InteractionHand.MAIN_HAND)) {
             CompoundTag tag = new CompoundTag();
@@ -65,29 +65,30 @@ public class MobCatcherItem extends Item {
             mainHandStack.getOrCreateTag().putBoolean("is_Holding", true);
             setHolding(true);
             return true;
-        }
+        }*/
         return false;
     }
 
     public boolean isHolding(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTag();
+        /*CompoundTag tag = stack.getOrCreateTag();
         if (tag.contains("is_Holding")) {
             isHolding = tag.getBoolean("is_Holding");
         } else {
             return false;
         }
-        return isHolding;
+        return isHolding;*/
+        return false;
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level world, @NotNull List<Component> componentList, @NotNull TooltipFlag flag) {
-        CompoundTag tag = itemStack.getOrCreateTag();
+    public void appendHoverText(@NotNull ItemStack itemStack, @NotNull TooltipContext context, @NotNull List<Component> componentList, @NotNull TooltipFlag flag) {
+        /*CompoundTag tag = itemStack.getOrCreateTag();
         if (!tag.isEmpty()) {
             Component storedEntity = Component.literal("Entity: " + tag.getString("id"));
             componentList.add(storedEntity);
         }
-
-        super.appendHoverText(itemStack, world, componentList, flag);
+*/
+        super.appendHoverText(itemStack, context, componentList, flag);
     }
 
     public void setHolding(boolean holding) {

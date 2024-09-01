@@ -31,7 +31,7 @@ import static net.smackplays.smacksutil.Constants.MOD_ID;
 
 
 public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends AbstractContainerScreen<T> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, C_BACKPACK_SCREEN_LOCATION);
+    private static final ResourceLocation TEXTURE = ResourceLocation.tryBuild(MOD_ID, C_BACKPACK_SCREEN_LOCATION);
     //A path to the gui texture. In this example we use the texture from the dispenser
     protected final int backgroundWidth = 196;
     protected final int backgroundHeight = 220;
@@ -57,7 +57,7 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
 
         BackpackInventory inv = (BackpackInventory) this.menu.inventory;
         ItemStack backpack = inv.stack;
-        CompoundTag tag = backpack.getOrCreateTagElement("backpack");
+        /*CompoundTag tag = backpack.getOrCreateTagElement("backpack");
         ListTag listTag = tag.getList("Items", 10);
         Map<Integer, ItemStack> corrList = new HashMap<>();
         for ( int i = 0; i < listTag.size(); i++){
@@ -69,7 +69,7 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
         for (int i = 4; i < inv.getItems().size(); i++){
             inv.setItem(i, corrList.getOrDefault(i, ItemStack.EMPTY));
         }
-
+*/
         BackpackGuiGraphics c = new BackpackGuiGraphics(context, this.minecraft);
         super.render(c, mouseX, mouseY, delta);
         renderTooltip(context, mouseX, mouseY);
@@ -122,9 +122,9 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
     }
 
     private ItemStack stackOf(CompoundTag tag){
-        Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(tag.getString("id")));
+        /*Item item = BuiltInRegistries.ITEM.get(ResourceLocation.tryBuild(tag.getString("id")));
         ItemStack stack = new ItemStack(item);
-        stack.setCount((int) tag.getFloat("Count"));
+        /*stack.setCount((int) tag.getFloat("Count"));
         if (tag.contains("tag", 10)) {
             stack.setTag(tag.getCompound("tag").copy());
             if (stack.getTag() != null) {
@@ -135,6 +135,7 @@ public class AbstractBackpackScreen<T extends AbstractBackpackMenu> extends Abst
         if (stack.getItem().canBeDepleted()) {
             stack.setDamageValue(stack.getDamageValue());
         }
-        return stack;
+        return stack;*/
+        return ItemStack.EMPTY;
     }
 }

@@ -31,7 +31,7 @@ import static net.smackplays.smacksutil.Constants.MOD_ID;
 
 
 public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> extends AbstractContainerScreen<T> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, C_LARGE_BACKPACK_SCREEN_LOCATION);
+    private static final ResourceLocation TEXTURE = ResourceLocation.tryBuild(MOD_ID, C_LARGE_BACKPACK_SCREEN_LOCATION);
     //A path to the gui texture. In this example we use the texture from the dispenser
     protected final int backgroundWidth = 268;
     protected final int backgroundHeight = 274;
@@ -57,7 +57,7 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
 
         LargeBackpackInventory inv = (LargeBackpackInventory) this.menu.inventory;
         ItemStack backpack = inv.stack;
-        CompoundTag tag = backpack.getOrCreateTagElement("large_backpack");
+        /*CompoundTag tag = backpack.getOrCreateTagElement("large_backpack");
         ListTag listTag = tag.getList("Items", 10);
         Map<Integer, ItemStack> corrList = new HashMap<>();
         for ( int i = 0; i < listTag.size(); i++){
@@ -69,7 +69,7 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
         for (int i = 4; i < inv.getItems().size(); i++){
             inv.setItem(i, corrList.getOrDefault(i, ItemStack.EMPTY));
         }
-
+*/
 
         BackpackGuiGraphics c = new BackpackGuiGraphics(context, this.minecraft);
         super.render(c, mouseX, mouseY, delta);
@@ -123,7 +123,7 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
     }
 
     private ItemStack stackOf(CompoundTag tag){
-        Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(tag.getString("id")));
+        /*Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(tag.getString("id")));
         ItemStack stack = new ItemStack(item);
         stack.setCount((int) tag.getFloat("Count"));
         if (tag.contains("tag", 10)) {
@@ -136,6 +136,7 @@ public class AbstractLargeBackpackScreen<T extends AbstractLargeBackpackMenu> ex
         if (stack.getItem().canBeDepleted()) {
             stack.setDamageValue(stack.getDamageValue());
         }
-        return stack;
+        return stack;*/
+        return ItemStack.EMPTY;
     }
 }

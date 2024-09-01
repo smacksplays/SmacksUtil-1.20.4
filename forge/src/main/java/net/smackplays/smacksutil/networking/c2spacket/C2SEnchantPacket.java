@@ -7,18 +7,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.network.CustomPayloadEvent;
 
 public class C2SEnchantPacket {
-    private final ItemStack stack;
+    //private final ItemStack stack;
 
     public C2SEnchantPacket(ItemStack s) {
-        stack = s;
+        // = s;
     }
 
     public C2SEnchantPacket(FriendlyByteBuf buffer) {
-        stack = buffer.readItem();
+        //stack = buffer.readItem();
     }
 
     public void encode(FriendlyByteBuf buffer) {
-        buffer.writeItem(stack);
+       // buffer.writeItem(stack);
     }
 
     public void handle(CustomPayloadEvent.Context context) {
@@ -26,6 +26,6 @@ public class C2SEnchantPacket {
         if (player == null)
             return;
         AbstractContainerMenu screenHandler = player.containerMenu;
-        screenHandler.slots.get(0).set(stack);
+        //screenHandler.slots.get(0).set(stack);
     }
 }

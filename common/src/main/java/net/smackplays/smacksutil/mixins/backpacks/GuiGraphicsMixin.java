@@ -47,7 +47,7 @@ public abstract class GuiGraphicsMixin {
             }
 
             LocalPlayer $$10 = minecraft.player;
-            float $$11 = $$10 == null ? 0.0F : $$10.getCooldowns().getCooldownPercent(stack.getItem(), minecraft.getFrameTime());
+            float $$11 = $$10 == null ? 0.0F : $$10.getCooldowns().getCooldownPercent(stack.getItem(), minecraft.getFrameTimeNs());
             if ($$11 > 0.0F) {
                 int $$12 = offsetY + Mth.floor(16.0F * (1.0F - $$11));
                 int $$13 = $$12 + Mth.ceil(16.0F * $$11);

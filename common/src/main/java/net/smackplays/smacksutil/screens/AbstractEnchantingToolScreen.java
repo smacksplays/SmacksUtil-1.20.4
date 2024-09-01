@@ -27,18 +27,18 @@ import static net.smackplays.smacksutil.Constants.*;
 
 
 public class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> extends AbstractContainerScreen<T> {
-    private static final ResourceLocation ENCHANTING_SLOT_HIGHLIGHTED_SPRITE =
-            new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_HIGHLIGHTED_SPRITE_LOCATION);
-    private static final ResourceLocation ENCHANTING_SLOT_SPRITE =
-            new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_SPRITE_LOCATION);
-    private static final ResourceLocation ENCHANTING_SLOT_DISABLED_SPRITE =
-            new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_DISABLED_SPRITE_LOCATION);
-    private static final ResourceLocation TEXTURE =
-            new ResourceLocation(MOD_ID, C_ENCHANTING_TOOL_SCREEN_LOCATION);
-    private static final ResourceLocation SCROLLER_SPRITE =
-            new ResourceLocation(C_SCROLLER_SPRITE_LOCATION);
-    private static final ResourceLocation SCROLLER_DISABLED_SPRITE =
-            new ResourceLocation(C_SCROLLER_DISABLED_SPRITE_LOCATION);
+    private static final ResourceLocation ENCHANTING_SLOT_HIGHLIGHTED_SPRITE = C_ENCHANTING_SLOT_HIGHLIGHTED_SPRITE_RESOURCELOCATION;
+            //new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_HIGHLIGHTED_SPRITE_LOCATION);
+    private static final ResourceLocation ENCHANTING_SLOT_SPRITE = C_ENCHANTING_SLOT_SPRITE_LOCATION_RESOURCELOCATION;
+            //new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_SPRITE_LOCATION);
+    private static final ResourceLocation ENCHANTING_SLOT_DISABLED_SPRITE = C_ENCHANTING_SLOT_DISABLED_SPRITE_LOCATION_RESOURCELOCATION;
+            //new ResourceLocation(MOD_ID, C_ENCHANTING_SLOT_DISABLED_SPRITE_LOCATION);
+    private static final ResourceLocation TEXTURE = C_ENCHANTING_TOOL_SCREEN_LOCATION_RESOURCELOCATION;
+            //new ResourceLocation(MOD_ID, C_ENCHANTING_TOOL_SCREEN_LOCATION);
+    private static final ResourceLocation SCROLLER_SPRITE = C_SCROLLER_SPRITE_LOCATION_RESOURCELOCATION;
+            //new ResourceLocation(C_SCROLLER_SPRITE_LOCATION);
+    private static final ResourceLocation SCROLLER_DISABLED_SPRITE = C_SCROLLER_DISABLED_SPRITE_LOCATION_RESOURCELOCATION;
+            //new ResourceLocation(C_SCROLLER_DISABLED_SPRITE_LOCATION);
     public boolean scrolling;
     private float scrollOffs;
     protected final int backgroundWidth = 176;
@@ -90,9 +90,9 @@ public class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> 
                     context.blit(ENCHANTING_SLOT_SPRITE, x + 8, y + 15 + 19 * i, 0, 0, 126, 19, 126, 19);
                 }
                 ArrayList<Component> comp = new ArrayList<>();
-                BuiltInRegistries.ENCHANTMENT
-                        .getOptional(EnchantmentHelper.getEnchantmentId(ench))
-                        .ifPresent(e -> comp.add(e.getFullname(e.getMaxLevel())));
+                //BuiltInRegistries.ENCHANTMENT_PROVIDER_TYPE
+                //        .getOptional(EnchantmentHelper.getEnchantmentId(ench))
+                //        .ifPresent(e -> comp.add(e.getFullname(e.getMaxLevel())));
 
 
                 labelList.add(new Label(comp.get(0), 10, 20 + 19 * i, false));
@@ -103,9 +103,10 @@ public class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> 
     }
 
     public ArrayList<Enchantment> getEnchantments(ItemStack stack) {
+        ArrayList<Enchantment> list = new ArrayList<>();
+        /*
         Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(stack);
         ArrayList<Enchantment> presentEnchantments = new ArrayList<>(enchantmentMap.keySet());
-        ArrayList<Enchantment> list = new ArrayList<>();
         if (this.addRemove) {
             for (Enchantment enchantment : BuiltInRegistries.ENCHANTMENT) {
                 int lvl = EnchantmentHelper.getItemEnchantmentLevel(enchantment, stack);
@@ -117,7 +118,7 @@ public class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> 
             }
         } else {
             list = presentEnchantments;
-        }
+        }*/
         return list;
     }
 
@@ -192,6 +193,7 @@ public class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> 
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int $$2) {
+        /*
         int x = (width - this.backgroundWidth) / 2;
         int y = (height - this.backgroundHeight) / 2;
 
@@ -225,7 +227,7 @@ public class AbstractEnchantingToolScreen<T extends AbstractEnchantingToolMenu> 
             if (list.size() > 6 && insideScrollbar(x, y, mouseX, mouseY)) {
                 this.scrolling = true;
             }
-        }
+        }*/
         return super.mouseClicked(mouseX, mouseY, $$2);
     }
 

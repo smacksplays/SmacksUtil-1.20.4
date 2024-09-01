@@ -17,10 +17,10 @@ public class InvSlot extends Slot {
     public boolean mayPickup(Player player) {
         if (player.containerMenu instanceof AbstractBackpackMenu menu){
             BackpackInventory inv = (BackpackInventory) menu.inventory;
-            if (ItemStack.isSameItemSameTags(this.getItem(), inv.stack)) return false;
+            if (ItemStack.isSameItemSameComponents(this.getItem(), inv.stack)) return false;
         } else if (player.containerMenu instanceof AbstractLargeBackpackMenu menu){
             LargeBackpackInventory inv = (LargeBackpackInventory) menu.inventory;
-            if (ItemStack.isSameItemSameTags(this.getItem(), inv.stack)) return false;
+            if (ItemStack.isSameItemSameComponents(this.getItem(), inv.stack)) return false;
         }
         return super.mayPickup(player);
     }

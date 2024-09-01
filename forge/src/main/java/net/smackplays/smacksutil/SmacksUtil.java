@@ -4,7 +4,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.DyeableLeatherItem;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -37,7 +37,6 @@ import net.smackplays.smacksutil.screens.AbstractBackpackScreen;
 import net.smackplays.smacksutil.screens.AbstractEnchantingToolScreen;
 import net.smackplays.smacksutil.screens.AbstractLargeBackpackScreen;
 import net.smackplays.smacksutil.screens.AbstractTeleportationTabletScreen;
-import top.theillusivec4.curios.api.SlotTypeMessage;
 
 import static net.smackplays.smacksutil.Constants.*;
 
@@ -89,9 +88,9 @@ public class SmacksUtil {
 
     public void interModEnqueue(InterModEnqueueEvent e){
         if (Services.PLATFORM.isModLoaded("curios")){
-            InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("charm").size(1).build());
-            InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("back").size(1).build());
-            InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("hands").size(1).build());
+            //InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("charm").size(1).build());
+            //InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("back").size(1).build());
+            //InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("hands").size(1).build());
         }
     }
 
@@ -136,10 +135,10 @@ public class SmacksUtil {
 
         @SubscribeEvent
         public static void colors(RegisterColorHandlersEvent.Item event) {
+            /*event.register((ItemStack stack, int tintIndex) -> tintIndex == 0 ?
+                    ((Equipable) BACKPACK_ITEM.get()).getColor(stack) : 0xFFFFFF, BACKPACK_ITEM.get());
             event.register((ItemStack stack, int tintIndex) -> tintIndex == 0 ?
-                    ((DyeableLeatherItem) BACKPACK_ITEM.get()).getColor(stack) : 0xFFFFFF, BACKPACK_ITEM.get());
-            event.register((ItemStack stack, int tintIndex) -> tintIndex == 0 ?
-                    ((DyeableLeatherItem) LARGE_BACKPACK_ITEM.get()).getColor(stack) : 0xFFFFFF, LARGE_BACKPACK_ITEM.get());
+                    ((Equipable) LARGE_BACKPACK_ITEM.get()).getColor(stack) : 0xFFFFFF, LARGE_BACKPACK_ITEM.get());*/
         }
     }
 

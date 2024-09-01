@@ -95,7 +95,7 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
             while(!stack.isEmpty() && (backwards ? counter >= min : counter < max)) {
                 Slot slot = this.slots.get(counter);
                 ItemStack stack1 = slot.getItem();
-                if (!stack1.isEmpty() && ItemStack.isSameItemSameTags(stack, stack1)) {
+                if (!stack1.isEmpty() && ItemStack.isSameItemSameComponents(stack, stack1)) {
                     int combinedCount = stack1.getCount() + stack.getCount();
                     if (combinedCount <= maxStackSize) {
                         stack.setCount(0);
@@ -141,7 +141,7 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
                     slot.setChanged();
                     bl1 = true;
                     break;
-                } else if (ItemStack.isSameItemSameTags(stack, stack1) && slot instanceof BackpackSlot && combinedCount < maxStackSize){
+                } else if (ItemStack.isSameItemSameComponents(stack, stack1) && slot instanceof BackpackSlot && combinedCount < maxStackSize){
                     stack1.grow(stack.getCount());
                     stack.setCount(0);
                 }
@@ -168,7 +168,7 @@ public abstract class AbstractLargeBackpackMenu extends AbstractContainerMenu {
                 if (i != j){
                     ItemStack stack1 = temp.get(i);
                     ItemStack stack2 = temp.get(j);
-                    if (ItemStack.isSameItemSameTags(stack1, stack2) && stack1.getCount() + stack2.getCount() <= maxStacksize){
+                    if (ItemStack.isSameItemSameComponents(stack1, stack2) && stack1.getCount() + stack2.getCount() <= maxStacksize){
                         stack1.setCount(stack1.getCount() + stack2.getCount());
                         temp.set(i, stack1);
                         temp.set(j, Items.AIR.getDefaultInstance());

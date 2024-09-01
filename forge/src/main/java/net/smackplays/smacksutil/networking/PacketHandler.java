@@ -13,7 +13,7 @@ import net.smackplays.smacksutil.networking.s2cpacket.S2CPlayerBlockBreakPacket;
 @SuppressWarnings("unused")
 public class PacketHandler {
     private static final SimpleChannel INSTANCE = ChannelBuilder.named(
-                    new ResourceLocation(Constants.MOD_ID, "main"))
+                    ResourceLocation.tryBuild(Constants.MOD_ID, "main"))
             .serverAcceptedVersions((status, version) -> true)
             .clientAcceptedVersions((status, version) -> true)
             .networkProtocolVersion(1)

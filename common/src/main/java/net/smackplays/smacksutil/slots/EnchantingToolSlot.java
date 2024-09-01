@@ -19,7 +19,8 @@ public class EnchantingToolSlot extends Slot {
 
     @Override
     public boolean mayPlace(ItemStack stack) {
-        return stack.isEnchantable() || stack.getOrCreateTag().contains("Enchantments");
+        //return stack.isEnchantable() || stack.getOrCreateTag().contains("Enchantments");
+        return false;
     }
 
     @Override

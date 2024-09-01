@@ -1,5 +1,6 @@
 package net.smackplays.smacksutil;
 
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,4 +70,12 @@ public class Constants {
     public static final String KEY_SMACKSUTIL_OPEN_BACKPACK = "key.smacksutil.open_backpack";
     public static final String KEY_SMACKSUTIL_TOGGLE_MAGNET = "key.smacksutil.toggle_magnet";
     public static final String KEY_SMACKSUTIL_TOGGLE_LIGHT_WAND = "key.smacksutil.toggle_light_wand";
+
+    public static final ResourceLocation  C_ENCHANTING_SLOT_HIGHLIGHTED_SPRITE_RESOURCELOCATION = ResourceLocation.tryBuild(MOD_ID, C_ENCHANTING_SLOT_HIGHLIGHTED_SPRITE_LOCATION);
+    public static final ResourceLocation  C_ENCHANTING_SLOT_SPRITE_LOCATION_RESOURCELOCATION = ResourceLocation.tryBuild(MOD_ID, C_ENCHANTING_SLOT_SPRITE_LOCATION);
+    public static final ResourceLocation  C_ENCHANTING_SLOT_DISABLED_SPRITE_LOCATION_RESOURCELOCATION = ResourceLocation.tryBuild(MOD_ID, C_ENCHANTING_SLOT_DISABLED_SPRITE_LOCATION);
+    public static final ResourceLocation  C_ENCHANTING_TOOL_SCREEN_LOCATION_RESOURCELOCATION = ResourceLocation.tryBuild(MOD_ID, C_ENCHANTING_TOOL_SCREEN_LOCATION);
+    public static final ResourceLocation  C_SCROLLER_SPRITE_LOCATION_RESOURCELOCATION = ResourceLocation.tryBuild(MOD_ID, C_SCROLLER_SPRITE_LOCATION);
+    public static final ResourceLocation  C_SCROLLER_DISABLED_SPRITE_LOCATION_RESOURCELOCATION = ResourceLocation.tryBuild(MOD_ID, C_SCROLLER_DISABLED_SPRITE_LOCATION);
+
 }

@@ -160,7 +160,7 @@ public interface IBackpackInventory extends WorldlyContainer {
     }
 
     default ItemStack stackOf(CompoundTag tag) {
-        Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(tag.getString("id")));
+        /*Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(tag.getString("id")));
         ItemStack stack = new ItemStack(item);
         stack.setCount((int) tag.getFloat("Count"));
         if (tag.contains("tag", 10)) {
@@ -173,7 +173,8 @@ public interface IBackpackInventory extends WorldlyContainer {
         if (stack.getItem().canBeDepleted()) {
             stack.setDamageValue(stack.getDamageValue());
         }
-        return stack;
+        return stack;*/
+        return ItemStack.EMPTY;
     }
 
     default void saveAllItems(CompoundTag tag, NonNullList<ItemStack> items, boolean bl) {
@@ -199,9 +200,9 @@ public interface IBackpackInventory extends WorldlyContainer {
         ResourceLocation location = BuiltInRegistries.ITEM.getKey(stack.getItem());
         tag.putString("id", location.toString());
         tag.putFloat("Count", (float)stack.getCount());
-        if (stack.getTag() != null) {
-            tag.put("tag", stack.getTag().copy());
-        }
+        //if (stack.getTag() != null) {
+        //    tag.put("tag", stack.getTag().copy());
+        //}
 
     }
 }

@@ -32,7 +32,7 @@ public class AdvancedMobCatcherItem extends Item {
 
     @Override
     public @NotNull InteractionResult useOn(UseOnContext context) {
-        Level world = context.getLevel();
+        /*Level world = context.getLevel();
         ItemStack stack = context.getItemInHand();
         CompoundTag mainTag = stack.getOrCreateTag();
         ListTag listTag = (ListTag) mainTag.get("Entities");
@@ -57,13 +57,13 @@ public class AdvancedMobCatcherItem extends Item {
                     mainTag.putBoolean("is_Holding", false);
                 }
             }
-        }
+        }*/
         return InteractionResult.SUCCESS;
     }
 
     @SuppressWarnings("unused")
     public boolean pickupLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity livingEntity, @NotNull InteractionHand interactionHand) {
-        Level world = player.level();
+        /*Level world = player.level();
         ItemStack mainHandStack = player.getItemInHand(interactionHand);
         CompoundTag tag = mainHandStack.getOrCreateTag();
         ListTag list;
@@ -84,33 +84,35 @@ public class AdvancedMobCatcherItem extends Item {
             mainHandStack.getOrCreateTag().putBoolean("is_Holding", true);
             setHolding(true);
             return true;
-        }
+        }*/
         return false;
     }
 
     public boolean isHolding(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTag();
+        /*CompoundTag tag = stack.getOrCreateTag();
         if (tag.contains("is_Holding")) {
             isHolding = tag.getBoolean("is_Holding");
         } else {
             return false;
         }
-        return isHolding;
+        return isHolding;*/
+        return false;
     }
 
     public boolean isBelowMax(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTag();
+        /*CompoundTag tag = stack.getOrCreateTag();
         if (tag.contains("is_Holding")) {
             ListTag listTag = (ListTag) tag.get("Entities");
             return listTag != null && listTag.size() < 10;
         } else {
             return true;
-        }
+        }*/
+        return false;
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level world, @NotNull List<Component> componentList, @NotNull TooltipFlag flag) {
-        CompoundTag tag = itemStack.getOrCreateTag();
+    public void appendHoverText(@NotNull ItemStack itemStack, @NotNull TooltipContext context, @NotNull List<Component> componentList, @NotNull TooltipFlag flag) {
+        /*CompoundTag tag = itemStack.getOrCreateTag();
         if (!tag.isEmpty()) {
             ListTag listTag = (ListTag) tag.get("Entities");
             if (listTag == null) return;
@@ -120,8 +122,8 @@ public class AdvancedMobCatcherItem extends Item {
                 componentList.add(storedEntity);
             }
         }
-
-        super.appendHoverText(itemStack, world, componentList, flag);
+*/
+        super.appendHoverText(itemStack, context, componentList, flag);
     }
 
     public void setHolding(boolean holding) {

@@ -12,27 +12,27 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.network.CustomPayloadEvent;
 
 public class C2SVeinMinerBreakPacket {
-    private final ItemStack stack;
+    //private final ItemStack stack;
     private final BlockPos pos;
     private final boolean isCreative;
     private final boolean replaceSeeds;
 
     public C2SVeinMinerBreakPacket(ItemStack s, BlockPos p, boolean isC, boolean isR) {
-        stack = s;
+        //stack = s;
         pos = p;
         isCreative = isC;
         replaceSeeds = isR;
     }
 
     public C2SVeinMinerBreakPacket(FriendlyByteBuf buffer) {
-        stack = buffer.readItem();
+        //stack = buffer.readItem();
         pos = buffer.readBlockPos();
         isCreative = buffer.readBoolean();
         replaceSeeds = buffer.readBoolean();
     }
 
     public void encode(FriendlyByteBuf buffer) {
-        buffer.writeItem(stack);
+        //buffer.writeItem(stack);
         buffer.writeBlockPos(pos);
         buffer.writeBoolean(isCreative);
         buffer.writeBoolean(replaceSeeds);
@@ -49,9 +49,9 @@ public class C2SVeinMinerBreakPacket {
             if (!isCreative) {
                 BlockEntity currBlockEntity = currBlockState.hasBlockEntity() ? world.getBlockEntity(pos) : null;
                 Block.dropResources(currBlockState, world, pos, currBlockEntity, null, ItemStack.EMPTY);
-                if (stack.isDamageableItem()) {
+                /*if (stack.isDamageableItem()) {
                     stack.hurt(1, player.getRandom(), player);
-                }
+                }*/
             }
             if (replaceSeeds) {
                 world.setBlockAndUpdate(pos, currBlockState.getBlock().defaultBlockState());

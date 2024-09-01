@@ -22,9 +22,9 @@ public class BackpackUpgradeItem extends Item {
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> componentList, @NotNull TooltipFlag flag) {
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, List<Component> componentList, @NotNull TooltipFlag flag) {
         componentList.add(1, Component.literal("Multiplier: " + multiplier));
-        super.appendHoverText(stack, level, componentList, flag);
+        super.appendHoverText(stack, context, componentList, flag);
     }
 
     public int getMultiplier(){
